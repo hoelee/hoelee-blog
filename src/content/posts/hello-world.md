@@ -26,7 +26,8 @@ Most posts will be one of a few shapes:
 
 I'm Lee Teong Hoe (Mr Hoelee), a full-stack developer and DevOps engineer
 based in Malaysia. I build web applications, self-host a ~140-container
-homelab, and run an email-hosting business for Malaysian SMEs.
+homelab, and run Hoelee Enterprise — a website design & development business
+for Malaysian SMEs (with email hosting as a side offering, not the focus).
 
 If you're a recruiter, a client, or a fellow builder — the posts here are my
 living portfolio. Start with the [latest posts](/posts/).
