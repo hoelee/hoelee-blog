@@ -134,6 +134,9 @@ body {
   line-height: 1.35;
   cursor: pointer;
   font-family: var(--font-sans);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .search-toggle:hover { color: var(--brand); border-color: var(--brand); }
 .lang-switch {
