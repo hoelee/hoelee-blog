@@ -130,10 +130,3 @@ is a log of the gotchas. The four that cost real time:
 
 Each of these was a "one-line fix after an hour of head-scratching" — which is
 exactly the kind of thing a blog post should save the next person from.
-
-## Coming up
-
-I'll write dedicated posts on the pieces that had the most hidden gotchas: the
-`act_runner` registration flow (versions + token), the Cloudflare tunnel +
-cache rules, and the locale routing (English flat, Chinese under `posts/zh/`)
-that this site now uses.
