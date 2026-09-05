@@ -1,5 +1,5 @@
 ---
-title: "How I host this blog: Astro, Gitea Actions, and self-hosted CI/CD"
+title: "How I Host This Blog: Astro, Gitea Actions, and Self-Hosted CI/CD"
 description: "A walkthrough of the end-to-end pipeline that builds and serves this site — git-as-CMS, a self-hosted runner on my unRaid server, and Cloudflare in front."
 pubDate: 2026-09-06
 category: case-studies

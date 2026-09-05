@@ -1,5 +1,5 @@
 ---
-title: "Hello, world — about this blog"
+title: "Hello, World — About This Blog"
 description: "What this blog is for: technical writing, self-hosting experience, and a record of what I build and learn."
 pubDate: 2026-09-06
 category: notes
