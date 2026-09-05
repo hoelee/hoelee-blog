@@ -22,6 +22,13 @@ Most posts will be one of a few shapes:
 - **Tutorials** — a hard problem, what I tried, and the fix.
 - **Gotchas & notes** — short entries on the small things that cost me a day.
 
+## What I write about
+
+- **Full-stack engineering** — PHP/CodeIgniter, Java/Spring, TypeScript/React, WordPress.
+- **DevOps & self-hosting** — Docker, Traefik, Cloudflare tunnels, NAS/unRaid homelabs.
+- **AI & automation** — Telegram bots, n8n workflows, local LLMs, memory systems.
+- **Web3** — Solidity, Foundry, ERC-20/721 (learning, honestly framed).
+
 ## About me
 
 I'm Lee Teong Hoe (Mr Hoelee), a full-stack developer and DevOps engineer
