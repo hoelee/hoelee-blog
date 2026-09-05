@@ -10,6 +10,10 @@ interface Props {
   lang?: string;
   ogImage?: string;
   type?: 'website' | 'article';
+  // Optional: direct URL of this page's translation (the other-language version).
+  // When provided, the language switch links to it; otherwise it falls back to
+  // the section landing page (/ for EN, /zh/ for ZH).
+  switchHref?: string;
   article?: {
     publishedTime: string;
     modifiedTime?: string;
@@ -24,6 +28,7 @@ const {
   lang = SITE.lang,
   ogImage = '/og-default.png',
   type = 'website',
+  switchHref,
   article,
 } = Astro.props;
 
@@ -31,9 +36,9 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
 const ogImageUrl = new URL(ogImage, SITE.url).href;
 
 // Language switcher: opposite of current page lang.
-// English pages link to /zh/ (Chinese landing); Chinese pages link back to /.
+// If a per-page translation link is provided, use it; else fall back to the section landing.
 const isZh = lang === 'zh';
-const switchHref = isZh ? '/' : '/zh/';
+const resolvedSwitchHref = switchHref ?? (isZh ? '/' : '/zh/');
 const switchLabel = isZh ? 'EN' : '中文';
 ---
 
@@ -127,7 +132,7 @@ const switchLabel = isZh ? 'EN' : '中文';
         <a href="/categories/">categories</a>
         <a href="/about/">about</a>
         <a href="/rss.xml" title="RSS feed">rss</a>
-        <a class="lang-switch" href={switchHref} aria-label={isZh ? 'Switch to English' : '切换到中文'}>{switchLabel}</a>
+        <a class="lang-switch" href={resolvedSwitchHref} aria-label={isZh ? 'Switch to English' : '切换到中文'}>{switchLabel}</a>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">◐</button>
       </nav>
     </header>

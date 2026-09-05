@@ -37,6 +37,14 @@ const related = all
   .sort((a, b) => b.score - a.score)
   .slice(0, 3)
   .map((r) => r.post);
+
+// Translation link for the language switch:
+// 1. Explicit `translation` field wins.
+// 2. Else auto-match the other-language slug (strip/add the `zh/` prefix).
+const otherLangSlug = lang === 'en' ? `zh/${post.slug}` : post.slug.replace(/^zh\//, '');
+const translation = post.data.translation
+  ?? (all.some((p) => p.slug === otherLangSlug) ? otherLangSlug : undefined);
+const switchHref = translation ? `/posts/${translation}/` : undefined;
 ---
 
 <BaseLayout
@@ -45,6 +53,7 @@ const related = all
   lang={lang}
   ogImage={post.data.ogImage ?? '/og-default.png'}
   type="article"
+  switchHref={switchHref}
   article={{
     publishedTime: post.data.pubDate.toISOString(),
     modifiedTime: post.data.updatedDate?.toISOString(),

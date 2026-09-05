@@ -21,6 +21,9 @@ const posts = defineCollection({
     // lang is NOT set in frontmatter anymore — it's derived from the folder:
     //   posts/hello-world.md  -> en (flat)
     //   posts/zh/hello-world.md -> zh (subfolder)
+    // Explicit link to the other-language version (its full slug, e.g. "zh/how-i-host-this-blog").
+    // When absent, the language switch falls back to the section landing page (/ or /zh/).
+    translation: z.string().optional(),
     ogImage: z.string().optional(),
   }),
 });
