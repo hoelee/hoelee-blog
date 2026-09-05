@@ -16,6 +16,27 @@ and can even hand out free-trial accounts without a human in the loop.
 This is the story of how it went together — the architecture, the LLM wiring,
 and the bugs that ate an afternoon each.
 
+## Why a business needs a bot like this
+
+Before the architecture, the *why*. A support bot isn't a gimmick — it changes
+the economics of a small business:
+
+- **Saves money on staff.** Every routine question a bot answers is one your
+  team doesn't have to. Digi Kedai gets the equivalent of a round-the-clock
+  support agent for a fraction of the cost of hiring one.
+- **Answers instantly, 24/7.** Customers ask at midnight and on weekends. A bot
+  replies in seconds, in their language — no queues, no "we'll get back to you".
+- **Converts browsers into buyers.** The bot doesn't just answer — it *upsells*.
+  A "does this have a free trial?" question turns into a claimed trial account
+  in a couple of taps, with no human in the loop.
+- **Never forgets a customer.** Long-term memory means repeat customers are
+  greeted like regulars, not strangers.
+- **Scales with your catalogue.** Add a product and the bot already knows it —
+  no retraining, no new FAQ pages.
+
+For a one-person business like Digi Kedai, that's the difference between losing
+sales at 2 a.m. and closing them.
+
 ## The stack
 
 - **TypeScript + Node 20** running as a single container on my Synology NAS.
@@ -159,3 +180,15 @@ If you're building your own Telegram bot backed by an LLM, the lesson is the
 boring one: the model is the easy part. The webhook lifecycle, the payload
 contract, and the idempotency of your provisioning are where it actually breaks —
 design those first.
+
+---
+
+## Want a bot like this for your business?
+
+I build custom Telegram/WhatsApp AI bots, websites, and self-hosted
+infrastructure for businesses. If a bot like this could save you time and
+money — or you'd like to hire me — I'd love to talk:
+
+- 📱 **WhatsApp:** [+60 12-797 2969](https://wa.me/60127972969)
+- 📧 **Email:** [me@hoelee.com](mailto:me@hoelee.com)
+- 🌐 **Website:** [hoelee.com](https://hoelee.com)
