@@ -1,30 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
 import { getCollection } from 'astro:content';
 
-const posts = (await getCollection('posts', ({ data }) => !data.draft))
+const posts = (await getCollection('posts', ({ data }) => !data.draft && data.lang === 'en'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<BaseLayout title="Posts — hoelee.dev">
+<BaseLayout title="Posts — Mr Hoelee" description="All posts on Mr Hoelee's blog.">
   <h1>Posts</h1>
   {posts.length === 0 ? (
     <p><em>No posts yet.</em></p>
   ) : (
-    <ul class="post-list">
-      {posts.map((post) => (
-        <li>
-          <a href={`/posts/${post.slug}/`}>
-            <h2>{post.data.title}</h2>
-          </a>
-          <time datetime={post.data.pubDate.toISOString()}>
-            {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
-          <span class="tag">{post.data.category}</span>
-          {post.data.tags.map((tag) => <span class="tag">{tag}</span>)}
-          <p>{post.data.description}</p>
-        </li>
-      ))}
-    </ul>
+    <PostList posts={posts} />
   )}
 </BaseLayout>

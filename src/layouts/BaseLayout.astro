@@ -1,75 +1,170 @@
 ---
+import '../styles/global.css';
+import '@fontsource-variable/inter';
+import '@fontsource/jetbrains-mono/400.css';
+import { SITE } from '../config';
+
 interface Props {
   title: string;
   description?: string;
   lang?: string;
+  ogImage?: string;
+  type?: 'website' | 'article';
+  article?: {
+    publishedTime: string;
+    modifiedTime?: string;
+    tags?: string[];
+    category?: string;
+  };
 }
 
-const { title, description = 'Personal blog of Hoelee — engineering, DevOps, AI, and self-hosting.', lang = 'en' } = Astro.props;
+const {
+  title,
+  description = SITE.description,
+  lang = SITE.lang,
+  ogImage = '/og-default.png',
+  type = 'website',
+  article,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const ogImageUrl = new URL(ogImage, SITE.url).href;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+
     <title>{title}</title>
-    <style>
-      :root {
-        --fg: #1a1a1a;
-        --muted: #6b7280;
-        --accent: #2563eb;
-        --bg: #ffffff;
-        --code-bg: #f3f4f6;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --fg: #e5e7eb;
-          --muted: #9ca3af;
-          --accent: #60a5fa;
-          --bg: #111827;
-          --code-bg: #1f2937;
-        }
-      }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        line-height: 1.6;
-        color: var(--fg);
-        background: var(--bg);
-      }
-      main { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-      header.nav {
-        max-width: 720px; margin: 0 auto; padding: 1.5rem 1.5rem 0;
-        display: flex; gap: 1rem; align-items: baseline;
-      }
-      header.nav a { color: var(--muted); text-decoration: none; }
-      header.nav a:hover { color: var(--accent); }
-      header.nav .brand { font-weight: 700; color: var(--fg); margin-right: auto; }
-      h1, h2, h3 { line-height: 1.25; }
-      a { color: var(--accent); }
-      article a { text-decoration: underline; }
-      code { background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.9em; }
-      pre { background: var(--code-bg); padding: 1rem; border-radius: 8px; overflow-x: auto; }
-      pre code { background: none; padding: 0; }
-      time { color: var(--muted); font-size: 0.9rem; }
-      .post-list { list-style: none; padding: 0; }
-      .post-list li { margin-bottom: 1.5rem; }
-      .post-list h2 { margin: 0 0 0.25rem; }
-      .tag { display: inline-block; background: var(--code-bg); color: var(--muted); padding: 0.1em 0.5em; border-radius: 999px; font-size: 0.8rem; margin-right: 0.4rem; }
-    </style>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={SITE.locale} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Article-specific meta -->
+    {article && (
+      <>
+        <meta property="article:published_time" content={article.publishedTime} />
+        {article.modifiedTime && <meta property="article:modified_time" content={article.modifiedTime} />}
+        {article.category && <meta property="article:section" content={article.category} />}
+        {article.tags?.map((t) => <meta property="article:tag" content={t} />)}
+      </>
+    )}
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Fonts are self-hosted via @fontsource (imported in frontmatter) -->
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — RSS`} href="/rss.xml" />
+
+    <!-- Person / ProfilePage JSON-LD (E-E-A-T backbone) -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: SITE.author,
+      alternateName: SITE.handle,
+      url: SITE.url,
+      email: SITE.email,
+      sameAs: [SITE.linkedin, SITE.github, SITE.gitea, SITE.website].filter(Boolean),
+      jobTitle: 'Full-stack Developer & DevOps Engineer',
+      knowsAbout: [
+        'Full-stack engineering', 'DevOps', 'Self-hosting',
+        'Docker', 'WordPress', 'AI automation', 'Web3',
+      ],
+    })} />
+
+    <!-- Theme init (before paint, no FOUC) -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t === 'dark' || t === 'light') {
+            document.documentElement.setAttribute('data-theme', t);
+          } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
-    <header class="nav">
-      <a class="brand" href="/">hoelee.dev</a>
-      <a href="/about/">about</a>
-      <a href="/posts/">posts</a>
+    <header class="site-header">
+      <nav class="nav" aria-label="Main">
+        <a class="brand" href="/">Mr<span class="dot"> Hoelee</span></a>
+        <a href="/posts/">posts</a>
+        <a href="/categories/">categories</a>
+        <a href="/about/">about</a>
+        <a href="/rss.xml" title="RSS feed">rss</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">◐</button>
+      </nav>
     </header>
-    <main>
+
+    <main class="wrap">
       <slot />
     </main>
+
+    <footer class="site-footer">
+      <span>© {new Date().getFullYear()} {SITE.author} · {SITE.handle}</span>
+      <span>
+        <a href={SITE.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+        <a href={SITE.github} target="_blank" rel="noopener">GitHub</a>
+        <a href={SITE.gitea} target="_blank" rel="noopener">Gitea</a>
+        <a href={SITE.website} target="_blank" rel="noopener">hoelee.com</a>
+      </span>
+    </footer>
+
+    <script>
+      // Theme toggle + code copy buttons (tiny, no framework)
+      const btn = document.getElementById('theme-toggle');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          const cur = document.documentElement.getAttribute('data-theme');
+          const next = cur === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          try { localStorage.setItem('theme', next); } catch (e) {}
+        });
+      }
+      document.querySelectorAll('pre').forEach((pre) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'code-block';
+        pre.parentNode.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+        const b = document.createElement('button');
+        b.className = 'copy-btn';
+        b.textContent = 'copy';
+        b.addEventListener('click', () => {
+          const text = pre.innerText;
+          navigator.clipboard.writeText(text).then(() => {
+            b.textContent = 'copied';
+            b.classList.add('copied');
+            setTimeout(() => { b.textContent = 'copy'; b.classList.remove('copied'); }, 1500);
+          });
+        });
+        wrap.appendChild(b);
+      });
+    </script>
   </body>
 </html>

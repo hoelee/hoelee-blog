@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AuthorCard from '../../components/AuthorCard.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -12,16 +13,71 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+// Reading time (~200 wpm)
+const words = post.body?.trim().split(/\s+/).length ?? 0;
+const minutes = Math.max(1, Math.round(words / 200));
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+// Related posts: same category or overlapping tags, excluding self
+const all = await getCollection('posts', ({ data }) => !data.draft);
+const related = all
+  .filter((p) => p.slug !== post.slug && p.data.lang === post.data.lang)
+  .map((p) => {
+    const catMatch = p.data.category === post.data.category ? 2 : 0;
+    const tagOverlap = p.data.tags.filter((t) => post.data.tags.includes(t)).length;
+    return { post: p, score: catMatch + tagOverlap };
+  })
+  .filter((r) => r.score > 0)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 3)
+  .map((r) => r.post);
 ---
 
-<BaseLayout title={`${post.data.title} — hoelee.dev`} description={post.data.description} lang={post.data.lang}>
+<BaseLayout
+  title={`${post.data.title} — Mr Hoelee`}
+  description={post.data.description}
+  lang={post.data.lang}
+  ogImage={post.data.ogImage ?? '/og-default.png'}
+  type="article"
+  article={{
+    publishedTime: post.data.pubDate.toISOString(),
+    modifiedTime: post.data.updatedDate?.toISOString(),
+    tags: post.data.tags,
+    category: post.data.category,
+  }}
+>
   <article>
-    <h1>{post.data.title}</h1>
-    <time datetime={post.data.pubDate.toISOString()}>
-      {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-    </time>
-    <span class="tag">{post.data.category}</span>
-    {post.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+    <header class="article-head">
+      <h1>{post.data.title}</h1>
+      <div class="meta">
+        <time datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+        <span class="sep">·</span>
+        <span>{minutes} min read</span>
+        <span class="sep">·</span>
+        <a class="tag" href={`/categories/${post.data.category}/`}>{post.data.category}</a>
+        {post.data.tags.map((t) => <span class="tag">{t}</span>)}
+      </div>
+    </header>
+
     <Content />
+
+    <AuthorCard />
   </article>
+
+  {related.length > 0 && (
+    <section class="related">
+      <h2>Related posts</h2>
+      <div class="related-grid">
+        {related.map((p) => (
+          <a class="related-card" href={`/posts/${p.slug}/`}>
+            <h3>{p.data.title}</h3>
+            <time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 </BaseLayout>

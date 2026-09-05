@@ -1,0 +1,325 @@
+/* ============================================================
+   hoelee-blog — global design system
+   Brand colors sourced from www.hoelee.com (Kadence palette).
+   Priority: reading experience → SEO → brand → everything else.
+   ============================================================ */
+
+:root {
+  /* Brand palette (from hoelee.com Kadence global palette) */
+  --brand: #295cff;          /* primary — cobalt/royal blue */
+  --brand-strong: #1c0d5a;   /* deep indigo — dark bg anchor, headings */
+  --brand-soft: #0e94ff;     /* lighter cyan-blue — hover/links */
+  --ink: #1a1a1a;            /* near-black text (never pure #000) */
+  --paper: #ffffff;          /* near-white bg (never pure #fff for large areas) */
+  --surface: #f6f8fb;        /* cool light gray — cards, code bg */
+  --surface-2: #eef2f7;      /* slightly deeper gray — borders on light */
+  --border: #e1ebee;         /* cool light border (palette7) */
+  --muted: #57575d;          /* secondary text (palette5) */
+  --faint: #636363;          /* tertiary text (palette6) */
+
+  /* Semantic (correct/wrong in tutorials) */
+  --good: #13612e;           /* green (palette11) */
+  --warn: #f5a524;           /* amber (palette15) */
+  --bad: #b82105;            /* red (palette13) */
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  --fs-base: 17px;
+  --lh-body: 1.7;
+
+  /* Layout */
+  --measure: 46rem;          /* 65–75ch measure */
+  --radius: 8px;
+
+  color-scheme: light dark;
+}
+
+/* Dark theme */
+html[data-theme='dark'] {
+  --brand: #6d8dff;
+  --brand-soft: #60a5fa;
+  --brand-strong: #c9c2ff;
+  --ink: #e5e7eb;
+  --paper: #111827;
+  --surface: #1f2937;
+  --surface-2: #263244;
+  --border: #2a3345;
+  --muted: #9ca3af;
+  --faint: #6b7280;
+  --good: #4ade80;
+  --warn: #fbbf24;
+  --bad: #f87171;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Layout ---------- */
+.wrap {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  overflow-wrap: break-word;
+}
+.wrap > * { min-width: 0; }
+
+/* ---------- Header / nav ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.nav {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 0.4rem;
+  gap: 1rem;
+}
+.nav .brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+  text-decoration: none;
+  margin-right: auto;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.nav .brand .dot { color: var(--brand); }
+.nav a:not(.brand) {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+.nav a:not(.brand):hover { color: var(--brand); }
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.6rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+.theme-toggle:hover { color: var(--brand); border-color: var(--brand); }
+
+/* ---------- Typography ---------- */
+h1, h2, h3, h4 {
+  color: var(--ink);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+h1 { font-size: 2rem; margin: 0 0 1rem; }
+h2 { font-size: 1.4rem; margin: 2.25rem 0 0.75rem; }
+h3 { font-size: 1.15rem; margin: 1.75rem 0 0.5rem; }
+p { margin: 0 0 1rem; }
+
+a { color: var(--brand); text-decoration: none; }
+a:hover { color: var(--brand-soft); }
+article a { text-decoration: underline; text-underline-offset: 2px; }
+
+time { color: var(--faint); font-size: 0.88rem; }
+
+/* ---------- Article ---------- */
+.article-head {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.article-head .meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0.5rem 0 1rem;
+}
+.article-head .meta .sep { color: var(--border); }
+
+/* ---------- Tags & categories ---------- */
+.tag {
+  display: inline-block;
+  background: var(--surface);
+  color: var(--muted);
+  padding: 0.1em 0.6em;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin: 0 0.35rem 0.35rem 0;
+  text-decoration: none;
+}
+a.tag:hover { color: var(--brand); }
+
+/* ---------- Code ---------- */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--surface);
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+}
+pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  line-height: 1.55;
+  margin: 1.25rem 0;
+  position: relative;
+}
+pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.88rem;
+}
+.code-block { position: relative; }
+.copy-btn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: var(--surface-2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.75rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.code-block:hover .copy-btn { opacity: 1; }
+.copy-btn.copied { color: var(--good); border-color: var(--good); }
+
+/* ---------- Author card ---------- */
+.author-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 2.5rem 0;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.author-card .avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.author-card .who { font-weight: 600; margin: 0; }
+.author-card .bio { color: var(--muted); font-size: 0.9rem; margin: 0.25rem 0 0.5rem; }
+.author-card .links { display: flex; gap: 0.75rem; font-size: 0.85rem; }
+
+/* ---------- Related posts ---------- */
+.related { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+.related-card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.related-card:hover { border-color: var(--brand); }
+.related-card h3 { margin: 0 0 0.3rem; font-size: 0.95rem; }
+.related-card time { font-size: 0.78rem; }
+
+/* ---------- Post list ---------- */
+.post-list { list-style: none; padding: 0; margin: 0; }
+.post-list li {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.post-list li:last-child { border-bottom: none; }
+.post-list h2 { margin: 0 0 0.3rem; font-size: 1.25rem; }
+.post-list .meta { color: var(--faint); font-size: 0.85rem; margin-bottom: 0.5rem; }
+.post-list p { color: var(--muted); margin: 0.4rem 0 0; }
+
+/* ---------- Callouts (correct / wrong in tutorials) ---------- */
+.callout {
+  border-left: 3px solid var(--brand);
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin: 1.25rem 0;
+}
+.callout.good { border-left-color: var(--good); }
+.callout.warn { border-left-color: var(--warn); }
+.callout.bad { border-left-color: var(--bad); }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--faint);
+  font-size: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  justify-content: space-between;
+}
+.site-footer span:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+}
+.site-footer a { color: var(--muted); text-decoration: none; }
+.site-footer a:hover { color: var(--brand); }
+
+/* ---------- Utility ---------- */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 600px) {
+  .wrap { padding: 1.5rem 1.25rem 4rem; }
+  .nav { padding: 0.8rem 1.25rem; gap: 0.85rem; }
+  h1 { font-size: 1.7rem; }
+  h2 { font-size: 1.25rem; }
+  .related-grid { grid-template-columns: 1fr; }
+  .author-card { flex-direction: column; align-items: flex-start; }
+}

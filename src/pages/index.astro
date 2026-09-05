@@ -1,35 +1,37 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
 import { getCollection } from 'astro:content';
+import { SITE } from '../config';
 
-const posts = (await getCollection('posts', ({ data }) => !data.draft))
+const posts = (await getCollection('posts', ({ data }) => !data.draft && data.lang === 'en'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<BaseLayout title="hoelee.dev — personal blog">
-  <h1>hoelee.dev</h1>
-  <p>
-    I'm Hoelee — a full-stack developer and DevOps engineer. I build web apps,
-    self-host infrastructure, and automate things. Here I write about what I
-    learn and ship.
-  </p>
+<BaseLayout title={SITE.title} description={SITE.description}>
+  <section>
+    <h1>Hi, I'm {SITE.author}.</h1>
+    <p>
+      A full-stack developer and DevOps engineer based in Malaysia. I build web
+      apps (PHP/CodeIgniter, Java/Spring, TypeScript/React), self-host a
+      ~140-container homelab, and run a small email-hosting business for
+      Malaysian SMEs. I write here about what I learn and ship.
+    </p>
+    <p>
+      <a href="/about/">More about me</a>
+      <span class="sep">·</span>
+      <a href="/posts/">Browse all posts</a>
+      <span class="sep">·</span>
+      <a href="/rss.xml">RSS</a>
+    </p>
+  </section>
 
-  <h2>Latest posts</h2>
-  {posts.length === 0 ? (
-    <p><em>No posts yet — check back soon.</em></p>
-  ) : (
-    <ul class="post-list">
-      {posts.slice(0, 10).map((post) => (
-        <li>
-          <a href={`/posts/${post.slug}/`}>
-            <h2>{post.data.title}</h2>
-          </a>
-          <time datetime={post.data.pubDate.toISOString()}>
-            {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
-          <p>{post.data.description}</p>
-        </li>
-      ))}
-    </ul>
-  )}
+  <section>
+    <h2>Latest posts</h2>
+    {posts.length === 0 ? (
+      <p><em>No posts yet — check back soon.</em></p>
+    ) : (
+      <PostList posts={posts} limit={10} />
+    )}
+  </section>
 </BaseLayout>

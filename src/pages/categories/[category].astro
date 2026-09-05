@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft && data.lang === 'en');
+  const cats = [...new Set(posts.map((p) => p.data.category))];
+  return cats.map((cat) => ({ params: { category: cat } }));
+}
+
+const { category } = Astro.params;
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft && data.lang === 'en'))
+  .filter((p) => p.data.category === category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title={`${category} — Mr Hoelee`} description={`Posts in the ${category} category.`}>
+  <h1>Category: {category}</h1>
+  <PostList posts={posts} />
+</BaseLayout>

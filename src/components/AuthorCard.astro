@@ -1,0 +1,23 @@
+---
+import { SITE } from '../config';
+
+interface Props {
+  bio?: string;
+}
+
+const { bio = 'Full-stack developer & DevOps engineer. I build web apps, self-host infrastructure, and automate things — this blog is my living portfolio.' } = Astro.props;
+---
+
+<div class="author-card">
+  <div class="avatar" aria-hidden="true">{SITE.handle.charAt(0)}</div>
+  <div>
+    <p class="who">{SITE.author}</p>
+    <p class="bio">{bio}</p>
+    <div class="links">
+      <a href={SITE.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a href={SITE.github} target="_blank" rel="noopener">GitHub</a>
+      <a href={SITE.gitea} target="_blank" rel="noopener">Gitea</a>
+      <a href={SITE.website} target="_blank" rel="noopener">hoelee.com</a>
+    </div>
+  </div>
+</div>
