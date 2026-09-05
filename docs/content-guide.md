@@ -74,9 +74,12 @@ category: case-studies
 tags: ["telegram", "n8n", "docker", "cloudflare"]
 ogImage: "/og/digikedai-bot.png"   # 1200×630, custom per post
 draft: false
-lang: en
 ---
 ```
+
+**No `lang:` field** — language is derived from the file location:
+- `posts/hello-world.md` → English (`en`)
+- `posts/zh/hello-world.md` → Chinese (`zh`), served at `/posts/zh/hello-world/`
 
 ---
 
@@ -102,4 +105,10 @@ lang: en
 - **English is primary and non-negotiable** — the whole SEO strategy targets English queries.
 - **Chinese (zh):** translate only the 2–3 best case studies. Cheap differentiation, opens zh-SG/zh-MY search.
 - **Malay: skip for v1** — no dev-audience demand (the main site already has a dangling Malay config; don't repeat it).
+
+### File layout (enforced by code)
+
+- English posts: `src/content/posts/*.md` (flat, no subfolder).
+- Chinese posts: `src/content/posts/zh/*.md` (subfolder → `/posts/zh/<slug>/`).
+- Language is derived from the folder (see `src/lib/lang.ts`), so **do not** set a `lang:` field in frontmatter.
 - Never let "I should translate this" block publishing an English post.

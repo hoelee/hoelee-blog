@@ -18,7 +18,9 @@ const posts = defineCollection({
     ]),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
-    lang: z.enum(['en', 'zh']).default('en'),
+    // lang is NOT set in frontmatter anymore — it's derived from the folder:
+    //   posts/hello-world.md  -> en (flat)
+    //   posts/zh/hello-world.md -> zh (subfolder)
     ogImage: z.string().optional(),
   }),
 });

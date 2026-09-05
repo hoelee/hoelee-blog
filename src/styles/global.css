@@ -123,6 +123,16 @@ body {
   font-family: var(--font-sans);
 }
 .theme-toggle:hover { color: var(--brand); border-color: var(--brand); }
+.lang-switch {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.1rem 0.55rem;
+}
+.lang-switch:hover { color: var(--brand); border-color: var(--brand); }
 
 /* ---------- Typography ---------- */
 h1, h2, h3, h4 {

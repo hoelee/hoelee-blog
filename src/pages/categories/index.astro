@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { isEn } from '../../lib/lang';
 
-const posts = await getCollection('posts', ({ data }) => !data.draft && data.lang === 'en');
+const posts = await getCollection('posts', isEn);
 
 const categories = [...new Set(posts.map((p) => p.data.category))].sort();
 

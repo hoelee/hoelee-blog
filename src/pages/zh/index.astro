@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getCollection } from 'astro:content';
+import { isZh } from '../../lib/lang';
+import { SITE } from '../../config';
+
+const posts = (await getCollection('posts', isZh))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title={`${SITE.handle} — 技术博客`}
+  description="Hoelee 的技术博客中文版：工程、DevOps、自托管、AI 自动化与 Web3 实验。"
+  lang="zh"
+>
+  <section>
+    <h1>你好，我是 {SITE.author}。</h1>
+    <p>
+      一名base在马来西亚的全栈开发者兼 DevOps 工程师。我构建 Web 应用，
+      自托管一个约 140 个容器的 homelab，并运营面向马来西亚中小企业的
+      邮箱托管业务。这里是博客的中文部分。
+    </p>
+    <p>
+      <a href="/">切换到英文</a>
+      <span class="sep">·</span>
+      <a href="/about/">关于我</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>最新文章</h2>
+    {posts.length === 0 ? (
+      <p><em>中文文章即将发布，敬请期待。</em></p>
+    ) : (
+      <PostList posts={posts} />
+    )}
+  </section>
+</BaseLayout>

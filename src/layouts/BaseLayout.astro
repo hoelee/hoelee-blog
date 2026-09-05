@@ -29,10 +29,16 @@ const {
 
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 const ogImageUrl = new URL(ogImage, SITE.url).href;
+
+// Language switcher: opposite of current page lang.
+// English pages link to /zh/ (Chinese landing); Chinese pages link back to /.
+const isZh = lang === 'zh';
+const switchHref = isZh ? '/' : '/zh/';
+const switchLabel = isZh ? 'EN' : '中文';
 ---
 
 <!doctype html>
-<html lang={lang} data-theme="light">
+<html lang={lang} data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -96,17 +102,20 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
       ],
     })} />
 
-    <!-- Theme init (before paint, no FOUC) -->
+    <!-- Theme init (before paint, no FOUC). Default = dark. -->
     <script is:inline>
       (function () {
         try {
           var t = localStorage.getItem('theme');
-          if (t === 'dark' || t === 'light') {
-            document.documentElement.setAttribute('data-theme', t);
-          } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          if (t === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+          } else {
+            // stored 'dark', or no preference -> default to dark
             document.documentElement.setAttribute('data-theme', 'dark');
           }
-        } catch (e) {}
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
       })();
     </script>
   </head>
@@ -118,6 +127,7 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
         <a href="/categories/">categories</a>
         <a href="/about/">about</a>
         <a href="/rss.xml" title="RSS feed">rss</a>
+        <a class="lang-switch" href={switchHref} aria-label={isZh ? 'Switch to English' : '切换到中文'}>{switchLabel}</a>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">◐</button>
       </nav>
     </header>
