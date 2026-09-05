@@ -12,7 +12,10 @@ jobs:
         run: |
           git config --global --add safe.directory '*'
           git clone --depth 1 "https://git.hoelee.com/hoelee/hoelee-blog.git" .
-          git checkout $GITHUB_SHA 2>/dev/null || true
+          ls -la
+
+      - name: Node version
+        run: node --version && npm --version
 
       - name: Install dependencies
         run: npm ci
@@ -20,7 +23,5 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to unRaid docroot
-        run: |
-          rm -rf /mnt/user/docker/blog/html/*
-          cp -r dist/* /mnt/user/docker/blog/html/
+      - name: List output
+        run: ls -la dist/
