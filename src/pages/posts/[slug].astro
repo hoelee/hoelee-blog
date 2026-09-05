@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} — hoelee.dev`} description={post.data.description} lang={post.data.lang}>
+  <article>
+    <h1>{post.data.title}</h1>
+    <time datetime={post.data.pubDate.toISOString()}>
+      {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+    </time>
+    <span class="tag">{post.data.category}</span>
+    {post.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+    <Content />
+  </article>
+</BaseLayout>
