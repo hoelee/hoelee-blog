@@ -3,9 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostList from '../../components/PostList.astro';
 import { getCollection } from 'astro:content';
 import { isEn } from '../../lib/lang';
+import { sortByUpdated } from '../../lib/sort';
 
-const posts = (await getCollection('posts', isEn))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = sortByUpdated(await getCollection('posts', isEn));
 ---
 
 <BaseLayout title="Posts — Mr Hoelee" description="All posts on Mr Hoelee's blog.">

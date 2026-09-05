@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostList from '../../components/PostList.astro';
 import { getCollection } from 'astro:content';
 import { isEn } from '../../lib/lang';
+import { sortByUpdated } from '../../lib/sort';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', isEn);
@@ -12,9 +13,9 @@ export async function getStaticPaths() {
 
 const { category } = Astro.params;
 
-const posts = (await getCollection('posts', isEn))
-  .filter((p) => p.data.category === category)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = sortByUpdated(
+  (await getCollection('posts', isEn)).filter((p) => p.data.category === category),
+);
 ---
 
 <BaseLayout title={`${category} — Mr Hoelee`} description={`Posts in the ${category} category.`}>

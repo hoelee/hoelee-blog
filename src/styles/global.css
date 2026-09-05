@@ -123,6 +123,18 @@ body {
   font-family: var(--font-sans);
 }
 .theme-toggle:hover { color: var(--brand); border-color: var(--brand); }
+.search-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.6rem;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+.search-toggle:hover { color: var(--brand); border-color: var(--brand); }
 .lang-switch {
   color: var(--muted);
   text-decoration: none;
@@ -282,6 +294,8 @@ pre code {
 .post-list li:last-child { border-bottom: none; }
 .post-list h2 { margin: 0 0 0.3rem; font-size: 1.25rem; }
 .post-list .meta { color: var(--faint); font-size: 0.85rem; margin-bottom: 0.5rem; }
+.post-list .meta .sep { color: var(--border); }
+.post-list .updated { color: var(--brand); font-weight: 500; }
 .post-list p { color: var(--muted); margin: 0.4rem 0 0; }
 
 /* ---------- Callouts (correct / wrong in tutorials) ---------- */

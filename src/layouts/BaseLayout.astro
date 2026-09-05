@@ -3,6 +3,7 @@ import '../styles/global.css';
 import '@fontsource-variable/inter';
 import '@fontsource/jetbrains-mono/400.css';
 import { SITE } from '../config';
+import Search from '../components/Search.astro';
 
 interface Props {
   title: string;
@@ -137,6 +138,7 @@ const nav = isZh
         <a href={isZh ? '/zh/' : '/categories/'}>{nav.categories}</a>
         <a href={isZh ? '/zh/' : '/about/'}>{nav.about}</a>
         <a href="/rss.xml" title={nav.rss}>{nav.rss}</a>
+        <button class="search-toggle" id="search-toggle" aria-label={isZh ? '搜索' : 'Search'}>⌕</button>
         <a class="lang-switch" href={resolvedSwitchHref} aria-label={isZh ? 'Switch to English' : '切换到中文'}>{switchLabel}</a>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">◐</button>
       </nav>
@@ -155,6 +157,8 @@ const nav = isZh
         <a href={SITE.website} target="_blank" rel="noopener">hoelee.com</a>
       </span>
     </footer>
+
+    <Search lang={lang} />
 
     <script>
       // Theme toggle + code copy buttons (tiny, no framework)

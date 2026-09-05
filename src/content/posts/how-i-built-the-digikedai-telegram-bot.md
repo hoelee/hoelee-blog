@@ -153,7 +153,7 @@ One container on the NAS now answers customer questions across two channels
 language, and issues free-trial accounts end-to-end — with a prompt suite of
 ~175 unit tests covering the deterministic flows, retrieval, and the payload
 contracts. The source lives at
-[git.hoelee.com/hoelee/dsm-resource-management](https://git.hoelee.com/hoelee/dsm-resource-management).
+[git.hoelee.com/hoelee/digikedai-bot](https://git.hoelee.com/hoelee/digikedai-bot).
 
 If you're building your own Telegram bot backed by an LLM, the lesson is the
 boring one: the model is the easy part. The webhook lifecycle, the payload

@@ -1,0 +1,201 @@
+---
+// Client-side search via Pagefind. The search box lives in the site header;
+// this component is mounted once per page (in BaseLayout) and drives the
+// overlay + results. Pagefind's index is generated post-build (see the build
+// script); its UI/JS loads from /pagefind/ at runtime.
+interface Props {
+  lang: string;
+}
+const { lang } = Astro.props;
+const placeholder =
+  lang === 'zh' ? '搜索文章…' : 'Search posts…';
+const noResults =
+  lang === 'zh' ? '没有匹配的结果。' : 'No results.';
+---
+
+<div class="search-overlay" id="search-overlay" hidden>
+  <div class="search-panel">
+    <div class="search-bar">
+      <input
+        type="search"
+        id="search-input"
+        placeholder={placeholder}
+        autocomplete="off"
+        spellcheck="false"
+        aria-label={placeholder}
+      />
+      <button class="search-close" id="search-close" aria-label="Close">✕</button>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+
+<style>
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(4px);
+    padding-top: 4rem;
+  }
+  .search-panel {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.4rem 0.7rem;
+  }
+  .search-bar input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    padding: 0.4rem 0;
+  }
+  .search-close {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 0.2rem 0.6rem;
+    cursor: pointer;
+    font-family: var(--font-sans);
+  }
+  .search-close:hover { color: var(--brand); border-color: var(--brand); }
+  .search-results {
+    margin-top: 1rem;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  .search-result {
+    display: block;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .search-result:hover { color: var(--brand); }
+  .search-result h3 { margin: 0 0 0.2rem; font-size: 1.05rem; }
+  .search-result .excerpt { color: var(--muted); font-size: 0.88rem; margin: 0; }
+  .search-result mark {
+    background: color-mix(in srgb, var(--brand) 25%, transparent);
+    color: var(--ink);
+    border-radius: 2px;
+    padding: 0 0.1em;
+  }
+</style>
+
+<script>
+  interface Pagefind {
+    search(query: string): Promise<{ results: PagefindResult[] }>;
+    debouncedSearch(query: string): Promise<{ results: PagefindResult[] }>;
+  }
+  interface PagefindResult {
+    data(): Promise<{ url: string; meta: Record<string, string>; excerpt: string }>;
+  }
+
+  const overlay = document.getElementById('search-overlay') as HTMLElement;
+  const input = document.getElementById('search-input') as HTMLInputElement;
+  const results = document.getElementById('search-results') as HTMLElement;
+  const closeBtn = document.getElementById('search-close') as HTMLButtonElement;
+
+  let pagefind: Pagefind | undefined;
+  let searchButton: HTMLElement | null = null;
+
+  function open() {
+    overlay.hidden = false;
+    input.value = '';
+    results.innerHTML = '';
+    input.focus();
+  }
+  function close() {
+    overlay.hidden = true;
+  }
+
+  // The header search trigger is injected by BaseLayout's script.
+  const trigger = document.getElementById('search-toggle');
+  if (trigger) trigger.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !overlay.hidden) close();
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      overlay.hidden ? open() : close();
+    }
+  });
+
+  async function loadPagefind() {
+    if (pagefind) return pagefind;
+    // Pagefind's UI/JS is copied into /pagefind/ post-build. Load it via a
+    // script tag (not a dynamic import) so Vite leaves the URL untouched.
+    await new Promise<void>((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = '/pagefind/pagefind.js';
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('pagefind load failed'));
+      document.head.appendChild(s);
+    });
+    const w = window as unknown as { Pagefind?: Pagefind };
+    pagefind = w.Pagefind;
+    return pagefind;
+  }
+
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  input.addEventListener('input', () => {
+    const q = input.value.trim();
+    if (!q) {
+      results.innerHTML = '';
+      return;
+    }
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(async () => {
+      try {
+        const pf = await loadPagefind();
+        const search = pf.debouncedSearch ? pf.debouncedSearch(q) : pf.search(q);
+        const res = await search;
+        results.innerHTML = '';
+        if (!res.results.length) {
+          const empty = document.createElement('p');
+          empty.className = 'excerpt';
+          empty.textContent = 'No results.';
+          results.appendChild(empty);
+          return;
+        }
+        for (const r of res.results.slice(0, 12)) {
+          const d = await r.data();
+          const a = document.createElement('a');
+          a.className = 'search-result';
+          a.href = d.url;
+          const h = document.createElement('h3');
+          h.textContent = d.meta.title || d.url;
+          const ex = document.createElement('p');
+          ex.className = 'excerpt';
+          ex.innerHTML = d.excerpt || '';
+          a.appendChild(h);
+          a.appendChild(ex);
+          results.appendChild(a);
+        }
+      } catch (err) {
+        results.innerHTML = '';
+        const errEl = document.createElement('p');
+        errEl.className = 'excerpt';
+        errEl.textContent = 'Search is unavailable.';
+        results.appendChild(errEl);
+      }
+    }, 120);
+  });
+</script>
