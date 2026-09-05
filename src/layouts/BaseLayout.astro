@@ -40,6 +40,11 @@ const ogImageUrl = new URL(ogImage, SITE.url).href;
 const isZh = lang === 'zh';
 const resolvedSwitchHref = switchHref ?? (isZh ? '/' : '/zh/');
 const switchLabel = isZh ? 'EN' : '中文';
+
+// Locale-aware nav labels
+const nav = isZh
+  ? { posts: '文章', categories: '分类', about: '关于', rss: 'RSS' }
+  : { posts: 'posts', categories: 'categories', about: 'about', rss: 'rss' };
 ---
 
 <!doctype html>
@@ -128,10 +133,10 @@ const switchLabel = isZh ? 'EN' : '中文';
     <header class="site-header">
       <nav class="nav" aria-label="Main">
         <a class="brand" href="/">Mr<span class="dot"> Hoelee</span></a>
-        <a href="/posts/">posts</a>
-        <a href="/categories/">categories</a>
-        <a href="/about/">about</a>
-        <a href="/rss.xml" title="RSS feed">rss</a>
+        <a href={isZh ? '/zh/' : '/posts/'}>{nav.posts}</a>
+        <a href={isZh ? '/zh/' : '/categories/'}>{nav.categories}</a>
+        <a href={isZh ? '/zh/' : '/about/'}>{nav.about}</a>
+        <a href="/rss.xml" title={nav.rss}>{nav.rss}</a>
         <a class="lang-switch" href={resolvedSwitchHref} aria-label={isZh ? 'Switch to English' : '切换到中文'}>{switchLabel}</a>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">◐</button>
       </nav>
