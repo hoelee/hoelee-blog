@@ -38,6 +38,7 @@ src/
     lang.ts         # derives en/zh from folder path
 docs/
   content-guide.md  # what to write, what to avoid (READ before writing a post)
+  post-guideline.md # HOW to write it: title case, locale, frontmatter, publish flow
   design-guide.md   # what the design must have, what to avoid (READ before touching UI)
   seo-reference.md  # E-E-A-T / name identity, SEO + GEO checklist, syndication
   ops-runbook.md    # pipeline, publish steps, build pitfalls, health checks
@@ -49,6 +50,7 @@ docs/
 | Doc | When to read |
 |---|---|
 | [`docs/content-guide.md`](docs/content-guide.md) | Before writing/planning any blog post — categories, post types, the "hard job → post" template, and the anti-patterns. |
+| [`docs/post-guideline.md`](docs/post-guideline.md) | Before writing/editing a post — title case, locale folder structure, frontmatter, publish flow. |
 | [`docs/design-guide.md`](docs/design-guide.md) | Before changing theme, layout, typography, color, or SEO markup. |
 | [`docs/seo-reference.md`](docs/seo-reference.md) | Before adding posts/`<head>` markup or debugging search visibility. |
 | [`docs/ops-runbook.md`](docs/ops-runbook.md) | Before debugging CI/CD, deployment, or hosting. |

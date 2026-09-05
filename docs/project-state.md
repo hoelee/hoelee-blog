@@ -15,19 +15,23 @@ Living list of what's done and what's next for blog.hoelee.com. Work through the
 - ✅ Full SEO: canonical, Open Graph (+dims), twitter:card, favicon (all sizes), RSS + sitemap
 - ✅ Category pages (`/categories/`, `/categories/[category]/`)
 - ✅ Locale scheme: English flat in `posts/`, Chinese in `posts/zh/` (lang derived from folder, no `lang:` frontmatter)
-- ✅ Language switcher in nav (EN ↔ 中文) + `/zh/` landing page
+- ✅ Language switcher in nav — links to the **same post** in the other language (auto-matches by `zh/` prefix; falls back to section landing when no translation)
+- ✅ Locale-aware nav labels (EN: Posts/Categories/About/RSS; ZH: 文章/分类/关于/RSS)
 - ✅ Dark mode default (light is opt-in via toggle)
-- ✅ Case study post "how-i-host-this-blog" updated with docker-compose sample + real installation gotchas (from commit history)
-- ✅ Knowledge guides in `docs/` (content, design, seo, ops) + README index + `hoelee-blog` skill
-- ⬜ **Make the Gitea repo public** — verified no secrets in source or history (PAT is a `${{ secrets.PAT }}` reference, not hardcoded). Recommended: yes, public — it's a portfolio artifact. Action: flip visibility in Gitea repo settings.
+- ✅ Case study post "How I Host This Blog" — docker-compose sample + real install gotchas (from commit history)
+- ✅ Chinese translation of the case study (`posts/zh/how-i-host-this-blog.md`)
+- ✅ hello-world intro post — "What I write about" skills map + corrected business framing
+- ✅ Business framing corrected everywhere: website design & development = primary; email hosting = secondary (not the focus)
+- ✅ Knowledge guides in `docs/` (content, design, seo, ops, post-guideline) + README index + `hoelee-blog` skill
+- ✅ Both repos public (Gitea + GitHub) with title/description/homepage/topics + `v1.0.0` release
 
 ---
 
 ## Tier 1 — Content (80% of value; do this first)
 
 - ⬜ **Write the 2 flagship case studies** — highest ROI, these are the portfolio:
-  - ⬜ "How I built the DigiKedai Telegram AI bot" (DSM Docker + Cloudflare tunnel webhook + LiteLLM)
-  - ⬜ "Self-hosting a mem0 memory stack" (API + LiteLLM + pgvector)
+  - ⬜ "How I Built the DigiKedai Telegram AI Bot" (DSM Docker + Cloudflare tunnel webhook + LiteLLM)
+  - ⬜ "Self-Hosting a Mem0 Memory Stack" (API + LiteLLM + pgvector)
 - ⬜ **2–3 gotcha posts** from real debugging history (short, Google-friendly):
   - ⬜ "The Traefik forward-auth gotcha that cost me a day"
   - ⬜ "Site-to-site OpenVPN behind CGNAT"
@@ -41,12 +45,12 @@ Living list of what's done and what's next for blog.hoelee.com. Work through the
 - ⬜ **Tag pages** — tags currently render as labels only; add `/tags/[tag]/` archive pages for fine-grained discovery + internal linking
 - ⬜ **Categories page shows all 7 categories** (not just those with posts) — signal intended coverage; show "0 posts / coming soon" for empty ones
 - ⬜ **Search** — AstroPaper-style fuzzy search (low priority until >20 posts)
+- ⬜ **Dedicated `/zh/posts/` and `/zh/categories/` archive pages** — currently zh nav links point to `/zh/` landing; split into real archives when Chinese content grows
 
 ---
 
 ## Tier 3 — Polish / later
 
-- ⬜ **Verify Chinese content split** — confirm `zh/` posts don't appear in EN feed (the `isEn` helper already filters; re-check when first zh post lands)
 - ⬜ **Google Search Console submission** — submit `sitemap-index.xml` for faster indexing
 - ⬜ **Newsletter / email capture** — only after real traffic exists
 
@@ -58,3 +62,5 @@ Living list of what's done and what's next for blog.hoelee.com. Work through the
 - English-first; Chinese selective (2–3 flagship case studies); no Malay
 - No overclaiming, especially Web3
 - Name identity: "Lee Teong Hoe" / "Mr Hoelee" + same photo + same `sameAs` handles everywhere
+- Business framing: website design & development is primary; email hosting is secondary
+- See `docs/post-guideline.md` for post-writing rules (title case, locale structure, frontmatter, etc.)
