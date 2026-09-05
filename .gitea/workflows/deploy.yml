@@ -4,25 +4,23 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug env
+        run: |
+          echo "GITHUB_TOKEN length: ${#GITHUB_TOKEN}"
+          echo "GITHUB_SHA: ${GITHUB_SHA:-EMPTY}"
+          echo "GITHUB_SERVER_URL: ${GITHUB_SERVER_URL:-EMPTY}"
+          echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY:-EMPTY}"
+          env | grep -i github | sort
+
       - name: Checkout
         run: |
           git config --global --add safe.directory '*'
           git clone --depth 1 "https://x-access-token:${GITHUB_TOKEN}@git.hoelee.com/hoelee/hoelee-blog.git" .
-          git checkout $GITHUB_SHA 2>/dev/null || true
           ls -la
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Deploy to nginx-hoelee-blog
-        run: |
-          rm -rf /mnt/user/docker/nginx-hoelee-blog/html/*
-          cp -r dist/* /mnt/user/docker/nginx-hoelee-blog/html/
-          ls -la /mnt/user/docker/nginx-hoelee-blog/html/
