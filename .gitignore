@@ -16,3 +16,8 @@ Thumbs.db
 # logs
 *.log
 npm-debug.log*
+
+# og/banner gen scratch\.og/
+
+# og/banner gen scratch
+.og/

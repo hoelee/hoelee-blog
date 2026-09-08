@@ -130,6 +130,45 @@ const BANNERS = {
       { n: '4', label: 'learn in public' },
     ],
   },
+
+  'why-your-headless-browser-cant-scrape-everything': {
+    titlebar: 'root@dsm — headless browser vs anti-bot',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'browserless → goofish.com search?q=iPhone15' },
+      { t: 'err', text: '非法访问 · "please use a normal browser"' },
+      { t: 'dim', text: 'stealth flag · patched navigator.webdriver · real UA → still blocked' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl carousell search → parse __PRELOADED_STATE__' },
+      { t: 'ok', text: 'listings + price + photos ✓ (no browser, no stealth)' },
+      { t: 'hl', text: 'server-rendered JSON ≠ signed async API' },
+      { t: 'prompt', text: '' }, { t: 'ok', text: 'read the data path before choosing a tool ✓' },
+    ],
+    flow: [
+      { n: '1', label: 'goofish' },
+      { n: '2', label: 'signed API', err: true },
+      { n: '3', label: 'carousell' },
+      { n: '4', label: 'server JSON', err: false },
+      { n: '5', label: 'parsed ✓' },
+    ],
+  },
+
+  'the-nocodb-attachment-that-wouldnt-update': {
+    titlebar: 'root@dsm — nocodb backfill',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'PATCH image path = fullsize_url' },
+      { t: 'dim', text: '200 OK — but readback still shows the old thumbnail' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'grep image.json | jq .id' },
+      { t: 'hl', text: 'id present → NocoDB resolves by id, ignores new path' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'drop id + signedPath · url.replace("_progressive_thumbnail","")' },
+      { t: 'prompt', text: '' }, { t: 'ok', text: '300 rows updated ✓' },
+    ],
+    flow: [
+      { n: '1', label: 'patch path' },
+      { n: '2', label: 'id keeps old', err: true },
+      { n: '3', label: 'strip id' },
+      { n: '4', label: 'replace() suffix' },
+      { n: '5', label: 'updated ✓' },
+    ],
+  },
 };
 
 const DEFAULT_BANNER = {

@@ -58,6 +58,16 @@ const TERMINALS = {
     <div class="line"><span class="prompt">$</span><span class="cmd">docker compose pull authentik-worker</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">authorization_flow not found · SSO broken</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">uptime: 2025.8 → 2026.8</span><span class="fix">fixed ✓</span></div>`,
+
+  'why-your-headless-browser-cant-scrape-everything': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">browserless → goofish search</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">非法访问 · product list stuck "loading…"</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">carousell: server-rendered JSON</span><span class="fix">→ parsed ✓</span></div>`,
+
+  'the-nocodb-attachment-that-wouldnt-update': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">PATCH image path → 300 rows backfill</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">path unchanged · keep the id, keep the old URL</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">strip id · replace() suffix</span><span class="fix">→ updated ✓</span></div>`,
 };
 
 const DEFAULT_TERMINAL = `
