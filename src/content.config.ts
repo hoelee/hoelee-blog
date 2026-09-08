@@ -25,6 +25,7 @@ const posts = defineCollection({
     // When absent, the language switch falls back to the section landing page (/ or /zh/).
     translation: z.string().optional(),
     ogImage: z.string().optional(),
+    banner: z.string().optional(),
   }),
 });
 

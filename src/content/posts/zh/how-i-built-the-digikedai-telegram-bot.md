@@ -5,6 +5,7 @@ pubDate: 2026-09-06
 category: case-studies
 tags: [telegram, docker, cloudflare, litellm, typescript, ai]
 ogImage: /og/how-i-built-the-digikedai-telegram-bot.png
+banner: /banners/how-i-built-the-digikedai-telegram-bot.png
 ---
 
 Digi Kedai 销售数字产品——在线课程、电子书、模板——每一单都会带来一连串同样的顾客问题：*「这门课有免费试看吗？」「我怎么拿到账号？」「我该买哪个套餐？」*。对一个人的生意来说，人工回复根本忙不过来。于是我打造了一个 AI 客服机器人，全天候解答这些问题，甚至能在无人介入的情况下自动发放免费试用账号。

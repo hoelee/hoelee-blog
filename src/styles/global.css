@@ -170,6 +170,18 @@ article a { text-decoration: underline; text-underline-offset: 2px; }
 time { color: var(--faint); font-size: 0.88rem; }
 
 /* ---------- Article ---------- */
+.article-banner {
+  margin: 0 0 2rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  line-height: 0;
+}
+.article-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 .article-head {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
