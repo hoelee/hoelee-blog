@@ -303,6 +303,42 @@ pre code {
 .post-list .updated { color: var(--brand); font-weight: 500; }
 .post-list p { color: var(--muted); margin: 0.4rem 0 0; }
 
+/* Post list card: thumbnail (left) + text (right) on desktop */
+.post-list .post-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.post-list .thumb {
+  display: block;
+  border-radius: var(--radius);
+  overflow: hidden;
+  line-height: 0;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.post-list .thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 1200 / 630;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .post-list .post-row {
+    grid-template-columns: 220px 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+}
+@media (min-width: 1024px) {
+  .post-list .post-row {
+    grid-template-columns: 260px 1fr;
+  }
+}
+
 /* ---------- Callouts (correct / wrong in tutorials) ---------- */
 .callout {
   border-left: 3px solid var(--brand);
