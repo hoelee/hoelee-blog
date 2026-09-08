@@ -208,6 +208,26 @@ const BANNERS = {
       { n: '5', label: 'verdict ✓' },
     ],
   },
+
+  'automating-cyberpanel-without-the-ui': {
+    titlebar: 'root@cyberpanel — reverse-engineering the v2 API',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl -X POST .../api/verifyConnection' },
+      { t: 'err', text: '404 — the /api/ prefix was dropped in v2' },
+      { t: 'dim', text: 'docs say adminUser/adminPass · panel says "This request need session."' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'GET / → csrftoken → POST /verifyLogin (X-CSRFToken)' },
+      { t: 'hl', text: 'loginStatus: 1 · session cookie set' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'POST /websites/fetchWebsitesList' },
+      { t: 'ok', text: '→ all sites + SSL expiry ✓ (no UI)' },
+    ],
+    flow: [
+      { n: '1', label: 'docs 404', err: true },
+      { n: '2', label: 'session wall' },
+      { n: '3', label: 'CSRF token' },
+      { n: '4', label: 'verifyLogin' },
+      { n: '5', label: 'sites ✓' },
+    ],
+  },
 };
 
 const DEFAULT_BANNER = {

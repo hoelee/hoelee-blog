@@ -78,6 +78,11 @@ const TERMINALS = {
       <div class="line"><span class="prompt">$</span><span class="cmd">fan-out → 3 subagents × 20 providers</span></div>
       <div class="line"><span class="prompt">&nbsp;</span><span class="fix">whois · AUP · reviews · retention — in parallel</span></div>
       <div class="line"><span class="prompt">$</span><span class="cmd">merge scorecard · rank · audit trail</span><span class="fix">→ verdict ✓</span></div>`,
+
+  'automating-cyberpanel-without-the-ui': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">POST /api/verifyConnection</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">404 · API prefix dropped in v2</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">csrftoken → /verifyLogin → fetchWebsitesList</span><span class="fix">→ sites ✓</span></div>`,
   };
 
 const DEFAULT_TERMINAL = `
