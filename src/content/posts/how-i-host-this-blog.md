@@ -4,6 +4,7 @@ description: "A walkthrough of the end-to-end pipeline that builds and serves th
 pubDate: 2026-09-04
 category: case-studies
 tags: [astro, gitea, ci-cd, self-hosting, docker, cloudflare]
+ogImage: /og/how-i-host-this-blog.png
 ---
 
 This blog is itself a project I built to demonstrate the kind of work I do.

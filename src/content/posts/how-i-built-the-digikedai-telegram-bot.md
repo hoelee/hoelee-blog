@@ -4,6 +4,7 @@ description: "A customer-support AI bot that answers questions and provisions fr
 pubDate: 2026-09-06
 category: case-studies
 tags: [telegram, docker, cloudflare, litellm, typescript, ai]
+ogImage: /og/how-i-built-the-digikedai-telegram-bot.png
 ---
 
 Digi Kedai sells digital products — online courses, ebooks, and templates — and

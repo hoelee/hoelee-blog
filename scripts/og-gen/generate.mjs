@@ -38,6 +38,26 @@ const TERMINALS = {
     <div class="line"><span class="prompt">$</span><span class="cmd">docker exec monitor python check_notify.py</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">telegram sendPhoto failed: 400 nginx/1.30.1</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">fix = IPv6 · DNS · multipart</span><span class="fix">→ delivered ✓</span></div>`,
+
+  'hello-world': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">git init hoelee-blog · first commit</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">technical writing · self-hosting · build log</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">about → blog.hoelee.com</span></div>`,
+
+  'how-i-host-this-blog': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">git push origin main</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">Gitea Actions → unRaid runner → nginx → Cloudflare ✓</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">git-as-CMS · zero-downtime deploy</span></div>`,
+
+  'how-i-built-the-digikedai-telegram-bot': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">user:"does this course have a free trial?"</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">bot → yes, here's your account ✓ (24/7, no human)</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">grammY · LiteLLM · Cloudflare tunnel</span></div>`,
+
+  'authentik-major-upgrade-gotchas': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">docker compose pull authentik-worker</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">authorization_flow not found · SSO broken</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">uptime: 2025.8 → 2026.8</span><span class="fix">fixed ✓</span></div>`,
 };
 
 const DEFAULT_TERMINAL = `

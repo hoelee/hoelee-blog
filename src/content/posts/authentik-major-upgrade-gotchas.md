@@ -4,6 +4,7 @@ description: "A year's worth of authentik major-version upgrade pain: storage mo
 pubDate: 2026-09-09
 category: devops
 tags: [authentik, sso, docker, portainer, self-hosting, oidc, upgrade]
+ogImage: /og/authentik-major-upgrade-gotchas.png
 ---
 
 I run authentik as the single sign-on gate in front of my self-hosted stack —

@@ -4,6 +4,7 @@ description: "这篇文章完整拆解了这个网站背后的构建与部署管
 pubDate: 2026-09-06
 category: case-studies
 tags: [astro, gitea, ci-cd, self-hosting, docker, cloudflare]
+ogImage: /og/how-i-host-this-blog.png
 ---
 
 这个博客本身，就是我用来说明「我到底会做什么」的一个项目。下面是完整的

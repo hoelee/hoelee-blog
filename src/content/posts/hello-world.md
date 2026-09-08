@@ -4,6 +4,7 @@ description: "What this blog is for: technical writing, self-hosting experience,
 pubDate: 2026-09-05
 category: notes
 tags: [intro]
+ogImage: /og/hello-world.png
 ---
 
 Welcome. This is where I write about what I build and learn — mostly

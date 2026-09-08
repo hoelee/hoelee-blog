@@ -4,6 +4,7 @@ description: "一年份的 authentik 大版本升级踩坑记录：存储挂载�
 pubDate: 2026-09-09
 category: devops
 tags: [authentik, sso, docker, portainer, self-hosting, oidc, upgrade]
+ogImage: /og/authentik-major-upgrade-gotchas.png
 ---
 
 我把 authentik 当作自托管体系前面的单点登录闸门——邮箱、仪表盘、Synology
