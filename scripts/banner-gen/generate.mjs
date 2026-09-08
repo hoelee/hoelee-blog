@@ -169,6 +169,26 @@ const BANNERS = {
       { n: '5', label: 'updated ✓' },
     ],
   },
+
+  'how-to-verify-a-hosting-provider-before-you-buy': {
+    titlebar: '~/hosting-due-diligence',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'whois vps.tld | grep -i created' },
+      { t: 'err', text: 'registration: 2026-05 — homepage says \"since 2012\"' },
+      { t: 'dim', text: 'a \"since\" claim on a young domain is never verifiable' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl AUP | grep -iE \"tor|reverse proxy|tunnel\"' },
+      { t: 'hl', text: 'found: \"TOR nodes\", \"anonymizing services\" → hard no' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'trustpilot trend · r/hosting · retention clause' },
+      { t: 'prompt', text: '' }, { t: 'ok', text: '→ verdict ✓' },
+    ],
+    flow: [
+      { n: '1', label: 'domain age' },
+      { n: '2', label: '\"since\" claim', err: true },
+      { n: '3', label: 'read AUP' },
+      { n: '4', label: 'reputation' },
+      { n: '5', label: 'verdict ✓' },
+    ],
+  },
 };
 
 const DEFAULT_BANNER = {

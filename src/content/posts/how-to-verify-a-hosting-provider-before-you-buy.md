@@ -4,6 +4,8 @@ description: "A reusable checklist for separating real hosting claims from marke
 pubDate: 2026-09-09
 category: tutorials
 tags: [hosting, vps, due-diligence, whois, devops]
+ogImage: /og/how-to-verify-a-hosting-provider-before-you-buy.png
+banner: /banners/how-to-verify-a-hosting-provider-before-you-buy.png
 ---
 
 Every hosting provider's homepage is a list of promises: *"in business since 2005"*,

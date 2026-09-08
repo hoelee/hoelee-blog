@@ -4,6 +4,8 @@ description: "一份可复用的核查清单，帮你把真实的主机声明和
 pubDate: 2026-09-09
 category: tutorials
 tags: [hosting, vps, due-diligence, whois, devops]
+ogImage: /og/how-to-verify-a-hosting-provider-before-you-buy.png
+banner: /banners/how-to-verify-a-hosting-provider-before-you-buy.png
 ---
 
 每家主机服务商的首页都是一串承诺：_「自 2005 年起运营」_、_「保证在线率」_、
