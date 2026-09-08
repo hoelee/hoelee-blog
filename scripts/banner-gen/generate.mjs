@@ -189,6 +189,25 @@ const BANNERS = {
       { n: '5', label: 'verdict ✓' },
     ],
   },
+
+  'how-i-vetted-20-vps-providers-with-parallel-subagents': {
+    titlebar: '~/vendor-due-diligence — fan-out',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'delegate → 3 subagents, 20 providers' },
+      { t: 'dim', text: 'batch A: 5 · batch B: 6 · batch C: 9 (parallel)' },
+      { t: 'info', text: 'each → WHOIS · AUP · privacy · pricing · reviews' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'merge → one scorecard' },
+      { t: 'hl', text: 'aup flags: "TOR nodes" · domain-age mismatch · metered cap' },
+      { t: 'prompt', text: '' }, { t: 'ok', text: '→ ~20 providers audited in 3h ✓' },
+    ],
+    flow: [
+      { n: '1', label: 'checklist' },
+      { n: '2', label: '3 subagents' },
+      { n: '3', label: 'parallel fetch' },
+      { n: '4', label: 'scorecard' },
+      { n: '5', label: 'verdict ✓' },
+    ],
+  },
 };
 
 const DEFAULT_BANNER = {

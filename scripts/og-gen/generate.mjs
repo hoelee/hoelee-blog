@@ -70,10 +70,15 @@ const TERMINALS = {
     <div class="line"><span class="prompt">$</span><span class="cmd">strip id · replace() suffix</span><span class="fix">→ updated ✓</span></div>`,
 
   'how-to-verify-a-hosting-provider-before-you-buy': `
-    <div class="line"><span class="prompt">$</span><span class="cmd">curl -s rdap.org/domain/vps.tld | jq .events</span></div>
-    <div class="line"><span class="prompt">&nbsp;</span><span class="err">registration: 2026-05 · \"trusted since 2012\"</span></div>
-    <div class="line"><span class="prompt">$</span><span class="cmd">AUP grep tor · reviews · retention</span><span class="fix">→ verdict ✓</span></div>`,
-};
+      <div class="line"><span class="prompt">$</span><span class="cmd">curl -s rdap.org/domain/vps.tld | jq .events</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="err">registration: 2026-05 · "trusted since 2012"</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">AUP grep tor · reviews · retention</span><span class="fix">→ verdict ✓</span></div>`,
+
+    'how-i-vetted-20-vps-providers-with-parallel-subagents': `
+      <div class="line"><span class="prompt">$</span><span class="cmd">fan-out → 3 subagents × 20 providers</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="fix">whois · AUP · reviews · retention — in parallel</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">merge scorecard · rank · audit trail</span><span class="fix">→ verdict ✓</span></div>`,
+  };
 
 const DEFAULT_TERMINAL = `
   <div class="line"><span class="prompt">$</span><span class="cmd">engineering · devops · self-hosting</span></div>
