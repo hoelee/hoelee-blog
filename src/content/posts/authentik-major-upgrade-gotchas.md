@@ -13,6 +13,41 @@ bringing it all the way to **2026.8.1** in one sitting, and everything that
 broke along the way — especially the one mistake that took Single Sign-On
 completely offline and made every internal app ask for a password again.
 
+## What is authentik, and why run it?
+
+authentik is an open-source **identity provider (IdP)** — the thing that answers
+one question over and over: *"who is this person, and are they allowed in?"*
+Think of it as the front door to a whole building of apps. Instead of every
+app running its own username/password screen (and its own list of bugs, its own
+"forgot password" flow, its own 2FA), you make all of them ask authentik instead.
+
+It speaks the protocols that matter for real deployments:
+
+- **OIDC / OAuth2** — the modern single sign-on standard (what "Sign in with
+  Google" uses under the hood).
+- **SAML** — the enterprise standard (for tools like Grafana, Jira, or any
+  legacy line-of-business app).
+- **LDAP** — so older clients and NAS boxes that only know LDAP can join too.
+- **Proxy / forward-auth** — it sits in front of an app via a reverse proxy and
+  gatekeeps access before a request ever reaches the app.
+
+The practical benefits, in order of how much they actually matter:
+
+1. **One login for everything.** Log in once, move freely between every app.
+   Users stop juggling a dozen passwords (and the support tickets that go with
+   them).
+2. **One place to lock things down.** MFA, password policy, session limits, and
+   account recovery live in authentik once — not re-implemented per app.
+3. **One place to audit.** Every login, on every app, for every user, in one
+   log. That's the difference between "we think nothing happened" and "we can
+   prove it" when a question comes up.
+4. **Self-contained and self-hosted.** You own the data. No per-user SaaS fees
+   that scale with your headcount, no lock-in — it's AGPL, runs in Docker.
+
+For a small business or a solo operator running twenty-something services
+(email, dashboards, NAS apps, internal tools), authentik is the difference
+between "every app has its own flimsy password" and "one hardened front door."
+
 ## Why upgrade at all
 
 Version 2025.8.3 wasn't broken. But it had fallen far enough behind that a
@@ -192,3 +227,18 @@ roughly 10% "change the image tag" and 90% "the data model, storage layout,
 and proxy rules all shifted underneath you." Back up, go one version at a time,
 and when something behaves in a way that makes no sense, read the field name
 again before you reach for another config.
+
+---
+
+## Want single sign-on for your business?
+
+If you're running several internal apps — a dashboard, an email server, a help
+desk, a file server — and your team is still logging into each one separately
+(or reusing the same password everywhere), I set up and maintain exactly this
+kind of infrastructure. I'll deploy authentik, wire it to your existing apps,
+add MFA, and make sure "log in once" actually works — then leave you with a
+handover so you're never locked in.
+
+Reach me at [me@hoelee.com](mailto:me@hoelee.com) or WhatsApp
+[+60 12-797 2969](https://wa.me/60127972969), or see what I do at
+[hoelee.com](https://hoelee.com).
