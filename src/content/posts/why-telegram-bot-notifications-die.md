@@ -206,7 +206,12 @@ turned into exactly the kind of bug I'll never trip over twice.
 
 *The bot is a personal project, but the lesson generalizes to any service
 that relies on outbound notifications. If you've got a monitor, a scraper, or
-an alert pipeline that needs to reach people reliably, let's talk — I build
-and fix these for a living.*
+an alert pipeline that needs to reach people reliably, let's talk.*
 
-**WhatsApp +60 12-797 2969 · me@hoelee.com · hoelee.com**
+**I build reliable notification and monitoring pipelines — Telegram/WhatsApp
+alerts, scrapers, and the infrastructure around them.** Tell me what you need
+to watch and where you need it delivered:
+
+- [WhatsApp me →](https://wa.me/60127972969?text=Hi%20Hoelee%2C%20I%20need%20a%20monitoring%2Fnotification%20pipeline)
+- [Email me →](mailto:me@hoelee.com?subject=Monitoring%20%2F%20notification%20pipeline)
+- [hoelee.com](https://www.hoelee.com)

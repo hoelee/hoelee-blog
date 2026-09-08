@@ -188,7 +188,11 @@ multipart 修复之后，监控机器人在下一个 tick 就真正把通知发�
 ---
 
 *这个机器人是我个人的项目，但教训可以推广到任何依赖外发通知的服务。如果你
-有一个监控、抓取，或者需要可靠地触达用户的告警管线，我们可以聊聊——这就
-是我日常工作里搭建和修复的东西。*
+有一个监控、抓取，或者需要可靠地触达用户的告警管线，我们可以聊聊。*
 
-**WhatsApp +60 12-797 2969 · me@hoelee.com · hoelee.com**
+**我搭建可靠的监控与通知管线——Telegram/WhatsApp 告警、抓取器，以及背后的
+基础设施。** 告诉我你要监控什么、通知要发到哪里：
+
+- [WhatsApp 联系 →](https://wa.me/60127972969?text=Hi%20Hoelee%2C%20I%20need%20a%20monitoring%2Fnotification%20pipeline)
+- [Email 联系 →](mailto:me@hoelee.com?subject=Monitoring%20%2F%20notification%20pipeline)
+- [hoelee.com](https://www.hoelee.com)
