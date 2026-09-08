@@ -44,7 +44,7 @@
   .title {
     margin: 30px 48px 0;
     font-family: "Space Grotesk", "Plus Jakarta Sans", sans-serif;
-    font-weight: 700; font-size: 40px;
+    font-weight: 700; font-size: {{TITLE_SIZE}}px;
     line-height: 1.15; color: #ffffff; max-width: 1000px;
   }
   .title .accent { color: #ff5c5c; }
@@ -73,23 +73,20 @@
 </head>
 <body>
   <div class="topbar">
-    <div class="avatar"><img src="file:///D:/dev/hoelee-blog/public/logo-square.png" alt=""></div>
+    <div class="avatar"><img src="{{LOGO_PATH}}" alt=""></div>
     <div class="brand">Mr Hoelee <span class="domain">· blog.hoelee.com</span></div>
   </div>
 
-  <div class="tag"><span class="dot"></span>devops · DevOps</div>
+  <div class="tag"><span class="dot"></span>{{CATEGORY}} · {{KIND}}</div>
 
-  <div class="title">Why Telegram Bot Notifications Die: IPv6, DNS,<br>and a 400 That Took a Day</div>
+  <div class="title">{{TITLE_HTML}}</div>
 
   <div class="terminal">
-    
-    <div class="line"><span class="prompt">$</span><span class="cmd">docker exec monitor python check_notify.py</span></div>
-    <div class="line"><span class="prompt">&nbsp;</span><span class="err">telegram sendPhoto failed: 400 nginx/1.30.1</span></div>
-    <div class="line"><span class="prompt">$</span><span class="cmd">fix = IPv6 · DNS · multipart</span><span class="fix">→ delivered ✓</span></div>
+    {{TERMINAL_HTML}}
   </div>
 
   <div class="footer">
-    <div class="tags"><span>#docker</span><span>#telegram</span><span>#python</span><span>#dns</span><span>#ipv6</span><span>#debugging</span><span>#portainer</span></div>
+    <div class="tags">{{TAGS_HTML}}</div>
     <div class="url">blog.hoelee.com</div>
   </div>
 </body>
