@@ -62,11 +62,6 @@ const switchHref = translation ? `/posts/${translation}/` : undefined;
   }}
 >
   <article>
-    {post.data.banner && (
-      <figure class="article-banner">
-        <img src={post.data.banner} alt="" loading="lazy" width="1600" height="900" />
-      </figure>
-    )}
     <header class="article-head">
       <h1>{post.data.title}</h1>
       <div class="meta">
@@ -79,6 +74,12 @@ const switchHref = translation ? `/posts/${translation}/` : undefined;
       </div>
     </header>
 
+    {post.data.banner && (
+      <figure class="article-banner">
+        <img src={post.data.banner} alt="" loading="lazy" width="1600" height="900" />
+      </figure>
+    )}
+
     <Content />
 
     <AuthorCard />
@@ -90,8 +91,11 @@ const switchHref = translation ? `/posts/${translation}/` : undefined;
       <div class="related-grid">
         {related.map((p) => (
           <a class="related-card" href={`/posts/${p.slug}/`}>
-            <h3>{p.data.title}</h3>
-            <time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time>
+            <img class="related-thumb" src={p.data.ogImage || '/og-default.png'} alt="" loading="lazy" width="1200" height="630" />
+            <div class="related-body">
+              <h3>{p.data.title}</h3>
+              <time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time>
+            </div>
           </a>
         ))}
       </div>

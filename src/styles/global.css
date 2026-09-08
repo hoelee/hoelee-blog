@@ -285,8 +285,8 @@ pre code {
 .related { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
 .related-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 0.9rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
   margin-top: 1rem;
 }
 .related-card {
@@ -294,11 +294,20 @@ pre code {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 0.9rem 1rem;
+  overflow: hidden;
   color: var(--ink);
   text-decoration: none;
 }
 .related-card:hover { border-color: var(--brand); }
+.related-thumb {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 1200 / 630;
+  object-fit: cover;
+  border-bottom: 1px solid var(--border);
+}
+.related-body { padding: 0.9rem 1rem; }
 .related-card h3 { margin: 0 0 0.3rem; font-size: 0.95rem; }
 .related-card time { font-size: 0.78rem; }
 
