@@ -103,7 +103,7 @@ draft: false
 ## 8. i18n policy
 
 - **English is primary and non-negotiable** — the whole SEO strategy targets English queries.
-- **Chinese (zh):** translate only the 2–3 best case studies. Cheap differentiation, opens zh-SG/zh-MY search.
+- **Chinese (zh): translate every post.** Same filename in `posts/zh/` (auto language-switch). Opens zh-SG/zh-MY search and covers bilingual recruiters.
 - **Malay: skip for v1** — no dev-audience demand (the main site already has a dangling Malay config; don't repeat it).
 
 ### File layout (enforced by code)

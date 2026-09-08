@@ -96,9 +96,9 @@ When you finish a difficult piece of work, use this shape — it's simultaneousl
 
 ## 8. i18n sync — Chinese translation (do this automatically, every post)
 
-The DigiKedai case study established the standard: **flagship `case-studies` posts get a Chinese translation automatically.** When writing or updating a post, apply this flow without being asked:
+Every post gets a Chinese translation, **every time**, without being asked:
 
-1. **Translate flagship case studies.** Any `category: case-studies` post gets a Chinese version at `src/content/posts/zh/<same-slug>.md` — **same filename**, so the language switcher auto-links the two (no `translation:` field needed). Do NOT translate `notes`, quick tutorials, or tool roundups unless the user asks.
+1. **Translate every post.** Any new post gets a Chinese version at `src/content/posts/zh/<same-slug>.md` — **same filename**, so the language switcher auto-links the two (no `translation:` field needed).
 2. **Keep EN and ZH in sync.** If you edit the English post (add a section, fix a fact, update a link), make the **same edit** to the Chinese version in the same commit. Never let the two versions drift.
 3. **Translate the *frontmatter* too** — title and description go to Chinese, but `category`, `tags`, and `pubDate` stay identical to the English post (they're data, not prose).
 4. **Code/commands stay in English** inside the Chinese post (see §6) — only the prose around them is translated.
