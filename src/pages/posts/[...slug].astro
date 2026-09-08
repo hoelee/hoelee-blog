@@ -35,7 +35,7 @@ const related = all
   })
   .filter((r) => r.score > 0)
   .sort((a, b) => b.score - a.score)
-  .slice(0, 3)
+  .slice(0, 4)
   .map((r) => r.post);
 
 // Translation link for the language switch:
@@ -87,7 +87,7 @@ const switchHref = translation ? `/posts/${translation}/` : undefined;
 
   {related.length > 0 && (
     <section class="related">
-      <h2>{lang === 'zh' ? '相关文章' : 'Related posts'}</h2>
+      <h2>{lang === 'zh' ? '相关文章' : 'Related Posts'}</h2>
       <div class="related-grid">
         {related.map((p) => (
           <a class="related-card" href={`/posts/${p.slug}/`}>
