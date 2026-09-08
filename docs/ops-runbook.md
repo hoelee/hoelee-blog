@@ -63,3 +63,18 @@ Overflow diagnosis (real numbers, not screenshot guessing): check `scrollWidth >
 - `curl https://blog.hoelee.com/sitemap.xml` → lists all published posts.
 - `curl https://blog.hoelee.com/rss.xml` → non-empty.
 - DNS: `blog.hoelee.com` resolves through Cloudflare (proxy enabled).
+
+## Pitfall: premature poll caches a 16-day 404
+
+The origin serves `Cache-Control: max-age=1382400` (16 days), and Cloudflare caches
+negative (404) responses too. If you curl a freshly-deployed URL **before the CI deploy
+finishes**, Cloudflare caches that 404 for 16 days — the page itself returns 200 but its
+`og`/`banner` PNGs 404 with `cf-cache-status: HIT`.
+
+- **Detect:** the bare URL 404s but `?v=<timestamp>` (cache-buster) returns 200 → origin is
+  fine, edge cache is stale.
+- **Fix:** purge the Cloudflare zone cache. Zone-level token (`Zone.Cache Purge` perm, lives
+  in the cloudflare-pages-deploy skill) → `POST /zones/8c8b2359766ac853602b91dd851c630e/purge_cache`
+  with `{"purge_everything":true}`. See that skill for the exact curl.
+- **Prevent:** after `git push`, `sleep` ~60–90s before the first bare-URL check, or validate
+  with `?cb=$(date +%s)` first so you never register a 404 into edge cache.
