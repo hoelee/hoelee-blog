@@ -29,7 +29,7 @@
   --lh-body: 1.7;
 
   /* Layout */
-  --measure: 46rem;          /* 65–75ch measure */
+  --measure: 70rem;          /* global container width (nav, footer, all pages) */
   --radius: 8px;
 
   color-scheme: light dark;
@@ -326,16 +326,11 @@ pre code {
   object-fit: cover;
 }
 
-@media (min-width: 768px) {
-  .post-list .post-row {
-    grid-template-columns: 220px 1fr;
-    gap: 1.5rem;
-    align-items: center;
-  }
-}
 @media (min-width: 1024px) {
   .post-list .post-row {
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 300px 1fr;
+    gap: 1.75rem;
+    align-items: center;
   }
 }
 
