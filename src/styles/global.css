@@ -328,8 +328,8 @@ pre code {
 
 @media (min-width: 1024px) {
   .post-list .post-row {
-    grid-template-columns: 300px 1fr;
-    gap: 1.75rem;
+    grid-template-columns: 400px 1fr;
+    gap: 2rem;
     align-items: center;
   }
 }
