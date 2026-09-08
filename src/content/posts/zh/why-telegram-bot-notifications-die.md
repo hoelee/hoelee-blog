@@ -4,6 +4,7 @@ description: "一次排障记录：一个跑在 Docker 里的 Telegram 监控机
 pubDate: 2026-09-09
 category: devops
 tags: [docker, telegram, python, dns, ipv6, debugging, portainer]
+ogImage: /og/why-telegram-bot-notifications-die.png
 ---
 
 我跑着一个小监控机器人，专门盯着 Carousell 上新上架的商品，一旦有新品就通过

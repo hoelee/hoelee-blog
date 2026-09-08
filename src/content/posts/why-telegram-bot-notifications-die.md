@@ -4,6 +4,7 @@ description: "A debugging story: a Dockerized telegram monitor whose sendPhoto c
 pubDate: 2026-09-09
 category: devops
 tags: [docker, telegram, python, dns, ipv6, debugging, portainer]
+ogImage: /og/why-telegram-bot-notifications-die.png
 ---
 
 I run a small monitoring bot that watches Carousell for newly-listed
