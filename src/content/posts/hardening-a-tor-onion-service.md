@@ -19,6 +19,21 @@ While I was researching how to do this right, a lot of what I read online talked
 
 So what does actually keep an onion service safe? I went through this properly when I set the mirrors up, and again months later when I went back to check on them. Some of the setup held up. Some of it had quietly broken. And a couple of things I believed about Docker turned out to be wrong in ways I could measure.
 
+## Tor and onion services, in thirty seconds
+
+Tor is an anonymity network: your traffic hops through three relays, and no single relay sees both who you are and where you're going. An onion service is the reverse direction, a server that lives *inside* the network. It gets a `.onion` address instead of a domain, visitors reach it only through Tor, and the server's real location never shows up in the connection.
+
+Four properties come out of that, and a normal website simply can't offer them:
+
+- **No public IP, no ports, no DNS.** Nothing for scanners to find. You can host it from a home connection behind CGNAT.
+- **No middlemen.** No CDN, registrar, or platform in the path recording who visits.
+- **The address itself is the access control.** People who have it can reach the site; everyone else can't even tell it exists. Add client keys on top when that isn't strict enough.
+- **It keeps working when the clearnet doesn't.** If a domain gets blocked or seized, the onion is untouched, because no registry is involved.
+
+What onion hosting suits: private file drops, portfolio and git mirrors, lawyer-to-counsel drafts, digital-goods delivery, any archive that should never appear in a search index. The people who want it are the ones for whom "nobody can even see that it exists" is the feature rather than a quirk: lawyers, auditors, freelancers sending deliverables, sources talking to journalists, and shops selling digital products over a channel their competitors can't scan.
+
+The honest tradeoff is speed. Tor circuits are slower than a CDN, so you wouldn't put a marketing site on one. It's the right tool for the private half of the internet, not the public half.
+
 ## What actually protects the origin
 
 Three things, and only the last one requires any work:
@@ -145,3 +160,11 @@ So: as a bolt-on for a handful of specific clients, yes. As a product line, no. 
 - **Prefer mechanisms that can't silently unwind.** `internal: true` beats an iptables boot task every time.
 - **Healthchecks are cheap. They caught a crash loop in minutes** where previously nothing watched for days.
 - **The boring host firewall matters more than exotic Tor hardening.** Nobody de-anonymizes you with traffic analysis if they can just walk in through an open port.
+
+## Want one of these?
+
+I build and run these for clients: creating an onion site, hosting and maintaining it (updates, healthchecks, monitoring), and mining branded addresses when a client wants a name instead of gobbledygook. If you need a site that exists only for the people you choose, this is exactly what it does.
+
+- WhatsApp: [wa.me/60127972969](https://wa.me/60127972969)
+- Email: [me@hoelee.com](mailto:me@hoelee.com?subject=Onion%20service%20setup)
+- What else I do: [hoelee.com](https://hoelee.com)
