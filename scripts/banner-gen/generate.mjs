@@ -114,6 +114,25 @@ const BANNERS = {
     ],
   },
 
+  'hardening-a-tor-onion-service': {
+    titlebar: 'root@tor-host — onion service audit',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'wget -qO- ipv4.icanhazip.com   # from inside the app' },
+      { t: 'err', text: '→ home IP returned · iptables block silently gone' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'cap_add: NET_BIND_SERVICE · keep :80' },
+      { t: 'err', text: 'listen tcp :80: bind: permission denied · CapEff=0' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'networks: internal:true · port 8080 · SocksPort 0' },
+      { t: 'ok', text: '→ bad address ✓ · zero egress ✓ · all containers healthy ✓' },
+    ],
+    flow: [
+      { n: '1', label: 'Audit egress', err: true },
+      { n: '2', label: 'internal:true' },
+      { n: '3', label: 'non-root :8080' },
+      { n: '4', label: 'healthchecks' },
+      { n: '5', label: 'verify ✓' },
+    ],
+  },
+
   'hello-world': {
     titlebar: '~/hoelee-blog — first commit',
     lines: [

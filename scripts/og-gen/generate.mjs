@@ -83,6 +83,11 @@ const TERMINALS = {
     <div class="line"><span class="prompt">$</span><span class="cmd">POST /api/verifyConnection</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">404 · API prefix dropped in v2</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">csrftoken → /verifyLogin → fetchWebsitesList</span><span class="fix">→ sites ✓</span></div>`,
+
+  'hardening-a-tor-onion-service': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">wget -qO- ipv4.icanhazip.com</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">bind: permission denied · CapEff=0 on :80</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">internal:true · :8080 · SocksPort 0</span><span class="fix">→ zero egress ✓</span></div>`,
   };
 
 const DEFAULT_TERMINAL = `
