@@ -1,54 +1,42 @@
 ---
 title: "Hardening a Tor Onion Service: What Actually Matters"
-description: "An audit of a Dockerized onion service, the obfs4 misconception, and the five silent failures that turned out to be the real risk — with fixes and the tests that prove them."
+description: "What I learned hosting a service that exists only on Tor: the hardening that holds, the parts that silently break, and whether it's worth offering to clients."
 pubDate: 2026-09-09
 category: devops
 tags: [tor, docker, security, self-hosting, networking]
 ---
 
-Someone recently told me to add obfs4 to my Dockerized onion service, "for the server side." It's a well-intentioned suggestion and a common mistake. This post is about what I found when I actually audited the stack instead: which of my hardenings had silently rotted, which ones were wrong about how Docker works, and what ended up mattering.
+I wanted a small file server that existed only on Tor. Nothing googleable, nothing port-forwarded, no public DNS entry. Just an address I could hand to people I trust, and everyone else gets to pretend it doesn't exist.
 
-**TL;DR:** obfs4 does nothing for an onion service's server. The real risks were: an application container with full outbound internet access, a disabled host firewall, a config file that had never been reloaded, and a tor version behind a security release. All fixable with boring tooling.
+While I was researching how to do this right, a lot of what I read online praised obfs4, and for a while I assumed it was a server-side thing I should probably add. It isn't. obfs4 is a client-side transport: it disguises a censored user's connection into the Tor network. A server hosting an onion service doesn't touch it.
 
-## The obfs4 misconception
+So if obfs4 isn't the thing that keeps an onion-only host safe, what is? I went through this properly when I built mine, and again months later when I went back to check on it. Some of the setup held up. Some of it had quietly broken. And a couple of things I believed about Docker turned out to be wrong in ways I could measure.
 
-obfs4 is a *pluggable transport* — it disguises **client→Tor** traffic so that censored-network users (DPI, blocking regimes) can reach the Tor network at all. It runs on bridges, which are entry relays with disguised traffic.
+## What actually protects the origin
 
-An onion service's server has no use for it. The server connects to the Tor network as a client: it builds circuits to guards and registers itself with introduction points. That traffic uses standard Tor link protocol, and there is no "server-side obfs4" mode. Adding an obfs4 bridge container to your stack does exactly zero for your origin IP. (It's also impossible behind CGNAT anyway — a bridge needs a publicly reachable port.)
+Three things, and only the last one requires any work:
 
-What actually protects an onion service origin:
+1. **The protocol.** Visitors never connect to your server directly. Your tor process dials out, registers the service with introduction points, and rendezvous happens inside the network. Nobody who visits gets your IP from the visit itself.
+2. **Vanguards-lite.** Built into Tor since 0.4.7, this makes guard-discovery attacks (an attacker forcing circuits until they can observe your guard relay) far less practical. You get it by simply running a current Tor.
+3. **Not leaking the origin through other channels.** The realistic way an onion host gets exposed is not traffic analysis. It's your own machine leaking: a clearnet service gets compromised, and the attacker just reads your onion keys off the disk. Or the same content appears on both your normal site and your onion, and someone lines them up.
 
-1. **The protocol itself.** Visitors never learn your IP — they don't connect to you; your tor instance connects out and rendezvous happens inside the network.
-2. **Vanguards-lite.** Built into Tor ≥ 0.4.7, this defends against guard-discovery attacks where an attacker forces circuits until they observe your guard. You get it by simply *running a current Tor*.
-3. **Not leaking the origin through every other channel.** This is where most home setups actually fail — and it has nothing to do with Tor configuration.
+## Things that quietly broke
 
-## The audit
+These are the parts where re-checking my own server paid for itself.
 
-The stack: a file browser web app served exclusively through a Tor hidden service, both in Docker. tor → app over a private network, no published ports on either container. That part was already textbook.
+**The app container had full internet access.** I ran a one-liner inside the container against a public IP echo service, and my home IP came back. There had been an iptables-based block for this, but the rules were gone. Host firewalls get flushed silently by interface changes, container manager restarts, platform updates. A block that nothing re-applies and nothing alarms on is not a block, it's a superstition. This convinced me to stop filtering the app's egress and remove it entirely instead (below).
 
-Layer by layer, here's what I found:
+**The host firewall was off.** INPUT and FORWARD policy ACCEPT, and a few dozen ports listening on all interfaces from the other services on the same machine. If any one of those gets owned, the onion keys on that disk belong to the attacker. People spend hours on Tor-specific hardening and skip this.
 
-### ✅ What was already right
+**The running tor didn't match its config file.** The torrc on disk said `SocksPort 0`. The process, up for days, was still listening on 127.0.0.1:9050. I had edited the file and never restarted the container. Impact here was small, since the listener was container-local. The lesson generalizes: the config file you wrote is a wish, what the process is actually doing is the truth.
 
-- **No published ports.** The app and tor were reachable only inside their Docker network.
-- **Tor hardening basics.** `cap_drop: ALL`, `no-new-privileges`, non-root user, `SocksPort 0`, no ORPort/exit config.
-- **The right app image.** The original file browser project is unmaintained; the stack used its actively-maintained fork ("FileBrowser Quantum"), which is also designed to run as a non-root user.
+**Tor was a security release behind.** Older than I'd want on a box holding sensitive keys, and my logs carried the warn-spam signatures from a relay-descriptor parsing bug the newer releases fixed. It stopped after the upgrade.
 
-### ❌ What was quietly broken
+## The fixes that stayed fixed
 
-**1. The app container had full internet egress.** I ran a one-liner inside the container against a public IP echo service and got my home IP back. There had *been* an iptables-based block task, but the rules were gone — the host firewall had flushed them at some point (interface changes, container-manager restarts, platform updates all do this silently). The lesson: **container isolation built on host iptables that nothing re-applies and nothing alarms on is not isolation.**
+### Zero egress, by construction
 
-**2. The host firewall itself was off.** INPUT/FORWARD policy ACCEPT everywhere, a few dozen ports listening on 0.0.0.0 across the rest of the machine's services. For an onion service, this is the realistic deanonymization path: not exotic traffic analysis, but ordinary compromise of a clearnet-facing service — after which the attacker just reads your onion keys off the disk. Guard the keys' home before you worry about guard discovery.
-
-**3. The running tor didn't match its config file.** The on-disk torrc said `SocksPort 0`; the process had been up for days and was still listening on 127.0.0.1:9050. Somebody (me) had edited the file and never restarted the container. Low impact here — container-local, nothing else could reach it — but it's a good reminder that *the config file it's running is not the config file on disk*.
-
-**4. Tor was one security release behind.** Not dramatic on its own, but the newer releases carried fixes around parsing of malformed relay descriptors — my logs had the exact warn-spam signatures, and it disappeared after the upgrade. I treat security releases as mandatory for a box that hosts sensitive keys.
-
-## The fixes
-
-### Zero egress by design, not by script
-
-The core change: put both containers on a Docker network with `internal: true`, and give only the tor container a second NIC for reaching the Tor network.
+Both containers go on a Docker network with `internal: true`, and only the tor container gets a second NIC for reaching the Tor network.
 
 ```yaml
 networks:
@@ -59,22 +47,22 @@ networks:
     external: true        # ordinary bridge with internet
 ```
 
-The app now has **no route anywhere** — not to the internet, not to the LAN, not even to the host. `internal: true` removes the gateway entirely, so there's no iptables to flush, no boot task to forget, no silent decay. If the app is compromised, the attacker gets a socket to tor and nothing else. This is enforced by Docker's own networking, which is also why it survives reboots and daemon restarts.
+The app has no route to anything now. Not the internet, not the LAN, not even the host, because an internal network has no gateway at all. Nothing to flush, no boot task to remember, no way for it to silently decay. If the app gets compromised, the attacker gains a socket pointing at tor and nothing else. This is the one change I'd call non-negotiable for any app I run this way.
 
-### Non-root, and why `NET_BIND_SERVICE` didn't save me
+### Non-root, and the capability surprise
 
-The image's default user is non-root, and I wanted to keep binding port 80. Standard advice: `cap_add: NET_BIND_SERVICE`. It didn't work. The container crash-looped with:
+The image runs as non-root by default, and I wanted the app to keep listening on port 80. The standard advice is `cap_add: NET_BIND_SERVICE`. It didn't work. The container crash-looped with:
 
 ```
 [FATAL] Server error: listen tcp 0.0.0.0:80: bind: permission denied
 ```
 
-The reason is worth knowing: **Docker grants capabilities to a non-root container only in the *bounding set*, not the effective set.** I verified it with a probe container — `grep Cap /proc/self/status` showed `CapBnd` containing bit 10 (NET_BIND_SERVICE) while `CapEff` was 0. A non-root process executing a binary with no file capabilities gets an empty effective set, and the kernel checks the *effective* set on bind. So instead of fighting it: run on an unprivileged port (8080) internally and map the hidden service to it.
+The reason surprised me enough that I measured it with a probe container: `grep Cap /proc/self/status` showed `CapBnd` with bit 10 (NET_BIND_SERVICE) set, and `CapEff` at zero. Docker grants capabilities to a non-root container only in the bounding set, not the effective set, and bind() checks the effective set. A non-root process running a binary without file capabilities gets an empty effective set, full stop. So the answer is boring: run on an unprivileged port inside.
 
 ```yaml
   app:
     user: "1000:1000"
-    cap_drop: [ALL]          # hands empty; NET_BIND_SERVICE not needed on 8080
+    cap_drop: [ALL]
     security_opt: [no-new-privileges]
   tor:
     user: "100:101"
@@ -82,70 +70,71 @@ The reason is worth knowing: **Docker grants capabilities to a non-root containe
     security_opt: [no-new-privileges]
 ```
 
-Hidden service side, one line change:
+One line on the tor side remaps the visit:
 
 ```
 HiddenServicePort 80 app:8080
 ```
 
-Visitors still land on port 80 of the onion address; only the internal port moved.
+People still land on port 80 of the onion address. Only the internal port moved.
 
 ### Healthchecks that check the right thing
 
-The tor image's built-in healthcheck probes the SOCKS port. I'd just turned SOCKS off — so healthy became permanently "unhealthy." Override it with the thing you actually care about: is the process alive?
+The tor image ships with a healthcheck that probes the SOCKS port. I had just turned SOCKS off, so healthy became unhealthy forever. Override it with the question you actually mean: is the process alive?
 
 ```yaml
 healthcheck:
   test: ["CMD", "pgrep", "-x", "tor"]
 ```
 
-For nginx the trap was subtler: I first used `wget --spider` against the root path. When the site returned 404 (I hadn't uploaded content yet), wget exits non-zero and the container was marked unhealthy — the check was testing the *content*, not the *service*. `nc -z 127.0.0.1 80` tests the port and nothing else.
+The nginx trap was subtler. My first version used `wget --spider` against the root path. The site returned 404 (I hadn't uploaded content yet), wget exited non-zero, and the container got marked unhealthy. The check was testing the content, not the service. `nc -z 127.0.0.1 80` tests the port and nothing else.
 
-Also added `depends_on` (tor waits for the app): tor resolves its `HiddenServicePort` target at startup, and if the app container isn't up yet, tor dies with "Unparseable address in hidden service port configuration" and crash-loops. I'd watched exactly that happen in the old logs — four failed starts, nobody noticed, because nothing was watching.
+One more thing: tor resolves its `HiddenServicePort` target at startup. If the app container isn't up yet, tor dies with "Unparseable address in hidden service port configuration" and crash-loops. I'd watched four failed starts in the old logs, unnoticed, because nothing was watching. `depends_on` in the compose file fixed the ordering.
 
 ### The ownership landmine
 
-After re-keying the service I copied the key material back through a file-share mount. New containers immediately crash-looped:
+After generating new keys I copied the key material back through a file-share mount. The next containers crash-looped:
 
 ```
 [warn] Could not open "/var/lib/tor/.../hs_ed25519_secret_key": Permission denied
 ```
 
-Files written through the file share were owned by the share user, not by uid 100 that tor runs as. Fix is one command — run anywhere, including a throwaway container with the volume attached:
+Files written through the share are owned by the share user, not by the uid tor runs as. The fix is one command, runnable anywhere, including a throwaway container with the volume attached:
 
 ```bash
 docker run --rm -v /path/libTor:/var/lib/tor alpine \
   sh -c "chown -R 100:101 /var/lib/tor && chmod -R 700 /var/lib/tor"
 ```
 
-Rule of thumb going forward: **any key file that passed through a file share gets `chown`ed before the next container start.**
+### Verify, don't believe
 
-### Version hygiene
-
-Repulled `osminogin/tor-simple:latest` → tor 0.4.9.11, the current security track. Combined with SocksPort 0 now actually *applied*, the warn-spam stopped and the listener was gone.
-
-## Verify, don't believe
-
-Every fix above ends with a test I can run myself:
+Every fix above ends with a test I can run myself. The egress one is my favorite, because the two probes together are convincing: the same wget that fails inside the app's network succeeds from tor's egress network.
 
 ```bash
 # inside the app: with internal:true, even DNS should fail
 wget -T 6 -qO- http://ipv4.icanhazip.com     # → "wget: bad address", exit 1
 
-# same probe, on tor's egress network (control group)
-wget -T 6 -qO- http://ipv4.icanhazip.com     # → <home IP>, exit 0
+# same probe, on tor's egress network, as a control
+wget -T 6 -qO- http://ipv4.icanhazip.com     # → <your IP>, exit 0
 ```
 
-If you can't exec into a container, attach a throwaway probe container to the *same network* — it tests the network's properties, which is the thing you hardened. Final state: all containers healthy, hidden service up with the same onion address (keys on a persistent volume), zero published ports, and an app that literally cannot resolve `ipv4.icanhazip.com`.
+If you can't exec into a container, attach a throwaway probe container to the same network. It tests the network's properties, which is the thing you actually hardened.
 
-## What I'd do next time
+## Would I offer this as a service?
 
-1. **Audit running state, not config files.** The config file is a wish; `docker inspect`, in-container `netstat`, and live egress probes are the truth.
-2. **Prefer mechanisms that can't silently unwind.** `internal: true` beats an iptables boot task, always.
-3. **Healthchecks are tiny observability debt payments.** The day they catch something real (mine caught a crash loop within minutes) they've paid for themselves.
-4. **The boring host firewall matters more than exotic Tor hardening.** If the rest of the machine is 0.0.0.0-open, the onion's anonymity dies from a pickaxe attack, not a correlation attack.
-5. **Skip the plugs, keep the transport.** Run a current Tor (vanguards-lite included), disable what you don't need, isolate egress, and you're ahead of most onion deployments — no obfs4 required.
+I keep thinking about this, because the marginal cost is close to zero: the tor containers and their isolation are already running.
 
----
+Most of my hosting clients want the opposite of an onion service. They want to be found on Google. Selling someone a website that only opens in Tor Browser means selling them secrecy they probably don't need, and it means supporting their visitors through installing Tor Browser.
 
-*No IPs, addresses, or infrastructure specifics were harmed in the writing of this post.*
+But there is a real sliver of a market. Lawyers exchanging drafts, auditors, people delivering digital goods, anyone sharing an archive that should never show up in a search index. For those clients the pitch writes itself: no port forwards, no domain, no logs on some platform you don't control, just an address you physically hand to the people who should have it.
+
+There's one trick that sells better than I expected, and it ties to a question everyone asks: can you choose how the address starts? v3 onion addresses are random, but only because the keys are. You can mine them: generate keypairs until the base32 address begins with the prefix you want. Every character costs a factor of 32 in work. Community mining tools on a modern GPU check addresses in the low millions per second, which makes an 8-character prefix a day-or-a-few-days job, 9 characters a patient weeks-long one, and 10 characters a serious multi-GPU commitment. A prefix that starts with the client's brand turns an unmemorable 56-character string into something they can verify is really yours, and in a niche where trust is the entire product, that's real value. I'd mine 8 happily, 9 for a paying client, and quote 10 with a straight face only if they're renting the GPUs.
+
+So: as a bolt-on for a handful of specific clients, yes. As a product line, no. The market is too thin to build a funnel on, and the support burden doesn't shrink with volume. Privacy consulting with an onion attached, fine. Onion hosting as a web hosting tier, someone else's problem.
+
+## What stuck
+
+- **Run the tests, not the config file.** In-container probes and health states are the truth; the yaml is the intention.
+- **Prefer mechanisms that can't silently unwind.** `internal: true` beats an iptables boot task every time.
+- **Healthchecks are cheap. They caught a crash loop in minutes** where previously nothing watched for days.
+- **The boring host firewall matters more than exotic Tor hardening.** Nobody de-anonymizes you with traffic analysis if they can just walk in through an open port.
