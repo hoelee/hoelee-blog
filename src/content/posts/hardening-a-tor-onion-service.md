@@ -8,9 +8,9 @@ tags: [tor, docker, security, self-hosting, networking]
 
 I wanted a small file server that existed only on Tor. Nothing googleable, nothing port-forwarded, no public DNS entry. Just an address I could hand to people I trust, and everyone else gets to pretend it doesn't exist.
 
-While I was researching how to do this right, a lot of what I read online praised obfs4, and for a while I assumed it was a server-side thing I should probably add. It isn't. obfs4 is a client-side transport: it disguises a censored user's connection into the Tor network. A server hosting an onion service doesn't touch it.
+While I was researching how to do this right, a lot of what I read online talked up the benefits of obfs4. What actually kept my setup safe had nothing to do with that reading.
 
-So if obfs4 isn't the thing that keeps an onion-only host safe, what is? I went through this properly when I built mine, and again months later when I went back to check on it. Some of the setup held up. Some of it had quietly broken. And a couple of things I believed about Docker turned out to be wrong in ways I could measure.
+So what does keep an onion-only host safe? I went through this properly when I built mine, and again months later when I went back to check on it. Some of the setup held up. Some of it had quietly broken. And a couple of things I believed about Docker turned out to be wrong in ways I could measure.
 
 ## What actually protects the origin
 
