@@ -1,16 +1,23 @@
 ---
 title: "Hardening a Tor Onion Service: What Actually Matters"
-description: "What I learned hosting a service that exists only on Tor: the hardening that holds, the parts that silently break, and whether it's worth offering to clients."
+description: "Out of curiosity I mirrored my portfolio and git server onto the darknet. Here's the hardening that held, the parts that silently broke, and whether it's worth offering to clients."
 pubDate: 2026-09-09
 category: devops
 tags: [tor, docker, security, self-hosting, networking]
+ogImage: /og/hardening-a-tor-onion-service.png
+banner: /banners/hardening-a-tor-onion-service.png
 ---
 
-I wanted a small file server that existed only on Tor. Nothing googleable, nothing port-forwarded, no public DNS entry. Just an address I could hand to people I trust, and everyone else gets to pretend it doesn't exist.
+I got curious about the darknet. Not the marketplaces, the boring half of it: people self-hosting things the way the internet worked before registrars and cloud dashboards, running software they control at an address they own.
+
+The way I answer a curiosity like that is to build something, so the experiment became: mirror my own sites onto Tor. My interactive portfolio lives at [me.hoelee.com](https://me.hoelee.com), and my code lives on a Gitea instance at [git.hoelee.com](https://git.hoelee.com). Both now have darknet twins:
+
+- `hoeleegitkcng572znkbpyffppyulsdwv3aurrzlk7y7vlhknogswoqd.onion` — the Gitea mirror
+- `hoeleeaiwowgndbxswegtdzoeupz7lkkechtqmurbmnpvwa4k3vyuyid.onion` — the portfolio mirror
 
 While I was researching how to do this right, a lot of what I read online talked up the benefits of obfs4. What actually kept my setup safe had nothing to do with that reading.
 
-So what does keep an onion-only host safe? I went through this properly when I built mine, and again months later when I went back to check on it. Some of the setup held up. Some of it had quietly broken. And a couple of things I believed about Docker turned out to be wrong in ways I could measure.
+So what does actually keep an onion service safe? I went through this properly when I set the mirrors up, and again months later when I went back to check on them. Some of the setup held up. Some of it had quietly broken. And a couple of things I believed about Docker turned out to be wrong in ways I could measure.
 
 ## What actually protects the origin
 
@@ -18,7 +25,7 @@ Three things, and only the last one requires any work:
 
 1. **The protocol.** Visitors never connect to your server directly. Your tor process dials out, registers the service with introduction points, and rendezvous happens inside the network. Nobody who visits gets your IP from the visit itself.
 2. **Vanguards-lite.** Built into Tor since 0.4.7, this makes guard-discovery attacks (an attacker forcing circuits until they can observe your guard relay) far less practical. You get it by simply running a current Tor.
-3. **Not leaking the origin through other channels.** The realistic way an onion host gets exposed is not traffic analysis. It's your own machine leaking: a clearnet service gets compromised, and the attacker just reads your onion keys off the disk. Or the same content appears on both your normal site and your onion, and someone lines them up.
+3. **Not leaking the origin through other channels.** The realistic way an onion host gets exposed is not traffic analysis. It's your own machine leaking: a clearnet service gets compromised, and the attacker just reads your onion keys off the disk. Mirroring a public site to an onion is deliberate, so content correlation doesn't bother me. What matters is that the machine holding the keys isn't also running a pile of exposed services.
 
 ## Things that quietly broke
 

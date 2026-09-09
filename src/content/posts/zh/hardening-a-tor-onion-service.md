@@ -1,16 +1,23 @@
 ---
 title: "加固 Tor 洋葱服务:真正重要的是什么"
-description: "我只想托管一个仅存在于 Tor 上的服务。这篇记录我从头到尾学到的东西:哪些加固扛得住、哪些会悄悄坏掉、以及值不值得把它当成服务卖给客户。"
+description: "出于对暗网的好奇,我把个人主页和 Git 服务器镜像了过去。这篇记录哪些加固扛得住、哪些会悄悄坏掉,以及值不值得把它当成服务卖给客户。"
 pubDate: 2026-09-09
 category: devops
 tags: [tor, docker, security, self-hosting, networking]
+ogImage: /og/hardening-a-tor-onion-service.png
+banner: /banners/hardening-a-tor-onion-service.png
 ---
 
-我想要一个小文件服务器,只存在于 Tor 上。它不会被搜索引擎收录,没有端口转发,没有公开 DNS 记录。就是一个我可以交到信任的人手里的地址,而其他人可以当作它不存在。
+我对暗网产生了好奇。不是集市那一面,而是无聊的那一半:人们像注册商和云控制台出现之前那样自托管——跑自己维护的软件,用一个自己掌控的地址就能访问。
+
+我回应好奇心的方式一向是动手做一个东西,于是实验就这样定了:把自己的网站镜像到 Tor 上。我的交互式个人主页在 [me.hoelee.com](https://me.hoelee.com),代码托管在一个 Gitea 实例 [git.hoelee.com](https://git.hoelee.com) 上。现在两者都有暗网分身:
+
+- `hoeleegitkcng572znkbpyffppyulsdwv3aurrzlk7y7vlhknogswoqd.onion` — Gitea 镜像
+- `hoeleeaiwowgndbxswegtdzoeupz7lkkechtqmurbmnpvwa4k3vyuyid.onion` — 个人主页镜像
 
 研究怎么把它做好时,我在网上读到了很多讲 obfs4 好处的文章。最终让我的部署真正安全的东西,和那些阅读没什么关系。
 
-那么,真正保护一个仅限洋葱访问的主机的,到底是什么?我认真走了一遍全程,几个月后又回头检查了自己的部署。有一部分配置经受住了考验,有一部分已经悄悄坏掉,还有几件我原本对 Docker 的认知,被实测证明是错的。
+那么,真正让一个洋葱服务安全的是什么?我设镜像时认真走了一遍全程,几个月后又回头检查了一遍。有一部分配置经受住了考验,有一部分已经悄悄坏掉,还有几件我原本对 Docker 的认知,被实测证明是错的。
 
 ## 真正保护源站的是三件事
 
@@ -18,7 +25,7 @@ tags: [tor, docker, security, self-hosting, networking]
 
 1. **协议本身。** 访客从不直连你的服务器。你的 tor 进程主动拨出、向 introduction point 注册,会合发生在 Tor 网络内部。单凭一次访问,访客拿不到你的 IP。
 2. **Vanguards-lite。** Tor 0.4.7 起内置。它让 guard-discovery 攻击(攻击者反复制造 circuit 直到观察到你的 guard 中继)变得很难实施。你只要跑一个当前版本的 Tor 就白送这层防护。
-3. **别让源站信息从其它渠道泄漏。** 洋葱主机暴露的现实路径不是流量分析。是你自己的机器在漏:某台 clearnet 服务被攻破,攻击者直接从硬盘读走你的洋葱密钥;或者同样的内容同时出现在你的普通网站和洋葱站上,被人对上号。
+3. **别让源站信息从其它渠道泄漏。** 洋葱主机暴露的现实路径不是流量分析。是你自己的机器在漏:某台 clearnet 服务被攻破,攻击者直接从硬盘读走你的洋葱密钥。公开站点镜像到洋葱是刻意的,内容关联我不担心;真正要管的是,存密钥的那台机器别同时跑着一堆开着的服务。
 
 ## 那些悄悄坏掉的东西
 
