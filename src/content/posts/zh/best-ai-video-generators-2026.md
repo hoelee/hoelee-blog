@@ -146,14 +146,14 @@ Runway 已经变成一个视频*工作台*：自有 Gen-4.5 模型，加上真�
 
 ## 我的 LTX-2.3 实测
 
-这段短片是我用 **LTX-2.3** 通过 **PinkCherry**（一个托管开源模型的在线游乐场）生成的。这是一个真实世界的测试，不是基准评测——我不对速度或质量优势做任何宣称，只是展示这个模型在我给出提示词、放手让它跑的时候做了什么。
+这段短片是我用 **LTX-2.3** 在我自己的 ComfyUI 环境里生成的——一个我昵称为 **PinkCherry** 的本地安装。这是一个真实世界的测试，不是基准评测——我不对速度或质量优势做任何宣称，只是展示这个模型在我给出提示词、放手让它跑的时候做了什么。
 
 <video controls playsinline preload="metadata" poster="https://content.hoelee.com/file/hoelee/video/LTX23-Demo.jpg">
   <source src="https://content.hoelee.com/file/h_480/hoelee/video/LTX23-Demo.mp4" type="video/mp4" />
   Your browser does not support HTML5 video.
 </video>
 
-*我的 LTX-2.3 演示片段，通过 PinkCherry 生成（托管于 content.hoelee.com）。*
+*我的 LTX-2.3 演示片段，在本地 ComfyUI 中用 PinkCherry 工作流生成（托管于 content.hoelee.com）。*
 
 这个实验有意思的地方，不在于 LTX 打败了商业模型——论精细度它并不需要，我也不会这么宣称。而在于这是一个**开源权重、面向本地**的模型：
 
@@ -161,9 +161,39 @@ Runway 已经变成一个视频*工作台*：自有 Gen-4.5 模型，加上真�
 - **掌控力更强。** 可以在 ComfyUI 里运行、更换检查点、量化以适配显存，还能在社区许可下微调。
 - **它升级得很快。** 我测试的是 2.3；一个月后 2.5 就带着多镜头和 4K HDR 发布了。开源权重意味着你不必等某家公司给你升级。
 
-诚实的提醒：结果很大程度上取决于硬件、工作流、模型版本和量化方式。像 PinkCherry 这样的托管游乐场属于"免费"的第 4 种含义——适合第一次尝鲜，但队列和额度会变；要认真本地使用，意味着要学习 ComfyUI。
+诚实的提醒：结果很大程度上取决于硬件、工作流、模型版本和量化方式。托管游乐场（比如 Hugging Face Space 或 ComfyUI.cloud）属于"免费"的第 4 种含义——适合第一次尝鲜，但队列和额度会变；要认真本地使用，意味着要学习 ComfyUI。
 
-想自己试试：去 Hugging Face 下载权重，或者先用 PinkCherry 之类的游乐场试一把，再决定值不值得搭建本地环境。对我来说值得——这正是这篇文章存在的原因。
+想自己试试：去 Hugging Face 下载权重和社区 ComfyUI 模型包，或者先找个托管游乐场试一把，再决定值不值得搭建本地环境。对我来说值得——这正是这篇文章存在的原因。
+
+### 我是怎么做的：LTX-2.3 ComfyUI 工作流
+
+上面这段测试到底是怎么做出来的？下面是这个工作流的内容。没什么花哨的——就是标准的 LTX-2.3 组件，全部是免费节点：
+
+- **图生视频管线 + 第二次上采样。** 参考图变成视频潜空间，采样生成，最后再过一遍 **2× 空间潜空间上采样器**。
+- **视频和音频的 VAE 分开。** LTX-2.3 在同一次生成中产出同步音频，需要独立的音频 VAE 配合视频 VAE——正是这一点让声音成为生成过程的一部分，而不是事后贴上去的。
+- **Gemma 3 12B 文本编码器。** LTX 系列用 Gemma 作为语言主干，配合 LTX 文本投影加载。
+- **蒸馏检查点 + LoRA。** 快速蒸馏变体配蒸馏 LoRA（强度 0.6），**24 fps、5–7 秒片段**——这是 LTX 最实用的甜点区间。
+- **GGUF 量化 + Chunk FeedForward。** 模型以 GGUF 量化形式加载，配合分块前馈层——22B 模型就是这么塞进消费级显存的。
+- **负向音频引导（NAG）。** 视频轨和音频轨各有一套负向提示词（比如音频用"画外音、旁白、镜头外说话"），保证生成的声音干净。
+- **一个小型预览 VAE**，用于采样过程中的快速预览，不用每次都完整解码。
+
+提示词比任何单个节点都重要。LTX 喜欢"随时间展开动作、从一开始就把音频层织进去"的提示词——以下是它自带的提示技巧（转写自工作流笔记）：
+
+1. **核心动作：** 把事件和动作描述为随时间发生的过程。
+2. **音频：** 描述场景需要的声音和对白。
+3. **参考图：** 不要重复参考图里已有的细节。
+4. **一致性：** 避免与参考图矛盾的指令——它们会降低生成质量。
+
+<details>
+<summary>我工作流里的完整提示词（点击展开）</summary>
+
+> A cinematic futuristic night scene in a dense neon-lit city alley during a heavy rainstorm. A young Asian female courier in a dark waterproof jacket, black cargo pants and a compact glowing backpack runs quickly toward the camera, water splashing from her boots with every step, loose strands of wet hair moving naturally in the wind. The shot begins behind and slightly above her as she runs through the narrow alley, then the camera smoothly tracks alongside her and arcs around to the front, revealing her focused face as she looks briefly toward the camera while continuing to run. A small sleek hovering surveillance drone follows several meters behind her, its white searchlight sweeping through the rain. Neon signs reflect vividly across the wet pavement, puddles ripple from raindrops, mist drifts through the alley, and colored light flickers across her face and clothing. The camera movement remains smooth and cinematic with realistic handheld micro-motion, shallow depth of field, natural motion blur and strong foreground-to-background parallax. The final moment shows her rushing past the camera while the drone flies overhead, leaving the camera facing the glowing rainy alley. Realistic cinematic lighting, physically believable rain and water interaction, detailed skin, fabric and wet surfaces, high environmental detail, dramatic science-fiction atmosphere. Audio: heavy rainfall, footsteps splashing through puddles, distant city traffic, subtle electrical ambience and the quiet mechanical hum of the hovering drone.
+
+</details>
+
+注意它的结构：动作自上而下展开，镜头运动写清楚但不啰嗦，**音频层内联写死**（"heavy rainfall, footsteps splashing through puddles..."），而不是最后才补一句。这就是 LTX 提示词风格的缩影。
+
+想复现这套环境：社区现成的 LTX-2.3 ComfyUI 模型包在 [huggingface.co/Kijai/LTX2.3_comfy](https://huggingface.co/Kijai/LTX2.3_comfy)，文本编码器在 [huggingface.co/Comfy-Org/ltx-2](https://huggingface.co/Comfy-Org/ltx-2)。我用的节点都是 ComfyUI 核心和 KJNodes 自带的。
 
 ## 能做 3 分钟的 AI 视频吗？
 
@@ -215,6 +245,8 @@ Runway 已经变成一个视频*工作台*：自有 Gen-4.5 模型，加上真�
 - [Runway 价格页](https://runwayml.com/pricing)
 - [LTX-2.5 模型卡（Hugging Face）](https://huggingface.co/Lightricks/LTX-2.5)
 - [LTX-2.3 模型卡（Hugging Face）](https://huggingface.co/Lightricks/LTX-2.3)
+- [Kijai 的 LTX-2.3 ComfyUI 模型包（Hugging Face）](https://huggingface.co/Kijai/LTX2.3_comfy)
+- [LTX-2 文本编码器（Hugging Face）](https://huggingface.co/Comfy-Org/ltx-2)
 
 ---
 

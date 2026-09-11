@@ -146,14 +146,14 @@ Why this is a big deal: an open-weights model with synchronized audio changes th
 
 ## My LTX-2.3 test
 
-I generated this short clip with **LTX-2.3** through **PinkCherry**, a hosted playground for open-weight models. It's a real-world test, not a benchmark — no claims about speed or quality leadership here, just what the model did when I pointed it at a prompt and let it work.
+I generated this short clip with **LTX-2.3** in my own ComfyUI setup — a local install I've nicknamed **PinkCherry**. It's a real-world test, not a benchmark — no claims about speed or quality leadership here, just what the model did when I pointed it at a prompt and let it work.
 
 <video controls playsinline preload="metadata" poster="https://content.hoelee.com/file/hoelee/video/LTX23-Demo.jpg">
   <source src="https://content.hoelee.com/file/h_480/hoelee/video/LTX23-Demo.mp4" type="video/mp4" />
   Your browser does not support HTML5 video.
 </video>
 
-*My LTX-2.3 demo clip, generated via PinkCherry (hosted on content.hoelee.com).*
+*My LTX-2.3 demo clip, generated locally in ComfyUI with the PinkCherry workflow (hosted on content.hoelee.com).*
 
 What made this experiment interesting wasn't that LTX beats the commercial models — on raw polish it doesn't need to, and I'm not going to claim otherwise. It's that this is an **open-weight, local-oriented model**:
 
@@ -161,9 +161,39 @@ What made this experiment interesting wasn't that LTX beats the commercial model
 - **More control.** You can run it in ComfyUI, swap checkpoints, quantize to fit your VRAM, and fine-tune under the community license.
 - **It's the model's job to evolve fast.** I tested 2.3; 2.5 shipped a month later with multishot and 4K HDR. Open weights mean you don't wait for a company to upgrade you.
 
-The honest caveats: your results depend heavily on hardware, workflow, model version, and quantization. A hosted playground like PinkCherry is meaning #4 of "free" — great for a first taste, but queues and quotas can change, and serious local use means learning ComfyUI.
+The honest caveats: your results depend heavily on hardware, workflow, model version, and quantization. A hosted playground (like a Hugging Face Space or ComfyUI.cloud) is meaning #4 of "free" — great for a first taste, but queues and quotas can change, and serious local use means learning ComfyUI.
 
-If you want to try it yourself: grab the weights from Hugging Face, or use a playground like PinkCherry for a first test, then decide if local setup is worth it. For me, it was — which is exactly why this article exists.
+If you want to try it yourself: grab the weights from Hugging Face and a community ComfyUI pack, or use a hosted playground for a first test, then decide if local setup is worth it. For me, it was — which is exactly why this article exists.
+
+### How I made it: the LTX-2.3 ComfyUI workflow
+
+Here's how the test above was actually made — the workflow behind the clip. Nothing exotic: just the standard LTX-2.3 parts, all free nodes:
+
+- **Image-to-video pipeline with a second pass.** A reference image becomes a video latent, gets sampled, then runs through a **2× spatial latent upscaler** for the final pass.
+- **Separate video and audio VAEs.** LTX-2.3 generates synchronized audio in the same pass, and it needs its own audio VAE alongside the video VAE — that's the piece that makes the sound *part of* the generation instead of an afterthought.
+- **Gemma 3 12B text encoder.** The LTX line uses Gemma as its language backbone, loaded with the LTX text projection.
+- **Distilled checkpoint + LoRA.** The fast distilled variant with the distilled LoRA at 0.6 strength, at **24 fps and 5–7 second clips** — the practical sweet spot for LTX.
+- **GGUF quantization + Chunk FeedForward.** The model loaded GGUF-quantized, with chunked feed-forward layers — that's how a 22B model fits on consumer VRAM.
+- **Negative audio guidance (NAG).** Separate negative prompts for the video track and the audio track (e.g. "voice over, narration, off-camera speech" for audio), which keeps the generated sound clean.
+- **A tiny preview VAE** for fast in-sampler previews instead of full decodes.
+
+The prompt matters more than any single node. LTX rewards prompts that describe action over time and weave the audio layer in from the start — its own guidance (reproduced from the workflow's notes):
+
+1. **Core actions:** describe events and actions as they occur over time.
+2. **Audio:** describe sounds and dialogue needed for the scene.
+3. **Reference image:** don't repeat details already present.
+4. **Consistency:** avoid instructions that don't match the reference image — they degrade results.
+
+<details>
+<summary>The exact prompt from my workflow (tap to expand)</summary>
+
+> A cinematic futuristic night scene in a dense neon-lit city alley during a heavy rainstorm. A young Asian female courier in a dark waterproof jacket, black cargo pants and a compact glowing backpack runs quickly toward the camera, water splashing from her boots with every step, loose strands of wet hair moving naturally in the wind. The shot begins behind and slightly above her as she runs through the narrow alley, then the camera smoothly tracks alongside her and arcs around to the front, revealing her focused face as she looks briefly toward the camera while continuing to run. A small sleek hovering surveillance drone follows several meters behind her, its white searchlight sweeping through the rain. Neon signs reflect vividly across the wet pavement, puddles ripple from raindrops, mist drifts through the alley, and colored light flickers across her face and clothing. The camera movement remains smooth and cinematic with realistic handheld micro-motion, shallow depth of field, natural motion blur and strong foreground-to-background parallax. The final moment shows her rushing past the camera while the drone flies overhead, leaving the camera facing the glowing rainy alley. Realistic cinematic lighting, physically believable rain and water interaction, detailed skin, fabric and wet surfaces, high environmental detail, dramatic science-fiction atmosphere. Audio: heavy rainfall, footsteps splashing through puddles, distant city traffic, subtle electrical ambience and the quiet mechanical hum of the hovering drone.
+
+</details>
+
+Notice the shape: the action runs top to bottom, camera moves are specified but not over-specified, and the **audio layer is spelled out inline** ("heavy rainfall, footsteps splashing through puddles...") rather than tacked on at the end. That's the LTX prompting style in a nutshell.
+
+If you want to reproduce this setup: the community-ready LTX-2.3 ComfyUI model pack is at [huggingface.co/Kijai/LTX2.3_comfy](https://huggingface.co/Kijai/LTX2.3_comfy), with the text encoder at [huggingface.co/Comfy-Org/ltx-2](https://huggingface.co/Comfy-Org/ltx-2). The nodes I used ship with ComfyUI core and KJNodes.
 
 ## Can you make a 3-minute AI video?
 
@@ -215,6 +245,8 @@ And when an article quotes a price — including this one — check the provider
 - [Runway pricing](https://runwayml.com/pricing)
 - [LTX-2.5 model card (Hugging Face)](https://huggingface.co/Lightricks/LTX-2.5)
 - [LTX-2.3 model card (Hugging Face)](https://huggingface.co/Lightricks/LTX-2.3)
+- [Kijai's LTX-2.3 ComfyUI model pack (Hugging Face)](https://huggingface.co/Kijai/LTX2.3_comfy)
+- [LTX-2 text encoder (Hugging Face)](https://huggingface.co/Comfy-Org/ltx-2)
 
 ---
 
