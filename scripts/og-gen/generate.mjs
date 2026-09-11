@@ -88,6 +88,11 @@ const TERMINALS = {
     <div class="line"><span class="prompt">$</span><span class="cmd">wget -qO- ipv4.icanhazip.com</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">bind: permission denied · CapEff=0 on :80</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">internal:true · :8080 · SocksPort 0</span><span class="fix">→ zero egress ✓</span></div>`,
+
+  'syncing-a-self-improving-ai-agent-across-machines': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">git pull --ff-only origin main</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">refusing: local divergence · never --force</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">diff -rq live skills · merge on conflict</span><span class="fix">→ synced ✓</span></div>`,
   };
 
 const DEFAULT_TERMINAL = `

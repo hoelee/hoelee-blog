@@ -247,6 +247,26 @@ const BANNERS = {
       { n: '5', label: 'sites ✓' },
     ],
   },
+
+  'syncing-a-self-improving-ai-agent-across-machines': {
+    titlebar: '~/hermes — sync agent across machines',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'git pull --ff-only origin main' },
+      { t: 'err', text: 'refusing: local divergence · never --force' },
+      { t: 'dim', text: 'distribution repo skills/ is a COPY, not the live dir' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'diff -rq live ~/skills  repo copy' },
+      { t: 'hl', text: 'Only in live/: hermes-profile-sync   ← created after last push' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'stage real skills only · commit · push · verify' },
+      { t: 'ok', text: '→ edbf7ac on both ends ✓ · 172 skills · 49MB junk stripped' },
+    ],
+    flow: [
+      { n: '1', label: 'pull --ff-only' },
+      { n: '2', label: 'diff 3-way', err: true },
+      { n: '3', label: 'merge / ask' },
+      { n: '4', label: 'push' },
+      { n: '5', label: 'verify ✓' },
+    ],
+  },
 };
 
 const DEFAULT_BANNER = {
