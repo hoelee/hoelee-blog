@@ -4,6 +4,8 @@ description: "Using Chinese LLM APIs (GLM-5.3, DeepSeek V4) from Malaysia: how I
 pubDate: 2026-09-11
 category: ai
 tags: [llm, api, deepseek, glm, alipay, malaysia]
+ogImage: /og/using-chinese-llm-apis-from-malaysia.png
+banner: /banners/using-chinese-llm-apis-from-malaysia.png
 draft: false
 ---
 

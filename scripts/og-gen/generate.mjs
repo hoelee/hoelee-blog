@@ -69,6 +69,11 @@ const TERMINALS = {
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">path unchanged · keep the id, keep the old URL</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">strip id · replace() suffix</span><span class="fix">→ updated ✓</span></div>`,
 
+  'using-chinese-llm-apis-from-malaysia': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl tokenrhythm.studio/v1/chat/completions</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">403 · mainland CN phone required</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">Alipay RMB · OpenAI-compatible key</span><span class="fix">→ ¥68 credit ✓</span></div>`,
+
   'how-to-verify-a-hosting-provider-before-you-buy': `
       <div class="line"><span class="prompt">$</span><span class="cmd">curl -s rdap.org/domain/vps.tld | jq .events</span></div>
       <div class="line"><span class="prompt">&nbsp;</span><span class="err">registration: 2026-05 · "trusted since 2012"</span></div>

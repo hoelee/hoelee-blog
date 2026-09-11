@@ -4,6 +4,8 @@ description: "从马来西亚使用中国大模型 API（GLM-5.3、DeepSeek V4�
 pubDate: 2026-09-11
 category: ai
 tags: [llm, api, deepseek, glm, alipay, malaysia]
+ogImage: /og/using-chinese-llm-apis-from-malaysia.png
+banner: /banners/using-chinese-llm-apis-from-malaysia.png
 draft: false
 ---
 

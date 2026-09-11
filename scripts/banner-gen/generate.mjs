@@ -75,6 +75,25 @@ const BANNERS = {
     ],
   },
 
+  'using-chinese-llm-apis-from-malaysia': {
+    titlebar: 'root@dsm — llm cost watch',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'deepseek-v4-flash · off-peak' },
+      { t: 'dim', text: '$0.15 / 1M in · $0.60 / 1M out — cached input ~20× less' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'tokenrhythm ¥68 → GLM-5.3 · Qwen3.8-Max · Kimi K2.7-Code' },
+      { t: 'err', text: 'wall: RMB payment · mainland CN phone verification' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'fix = Alipay top-up · email-signup platforms' },
+      { t: 'prompt', text: '' }, { t: 'ok', text: '→ ~US$10 credit ≈ a month of agent work ✓' },
+    ],
+    flow: [
+      { n: '1', label: 'RMB via Alipay' },
+      { n: '2', label: 'CN phone wall', err: true },
+      { n: '3', label: 'OpenAI-compatible key' },
+      { n: '4', label: '¥68 credit' },
+      { n: '5', label: 'agents run ✓' },
+    ],
+  },
+
   'how-i-host-this-blog': {
     titlebar: 'root@unraid — deploy pipeline',
     lines: [
