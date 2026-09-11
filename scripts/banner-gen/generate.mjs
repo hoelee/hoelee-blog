@@ -285,6 +285,24 @@ const BANNERS = {
     ],
   },
 
+  'best-ai-video-generators-2026': {
+    titlebar: '~/blog — AI video free vs paid 2026',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'compare cloud APIs vs open weights' },
+      { t: 'err', text: '"free" = 4 different deals · credits ≠ seconds' },
+      { t: 'dim', text: 'Sora 2 app gone 04-26 · API sunset 09-24' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'LTX-2.3 via PinkCherry · demo clip ↓' },
+      { t: 'prompt', text: '' }, { t: 'ok', text: '→ 11 tools · pricing checked 2026-09-11 ✓' },
+    ],
+    flow: [
+      { n: '1', label: 'free credits' },
+      { n: '2', label: 'cloud APIs' },
+      { n: '3', label: 'open weights' },
+      { n: '4', label: 'LTX-2.3 test' },
+      { n: '5', label: 'pick one ✓' },
+    ],
+  },
+
   'how-i-made-my-own-songs-with-suno-ai': {
     titlebar: 'hoelee@studio — suno v6 · 7 songs',
     lines: [

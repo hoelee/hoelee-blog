@@ -94,7 +94,12 @@ const TERMINALS = {
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">refusing: local divergence · never --force</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">diff -rq live skills · merge on conflict</span><span class="fix">→ synced ✓</span></div>`,
 
-'ai-furniture-compositing-with-flux-kontext': `
+  'best-ai-video-generators-2026': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">video_gen --free --compare --2026</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">"free" = 4 deals · credits ≠ seconds · Sora 2 sunset 09-24</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">fix = LTX-2.3 test embed · pricing checked 2026-09-11</span><span class="fix">→ shipped ✓</span></div>`,
+
+  'ai-furniture-compositing-with-flux-kontext': `
     <div class="line"><span class="prompt">$</span><span class="cmd">fetch fal-ai/flux-pro/kontext/multi · 2 photos in</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">toDataURL: tainted canvas · may not be exported</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">enhance_prompt:false · same-origin paths</span><span class="fix">→ 1 room out ✓</span></div>`,
