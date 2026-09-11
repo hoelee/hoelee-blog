@@ -267,6 +267,23 @@ const BANNERS = {
       { n: '5', label: 'verify ✓' },
     ],
   },
+
+  'ai-furniture-compositing-with-flux-kontext': {
+    titlebar: 'client — furniture compositing PoC',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'POST fal-ai/flux-pro/kontext/multi · 2 photos in' },
+      { t: 'err', text: 'toDataURL: tainted canvas · may not be exported' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'fix = same-origin paths · enhance_prompt:false · name objects' },
+      { t: 'prompt', text: '' }, { t: 'ok', text: '→ 1 staged room out ✓ ($0.04, ~17s)' },
+    ],
+    flow: [
+      { n: '1', label: '2 photos in' },
+      { n: '2', label: 'tainted canvas', err: true },
+      { n: '3', label: 'same-origin fix' },
+      { n: '4', label: 'prompt anchoring' },
+      { n: '5', label: '1 room out ✓' },
+    ],
+  },
 };
 
 const DEFAULT_BANNER = {
