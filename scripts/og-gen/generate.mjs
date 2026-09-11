@@ -94,10 +94,15 @@ const TERMINALS = {
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">refusing: local divergence · never --force</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">diff -rq live skills · merge on conflict</span><span class="fix">→ synced ✓</span></div>`,
 
-  'ai-furniture-compositing-with-flux-kontext': `
+'ai-furniture-compositing-with-flux-kontext': `
     <div class="line"><span class="prompt">$</span><span class="cmd">fetch fal-ai/flux-pro/kontext/multi · 2 photos in</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">toDataURL: tainted canvas · may not be exported</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">enhance_prompt:false · same-origin paths</span><span class="fix">→ 1 room out ✓</span></div>`,
+
+  'how-i-made-my-own-songs-with-suno-ai': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">suno "indie folk · playful whistles · sprite-girl vocals"</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">lyrics + metatags → 7 songs shipped ✓</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">v6: section edits · single-line swaps · voices</span></div>`,
   };
 
 const DEFAULT_TERMINAL = `

@@ -268,7 +268,7 @@ const BANNERS = {
     ],
   },
 
-  'ai-furniture-compositing-with-flux-kontext': {
+'ai-furniture-compositing-with-flux-kontext': {
     titlebar: 'client — furniture compositing PoC',
     lines: [
       { t: 'prompt', text: '$' }, { t: 'cmd', text: 'POST fal-ai/flux-pro/kontext/multi · 2 photos in' },
@@ -282,6 +282,25 @@ const BANNERS = {
       { n: '3', label: 'same-origin fix' },
       { n: '4', label: 'prompt anchoring' },
       { n: '5', label: '1 room out ✓' },
+    ],
+  },
+
+  'how-i-made-my-own-songs-with-suno-ai': {
+    titlebar: 'hoelee@studio — suno v6 · 7 songs',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'write lyrics · craft style prompt (200 chars)' },
+      { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: '[Verse][Chorus][Bridge] · [Whispered][Belted]' },
+      { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'generate 3–5 takes → keep best' },
+      { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'AI vocalist mispronounces 忘川 — respell test clip' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'v6: section edit · single-line swap · voices' },
+      { t: 'prompt', text: '' }, { t: 'ok', text: '→ 7 songs hosted · embedded above ✓' },
+    ],
+    flow: [
+      { n: '1', label: 'lyrics first' },
+      { n: '2', label: 'style prompt' },
+      { n: '3', label: 'metatags' },
+      { n: '4', label: 'iterate takes' },
+      { n: '5', label: 'ship ✓' },
     ],
   },
 };
