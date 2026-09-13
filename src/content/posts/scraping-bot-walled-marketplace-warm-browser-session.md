@@ -1,6 +1,6 @@
 ---
 title: "Scraping a Bot-Walled Marketplace With a Warm Browser Session"
-description: "How I scraped Shopee's bot-walled listings with a warm headless-Chrome session over CDP — fail-fast health checks, split-wait rendering, and why I refused to parallelize it."
+description: "Scraping bot-walled marketplace listings for a client's used-electronics business: warm CDP session, fail-fast health checks, split-wait rendering."
 pubDate: 2026-09-13
 category: engineering
 tags: ["scraping", "cdp", "headless-chrome", "anti-bot", "shopee", "python"]
@@ -8,9 +8,9 @@ ogImage: "/og/scraping-bot-walled-marketplace-warm-browser-session.png"
 draft: false
 ---
 
-I set out to do something that sounds simple: list all the second-hand M.2 NVMe SSDs on a marketplace, sorted by price, so I could buy the cheapest one.
+A client asked me to build something that sounds simple: every day, list the second-hand phones on a big marketplace, sorted by price, so their restocking decisions come from data instead of gut feel. The client resells used electronics for a living — a few hundred ringgit either way on a phone is the whole margin.
 
-The result was nothing like a clean `requests` + BeautifulSoup script. It was a week-long fight against an anti-bot wall, a warm browser session held together with duct tape, and — the part I didn't expect — a hard lesson about why you cannot just "parallelize" a scraper by throwing more agents at it.
+The result was nothing like a clean `requests` + BeautifulSoup script. It was a week-long fight against an anti-bot wall, a warm browser session held together with duct tape, and — the part neither of us saw coming — a hard lesson about why you cannot just "parallelize" a scraper by throwing more agents at it.
 
 This is that story, told in the order I lived it: the problem, everything I tried that failed, the thing that finally worked, and what I'd do differently.
 
@@ -20,12 +20,12 @@ This is that story, told in the order I lived it: the problem, everything I trie
 
 Or, more honestly: **how do you scrape a marketplace that has already made scraping its sole job description?** Shopee doesn't politely serve HTML to `curl`. It detects automation, throws a `/verify` captcha, and silently serves you a page that looks fine but contains nothing.
 
-My requirement list was small:
+The client's requirement list was small:
 
-- Search for "used SSD", filter to "used condition only", filter to M.2 NVMe (not SATA/mSATA), filter to ≥128 GB.
-- Extract every listing's capacity variants and prices.
+- Search for used phones, filter to "used condition only", storage 128 GB and up.
+- Extract every listing's storage variants and prices.
 - Sort by price ascending.
-- Do it without a `chromedriver` Farm of a hundred headless instances, because I don't own a hundred residential IPs.
+- Do it without a `chromedriver` farm of a hundred headless instances — a reseller's margins don't pay for a hundred residential IPs, and neither do mine.
 
 Everything after this point is the debugging story.
 
@@ -54,13 +54,13 @@ So the "horizontal scaling" instinct — more workers — is actively hostile to
 
 Once I had listings rendering, I assumed the buy button's label contained the price. On most marketplaces it does. On this render, the button said `Add To Cart` / `Buy Now`. My regex for "Buy With Voucher … RM…" matched nothing, and I went around in circles for a while before actually reading the DOM.
 
-**Failure:** the price on Shopee product pages isn't in the button. It's rendered as **split spans** — `RM` in one element, `84` in another, `00` in a third — so a naive leaf-text match returns fragments, or a **range** (`RM125.00 - RM155.00`) when the listing has multiple variants.
+**Failure:** the price on Shopee product pages isn't in the button. It's rendered as **split spans** — `RM` in one element, `850` in another, `00` in a third — so a naive leaf-text match returns fragments, or a **range** (`RM850.00 - RM1150.00`) when the listing has multiple variants.
 
 ### Attempt 4: clicking variant options to get an exact price
 
-For a single-axis variant selector (e.g. one dropdown of capacities — 128GB / 256GB / 512GB), clicking one option collapses the price to a single value, and my extraction worked.
+For a single-axis variant selector (e.g. one dropdown of storage options — 128GB / 256GB / 512GB), clicking one option collapses the price to a single value, and my extraction worked.
 
-**Failure:** for a **two-axis** selector (brand × capacity), clicking the first axis (a brand) locks a price, but adding the second axis (a capacity) *un-collapses* it back to the product-wide range. The panel renders the range of all purchasable combinations, not the exact combination I selected, and the "selected" state is marked by a class that also matches every other option box. There is no reliable way to know which combination I actually locked.
+**Failure:** for a **two-axis** selector (brand × storage), clicking the first axis (a brand) locks a price, but adding the second axis (a storage size) *un-collapses* it back to the product-wide range. The panel renders the range of all purchasable combinations, not the exact combination I selected, and the "selected" state is marked by a class that also matches every other option box. There is no reliable way to know which combination I actually locked.
 
 I spent real time on this before accepting the honest answer: **for genuinely two-axis listings, the correct data is the price range, not a guessed per-combination number.** Shipping a fragile override that "sometimes works" would be worse than reporting an honest range.
 
@@ -101,7 +101,7 @@ This one change turned "silent 40-second dead-ends" into "instant, actionable fa
 
 ### 3. The right price selector: deepest pure-RM node
 
-The buy button is a lie. The price is the **deepest element whose text is a pure RM value** — a range (`RM125.00 - RM155.00`) before a variant is selected, a single value (`RM84.00`) after. Walk the DOM and take the deepest element whose text matches:
+The buy button is a lie. The price is the **deepest element whose text is a pure RM value** — a range (`RM850.00 - RM1150.00`) before a variant is selected, a single value (`RM850.00`) after. Walk the DOM and take the deepest element whose text matches:
 
 ```python
 import re
@@ -123,7 +123,7 @@ That's the whole trick. No brittle class names. No guessing. A node whose entire
 
 ## The result — one quantified outcome
 
-From a single warm session, in one serial pass, I extracted **20+ used-NVMe listings with per-variant prices**, filtered to M.2 NVMe ≥128GB, sorted by price. The cheapest real target — a 256GB M.2 NVMe — surfaced at **RM84**, alongside several 256GB options in the RM125–175 range. One command (`sweep.py <url1> <url2> ...`) now re-checks the whole shortlist and dumps JSONLines.
+From a single warm session, in one serial pass, I extracted **20+ used-phone listings with per-variant prices**, filtered to 128 GB and up, sorted by price. The cheapest real target — a 128GB model — surfaced at **RM299**, alongside several 128/256GB options in the RM450–880 range. One command (`sweep.py <url1> <url2> ...`) now re-checks the whole shortlist and dumps JSONLines; the client runs it once a day before restocking.
 
 But the number I'm most glad about is this: **zero captchas.** The warm-session + human-pacing + fail-fast combo survived the entire sweep without tripping `/verify` once.
 
@@ -150,7 +150,7 @@ The genuinely reusable lesson isn't the Shopee-specific selectors — it's the *
 
 ---
 
-*This is a real debugging session, not a tutorial written after the fact. The scraping toolkit and every one of these failures happened while actually hunting for a cheap SSD — I kept the parts that generalize and cut the parts that only matter to one Malaysian marketplace at one point in time.*
+*This is a real debugging session, not a tutorial written after the fact. The scraping toolkit and every one of these failures happened while building it for a client who resells used electronics — I kept the parts that generalize and cut the parts that only matter to one Malaysian marketplace at one point in time.*
 
 ---
 

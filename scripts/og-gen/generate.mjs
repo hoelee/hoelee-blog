@@ -120,7 +120,7 @@ const TERMINALS = {
     <div class="line"><span class="prompt">$</span><span class="cmd">mount passbolt.php · full fingerprint</span><span class="fix">→ fixed ✓</span></div>`,
 
   'scraping-bot-walled-marketplace-warm-browser-session': `
-    <div class="line"><span class="prompt">$</span><span class="cmd">CDP → shopee search "used ssd"</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">CDP → shopee search "used phone" · client marketplace monitor</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">/verify captcha · empty product cards</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">warm session · 7s pacing · sweep.py</span><span class="fix">→ 20+ listings ✓</span></div>`,
 };
