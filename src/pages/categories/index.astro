@@ -1,23 +1,31 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CategoryGrid from '../../components/CategoryGrid.astro';
 import { getCollection } from 'astro:content';
 import { isEn } from '../../lib/lang';
 
 const posts = await getCollection('posts', isEn);
 
-const categories = [...new Set(posts.map((p) => p.data.category))].sort();
-
-const count = (cat: string) => posts.filter((p) => p.data.category === cat).length;
+const counts: Record<string, number> = {};
+for (const p of posts) {
+  const cat = p.data.category as string;
+  counts[cat] = (counts[cat] ?? 0) + 1;
+}
 ---
 
-<BaseLayout title="Categories — Mr Hoelee" description="Browse posts by category.">
-  <h1>Categories</h1>
-  <ul class="post-list">
-    {categories.map((cat) => (
-      <li>
-        <a href={`/categories/${cat}/`}><h2>{cat}</h2></a>
-        <p>{count(cat)} post{count(cat) === 1 ? '' : 's'}</p>
-      </li>
-    ))}
-  </ul>
+<BaseLayout
+  title="Categories — Mr Hoelee"
+  description={`Browse ${posts.length} technical posts by category: case studies, DevOps, AI, engineering, tutorials and quick notes.`}
+  switchHref="/zh/categories/"
+>
+  <div class="page-head">
+    <h1>Categories</h1>
+    <p class="lede">
+      Every post belongs to one of seven themes. The <strong>Case Studies</strong> are my
+      working portfolio — end-to-end build logs with the debugging included. The{' '}
+      <strong>Notes</strong> are the quick fixes. Start wherever matches what you're building.
+    </p>
+  </div>
+
+  <CategoryGrid counts={counts} lang="en" />
 </BaseLayout>

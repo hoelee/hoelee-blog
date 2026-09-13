@@ -355,6 +355,107 @@ pre code {
   }
 }
 
+/* ---------- Page head (lead paragraphs on listing pages) ---------- */
+.page-head h1 { margin: 0 0 0.75rem; }
+.lede {
+  color: var(--muted);
+  font-size: 1.05rem;
+  max-width: 46rem;
+  margin: 0 0 1.75rem;
+}
+p.lede { margin-bottom: 1.75rem; }
+
+/* ---------- Category grid ---------- */
+.category-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+.category-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--ink);
+  height: 100%;
+}
+a.category-card:hover { border-color: var(--brand); }
+.category-card .art {
+  line-height: 0;
+  border-bottom: 1px solid var(--border);
+  background: #0d1220;
+}
+.category-card .art svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.category-card .body {
+  padding: 1.05rem 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.category-card h2 {
+  margin: 0 0 0.45rem;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.category-card h2 .dot {
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.category-card p {
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+  font-size: 0.93rem;
+  line-height: 1.6;
+}
+.category-card .count {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--faint);
+}
+.category-card .count .n { color: var(--brand); font-weight: 600; }
+.category-card.is-empty { opacity: 0.82; }
+.category-card.is-empty .count { color: var(--warn); }
+.category-card.is-empty .count .n { color: var(--warn); }
+
+@media (min-width: 640px) {
+  .category-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .category-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---------- Category detail hero art ---------- */
+.cat-art-wrap {
+  margin: 1.1rem 0 0 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  line-height: 0;
+  background: #0d1220;
+}
+.cat-art-wrap svg { width: 100%; height: auto; display: block; }
+.cat-count {
+  margin: 1.25rem 0 1.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--faint);
+}
+
 /* ---------- Callouts (correct / wrong in tutorials) ---------- */
 .callout {
   border-left: 3px solid var(--brand);

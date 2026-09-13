@@ -1,0 +1,181 @@
+---
+/**
+ * CategoryArt — terminal-style SVG illustration per category.
+ * Matches the banner-gen visual language (dark #0d1220 canvas, terminal
+ * window with traffic-light dots, JetBrains Mono, status colors) but with a
+ * per-category accent color, so each category is scannable at a glance.
+ * Inline SVG inherits the blog's self-hosted JetBrains Mono for text lines.
+ */
+import { categoryMeta } from '../lib/categories';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const meta = categoryMeta(slug);
+
+// line types: prompt (accent), cmd #e6edf3, ok #3fb950, hl #f5a524, dim #6b7c99
+type Line = { t: 'prompt' | 'cmd' | 'ok' | 'hl' | 'dim'; c: string };
+
+const ART: Record<string, { title: string; lines: Line[]; glyph: 'text' | 'check'; gc: string }> = {
+  ai: {
+    title: 'n8n — ai workflows',
+    lines: [
+      { t: 'dim', c: 'telegram ⇄ llm ⇄ memory' },
+      { t: 'prompt', c: '>' },
+      { t: 'cmd', c: ' user: "help me book a slot"' },
+      { t: 'ok', c: 'bot: done · calendar updated' },
+      { t: 'hl', c: 'mem0 long-term memory · on' },
+    ],
+    glyph: 'text',
+    gc: 'λ',
+  },
+  'case-studies': {
+    title: 'mr@hoelee — portfolio',
+    lines: [
+      { t: 'dim', c: 'drwxr-xr-x  hoelee  projects' },
+      { t: 'prompt', c: '$' },
+      { t: 'cmd', c: ' cd digikedai-bot && ship' },
+      { t: 'ok', c: 'deployed · measured · written up' },
+      { t: 'hl', c: '→ end-to-end build logs' },
+    ],
+    glyph: 'check',
+    gc: '',
+  },
+  devops: {
+    title: 'root@homelab',
+    lines: [
+      { t: 'dim', c: '~140 containers · 6 hosts' },
+      { t: 'prompt', c: '$' },
+      { t: 'cmd', c: ' docker compose up -d' },
+      { t: 'ok', c: 'traefik · pihole · n8n — Up' },
+      { t: 'ok', c: 'backups 3-2-1 · verified' },
+    ],
+    glyph: 'text',
+    gc: '$',
+  },
+  engineering: {
+    title: 'src — spring & wordpress',
+    lines: [
+      { t: 'dim', c: 'Java · PHP · TypeScript' },
+      { t: 'prompt', c: '$' },
+      { t: 'cmd', c: ' mvn clean package' },
+      { t: 'ok', c: 'BUILD SUCCESS · 42s' },
+      { t: 'hl', c: '{ "status": "200 OK" }' },
+    ],
+    glyph: 'text',
+    gc: '</>',
+  },
+  notes: {
+    title: 'scratchpad — gotchas',
+    lines: [
+      { t: 'dim', c: '3-minute reads' },
+      { t: 'hl', c: 'fix · traefik forward-auth' },
+      { t: 'hl', c: 'fix · cv 301 → 404 chain' },
+      { t: 'dim', c: '→ lessons, fast' },
+    ],
+    glyph: 'text',
+    gc: '!',
+  },
+  tutorials: {
+    title: 'learn — follow along',
+    lines: [
+      { t: 'dim', c: 'copy · run · understand' },
+      { t: 'prompt', c: '$' },
+      { t: 'cmd', c: ' npm create astro@latest' },
+      { t: 'ok', c: 'step 01 · scaffolded' },
+      { t: 'ok', c: 'step 02 · deployed' },
+    ],
+    glyph: 'text',
+    gc: '>_',
+  },
+  web3: {
+    title: 'foundry — testnet 31337',
+    lines: [
+      { t: 'dim', c: 'solidity · honest scope' },
+      { t: 'prompt', c: '$' },
+      { t: 'cmd', c: ' forge test' },
+      { t: 'ok', c: '[PASS] testMintERC721' },
+      { t: 'ok', c: '[PASS] testTransferERC20' },
+    ],
+    glyph: 'text',
+    gc: '0x',
+  },
+};
+
+const fallback: (typeof ART)[string] = {
+  title: slug,
+  lines: [
+    { t: 'dim', c: 'mr hoelee · blog' },
+    { t: 'prompt', c: '$' },
+    { t: 'cmd', c: ' ls posts' },
+  ],
+  glyph: 'text',
+  gc: '#',
+};
+const art = ART[slug] ?? fallback;
+const accent = meta?.accent ?? '#295cff';
+
+const LINE_COLORS: Record<Line['t'], string> = {
+  prompt: accent,
+  cmd: '#e6edf3',
+  ok: '#3fb950',
+  hl: '#f5a524',
+  dim: '#6b7c99',
+};
+---
+
+<svg
+  viewBox="0 0 640 320"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label={meta ? `${meta.name.en} category` : 'Category illustration'}
+  focusable="false"
+>
+  <rect width="640" height="320" fill="#0d1220" />
+  <circle cx="600" cy="-20" r="150" fill={accent} opacity="0.12" />
+  <circle cx="10" cy="330" r="130" fill="#0e94ff" opacity="0.08" />
+
+  <!-- terminal window -->
+  <rect x="28" y="24" width="584" height="268" rx="12" fill="#161e2e" stroke="#2a3550" stroke-width="1" />
+  <!-- titlebar -->
+  <path
+    d="M 28 36 a 12 12 0 0 1 12 -12 h 560 a 12 12 0 0 1 12 12 v 32 h -584 z"
+    fill="#131a2a"
+  />
+  <circle cx="52" cy="46" r="6" fill="#ff5c5c" />
+  <circle cx="74" cy="46" r="6" fill="#f5a524" />
+  <circle cx="96" cy="46" r="6" fill="#3fb950" />
+  <text x="118" y="52" fill="#6b7c99" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="15">{art.title}</text>
+
+  <!-- body lines -->
+  {art.lines.map((ln, i) => (
+    <text
+      x="52"
+      y={112 + i * 36}
+      fill={LINE_COLORS[ln.t]}
+      font-family="'JetBrains Mono', ui-monospace, monospace"
+      font-size="19"
+    >{ln.c}</text>
+  ))}
+
+  <!-- watermark glyph -->
+  {art.glyph === 'text' ? (
+    <text
+      x="588"
+      y="262"
+      text-anchor="end"
+      fill={accent}
+      opacity="0.16"
+      font-family="'JetBrains Mono', ui-monospace, monospace"
+      font-weight="700"
+      font-size="96"
+    >{art.gc}</text>
+  ) : (
+    <g opacity="0.22">
+      <circle cx="560" cy="196" r="58" fill="none" stroke={accent} stroke-width="10" />
+      <path d="M 536 196 l 17 17 l 32 -36" fill="none" stroke={accent} stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  )}
+</svg>

@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostList from '../../../components/PostList.astro';
+import CategoryArt from '../../../components/CategoryArt.astro';
+import { getCollection } from 'astro:content';
+import { isZh } from '../../../lib/lang';
+import { sortByUpdated } from '../../../lib/sort';
+import { categoryMeta } from '../../../lib/categories';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', isZh);
+  const cats = [...new Set(posts.map((p) => p.data.category))];
+  return cats.map((cat) => ({ params: { category: cat } }));
+}
+
+const { category } = Astro.params;
+const meta = categoryMeta(category as string);
+
+const posts = sortByUpdated(
+  (await getCollection('posts', isZh)).filter((p) => p.data.category === category),
+);
+
+const name = meta?.name.zh ?? category;
+const blurb = meta?.blurb.zh;
+---
+
+<BaseLayout
+  title={`${name} — Mr Hoelee`}
+  description={blurb ?? `「${category}」分类下的文章。`}
+  lang="zh"
+  switchHref={`/categories/${category}/`}
+>
+  <h1>{name}</h1>
+  {blurb && <p class="lede">{blurb}</p>}
+
+  <div class="cat-art-wrap">
+    <CategoryArt slug={category} />
+  </div>
+
+  <p class="cat-count">本分类共 {posts.length} 篇文章</p>
+
+  <PostList posts={posts} lang="zh" />
+</BaseLayout>

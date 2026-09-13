@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostList from '../../components/PostList.astro';
+import CategoryArt from '../../components/CategoryArt.astro';
 import { getCollection } from 'astro:content';
 import { isEn } from '../../lib/lang';
 import { sortByUpdated } from '../../lib/sort';
+import { categoryMeta } from '../../lib/categories';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', isEn);
@@ -12,13 +14,31 @@ export async function getStaticPaths() {
 }
 
 const { category } = Astro.params;
+const meta = categoryMeta(category as string);
 
 const posts = sortByUpdated(
   (await getCollection('posts', isEn)).filter((p) => p.data.category === category),
 );
+
+const name = meta?.name.en ?? category;
+const blurb = meta?.blurb.en;
 ---
 
-<BaseLayout title={`${category} — Mr Hoelee`} description={`Posts in the ${category} category.`}>
-  <h1>Category: {category}</h1>
-  <PostList posts={posts} />
+<BaseLayout
+  title={`${name} — Mr Hoelee`}
+  description={blurb ?? `Posts in the ${category} category.`}
+  switchHref={`/zh/categories/${category}/`}
+>
+  <h1>{name}</h1>
+  {blurb && <p class="lede">{blurb}</p>}
+
+  <div class="cat-art-wrap">
+    <CategoryArt slug={category} />
+  </div>
+
+  <p class="cat-count">
+    {posts.length} post{posts.length === 1 ? '' : 's'} in this category
+  </p>
+
+  <PostList posts={posts} lang="en" />
 </BaseLayout>

@@ -135,7 +135,7 @@ const nav = isZh
       <nav class="nav" aria-label="Main">
         <a class="brand" href="/">Mr<span class="dot"> Hoelee</span></a>
         <a href={isZh ? '/zh/' : '/posts/'}>{nav.posts}</a>
-        <a href={isZh ? '/zh/' : '/categories/'}>{nav.categories}</a>
+        <a href={isZh ? '/zh/categories/' : '/categories/'}>{nav.categories}</a>
         <a href={isZh ? '/zh/' : '/about/'}>{nav.about}</a>
         <a href="/rss.xml" title={nav.rss}>{nav.rss}</a>
         <button class="search-toggle" id="search-toggle" aria-label={isZh ? '搜索' : 'Search'}>⌕</button>

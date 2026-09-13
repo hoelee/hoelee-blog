@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CategoryGrid from '../../../components/CategoryGrid.astro';
+import { getCollection } from 'astro:content';
+import { isZh } from '../../../lib/lang';
+
+const posts = await getCollection('posts', isZh);
+
+const counts: Record<string, number> = {};
+for (const p of posts) {
+  const cat = p.data.category as string;
+  counts[cat] = (counts[cat] ?? 0) + 1;
+}
+---
+
+<BaseLayout
+  title="分类 — Mr Hoelee"
+  description={`按分类浏览 ${posts.length} 篇中文技术文章：案例研究、DevOps、AI、工程开发、教程与随记。`}
+  lang="zh"
+  switchHref="/categories/"
+>
+  <div class="page-head">
+    <h1>分类</h1>
+    <p class="lede">
+      每篇文章都属于七大主题之一。<strong>案例研究</strong>是我的实战作品集——包含完整踩坑过程的
+      端到端构建实录；<strong>随记</strong>则是简短速记。从你正在做的事情开始看吧。
+    </p>
+  </div>
+
+  <CategoryGrid counts={counts} lang="zh" />
+</BaseLayout>

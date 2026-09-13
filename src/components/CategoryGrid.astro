@@ -1,0 +1,54 @@
+---
+import CategoryArt from './CategoryArt.astro';
+import { ALL_CATEGORIES } from '../lib/categories';
+
+interface Props {
+  /** Per-slug post count for the current locale. */
+  counts: Record<string, number>;
+  lang?: 'en' | 'zh';
+}
+
+const { counts, lang = 'en' } = Astro.props;
+const isZh = lang === 'zh';
+
+const label = (count: number) => {
+  if (isZh) return count === 0 ? '0 篇 · 敬请期待' : `${count} 篇`;
+  return count === 0 ? '0 posts · coming soon' : `${count} post${count === 1 ? '' : 's'}`;
+};
+---
+
+<ul class="category-grid">
+  {ALL_CATEGORIES.map((cat) => {
+    const count = counts[cat.slug] ?? 0;
+    const href = count > 0 ? `/${isZh ? 'zh/' : ''}categories/${cat.slug}/` : null;
+    const cardBodyAttrs = href ? { href } : {};
+    const body = (
+      <>
+        <div class="art">
+          <CategoryArt slug={cat.slug} />
+        </div>
+        <div class="body">
+          <h2>
+            <span class="dot" style={`background:${cat.accent}`} aria-hidden="true"></span>
+            {cat.name[isZh ? 'zh' : 'en']}
+          </h2>
+          <p>{cat.blurb[isZh ? 'zh' : 'en']}</p>
+          <span class="count" class:list={{ 'is-empty': count === 0 }}>
+            <span class="n">{count}</span> {label(count)}
+          </span>
+        </div>
+      </>
+    );
+    return (
+      <li>
+        {href ? (
+          <a {...cardBodyAttrs} class="category-card">
+            {body}
+          </a>
+        ) : (
+          <div class="category-card is-empty">{body}</div>
+        )}
+      </li>
+    );
+  })}
+</ul>
