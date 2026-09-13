@@ -110,9 +110,14 @@ const TERMINALS = {
     <div class="line"><span class="prompt">$</span><span class="cmd">enhance_prompt:false · same-origin paths</span><span class="fix">→ 1 room out ✓</span></div>`,
 
   'how-i-made-my-own-songs-with-suno-ai': `
-    <div class="line"><span class="prompt">$</span><span class="cmd">suno "indie folk · playful whistles · sprite-girl vocals"</span></div>
-    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">lyrics + metatags → 7 songs shipped ✓</span></div>
-    <div class="line"><span class="prompt">$</span><span class="cmd">v6: section edits · single-line swaps · voices</span></div>`,
+      <div class="line"><span class="prompt">$</span><span class="cmd">suno "indie folk · playful whistles · sprite-girl vocals"</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="fix">lyrics + metatags → 7 songs shipped ✓</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">v6: section edits · single-line swaps · voices</span></div>`,
+
+    'passbolt-hang-three-failure-modes': `
+      <div class="line"><span class="prompt">$</span><span class="cmd">curl -I https://pass.hoelee.com</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="err">504 · ERR_TOO_MANY_REDIRECTS · fingerprint null</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">mount passbolt.php · full fingerprint</span><span class="fix">→ fixed ✓</span></div>`,
   };
 
 const DEFAULT_TERMINAL = `

@@ -323,35 +323,53 @@ const BANNERS = {
   },
 
   'how-i-made-my-own-songs-with-suno-ai': {
-    titlebar: 'hoelee@studio — suno v6 · 7 songs',
+      titlebar: 'hoelee@studio — suno v6 · 7 songs',
+      lines: [
+        { t: 'prompt', text: '$' }, { t: 'cmd', text: 'write lyrics · craft style prompt (200 chars)' },
+        { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: '[Verse][Chorus][Bridge] · [Whispered][Belted]' },
+        { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'generate 3–5 takes → keep best' },
+        { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'AI vocalist mispronounces 忘川 — respell test clip' },
+        { t: 'prompt', text: '$' }, { t: 'cmd', text: 'v6: section edit · single-line swap · voices' },
+        { t: 'prompt', text: '' }, { t: 'ok', text: '→ 7 songs hosted · embedded above ✓' },
+      ],
+      flow: [
+        { n: '1', label: 'lyrics first' },
+        { n: '2', label: 'style prompt' },
+        { n: '3', label: 'metatags' },
+        { n: '4', label: 'iterate takes' },
+        { n: '5', label: 'ship ✓' },
+      ],
+    },
+
+    'passbolt-hang-three-failure-modes': {
+      titlebar: 'root@dsm — passbolt incident',
+      lines: [
+        { t: 'prompt', text: '$' }, { t: 'cmd', text: 'GET / → 504 Gateway Timeout (every minute, worse under load)' },
+        { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'cron: job is still running since ... (1m elapsed)' },
+        { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'SMTP Setting errors: fingerprint null' },
+        { t: 'prompt', text: '$' }, { t: 'cmd', text: 'fix = bind-mount passbolt.php · full fingerprint · remove ssl.force' },
+        { t: 'prompt', text: '' }, { t: 'ok', text: '→ cron 0.4s · UI 302 · healthcheck green ✓' },
+      ],
+      flow: [
+        { n: '1', label: '504 hang' },
+        { n: '2', label: 'fingerprint null', err: true },
+        { n: '3', label: 'mount config' },
+        { n: '4', label: 'redirect loop', err: true },
+        { n: '5', label: 'fixed ✓' },
+      ],
+    },
+  };
+
+  const DEFAULT_BANNER = {
+    titlebar: 'root@host — shell',
     lines: [
-      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'write lyrics · craft style prompt (200 chars)' },
-      { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: '[Verse][Chorus][Bridge] · [Whispered][Belted]' },
-      { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'generate 3–5 takes → keep best' },
-      { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'AI vocalist mispronounces 忘川 — respell test clip' },
-      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'v6: section edit · single-line swap · voices' },
-      { t: 'prompt', text: '' }, { t: 'ok', text: '→ 7 songs hosted · embedded above ✓' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'engineering · devops · self-hosting' },
+      { t: 'prompt', text: '' }, { t: 'ok', text: 'read the full post →' },
     ],
     flow: [
-      { n: '1', label: 'lyrics first' },
-      { n: '2', label: 'style prompt' },
-      { n: '3', label: 'metatags' },
-      { n: '4', label: 'iterate takes' },
-      { n: '5', label: 'ship ✓' },
+      { n: '1', label: 'start' }, { n: '2', label: 'work' }, { n: '3', label: 'ship' },
     ],
-  },
-};
-
-const DEFAULT_BANNER = {
-  titlebar: 'root@host — shell',
-  lines: [
-    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'engineering · devops · self-hosting' },
-    { t: 'prompt', text: '' }, { t: 'ok', text: 'read the full post →' },
-  ],
-  flow: [
-    { n: '1', label: 'start' }, { n: '2', label: 'work' }, { n: '3', label: 'ship' },
-  ],
-};
+  };
 
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
