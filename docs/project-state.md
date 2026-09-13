@@ -90,11 +90,13 @@ Currently every post shares the generic 14KB `og-default.png` — flagship posts
 - [ ] Add tag archive routes (tags currently render as labels only).
 - **Done when:** clicking a tag on any post opens a working `/tags/<tag>/` page.
 
-**Step C3 — Categories page shows all 7 categories** (not just those with posts), with "0 posts / coming soon" for empty ones — signals intended coverage.
-- **Done when:** `/categories/` lists all 7 categories including empty ones with a placeholder.
+**Step C3 — Categories page shows all 7 categories** (not just those with posts), with "0 posts / coming soon" for empty ones — signals intended coverage. ✅ Done 2026-09-13
+- [x] `/categories/` lists all 7 categories with name, description, per-category terminal-style SVG illustration (CategoryArt/Grid components) and a post count; empty ones show "0 posts · coming soon" as a non-link.
+- **Done when:** ✅ all 7 render with a placeholder for empty ones + descriptions + illustrations.
 
-**Step C4 — Dedicated `/zh/posts/` and `/zh/categories/` archive pages.**
-- [ ] Split zh nav from `/zh/` landing into real archives once Chinese content grows (≥4 zh posts).
+**Step C4 — Dedicated `/zh/posts/` and `/zh/categories/` archive pages.** 🔵 In progress
+- [x] `/zh/categories/` index + `/zh/categories/[category]/` detail pages live (zh nav "分类" points there; PostList is locale-aware with zh-CN dates).
+- [ ] `/zh/posts/` archive still missing — zh nav "文章" falls back to `/zh/` landing (zh post count already 17, the archive is due).
 - **Done when:** zh nav links to real `/zh/posts/` + `/zh/categories/` archives.
 
 ### Phase D — Polish / later (Tier 3)
