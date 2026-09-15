@@ -123,6 +123,11 @@ const TERMINALS = {
     <div class="line"><span class="prompt">$</span><span class="cmd">CDP → shopee search "used phone" · client marketplace monitor</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">/verify captcha · empty product cards</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">warm session · 7s pacing · sweep.py</span><span class="fix">→ 20+ listings ✓</span></div>`,
+
+  'unraid-stop-array-hangs-on-swapfile': `
+    <div class="line"><span class="prompt">$</span><span class="cmd">unraid → stop array · swapfile on /mnt/cache</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">umount: target is busy · /proc/swaps says /dev/loop0</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">swapoff -a + losetup -j at stopping_svcs</span><span class="fix">→ clean stop ✓</span></div>`,
 };
 
 const DEFAULT_TERMINAL = `

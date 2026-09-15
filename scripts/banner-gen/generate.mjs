@@ -358,6 +358,24 @@ const BANNERS = {
         { n: '5', label: 'fixed ✓' },
       ],
     },
+
+    'unraid-stop-array-hangs-on-swapfile': {
+      titlebar: 'root@unraid — array stop incident',
+      lines: [
+        { t: 'prompt', text: '$' }, { t: 'cmd', text: 'WebUI → Stop array · swapfile lives on /mnt/cache (btrfs RAID1)' },
+        { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'Retry unmounting user shares… · umount: target is busy (every 5s, forever)' },
+        { t: 'prompt', text: 'WARN' }, { t: 'err', text: '/proc/swaps lists /dev/loop0 — grep swapfile never matches' },
+        { t: 'prompt', text: '$' }, { t: 'cmd', text: 'fix = User Scripts: swapoff -a + losetup -j/-d at stopping_svcs · swapon at disks_mounted' },
+        { t: 'prompt', text: '' }, { t: 'ok', text: '→ clean unmount on first try · swap survives stop/start ✓' },
+      ],
+      flow: [
+        { n: '1', label: 'stop array' },
+        { n: '2', label: 'EBUSY loop', err: true },
+        { n: '3', label: 'losetup -j' },
+        { n: '4', label: 'swapoff hook' },
+        { n: '5', label: 'clean stop ✓' },
+      ],
+    },
   };
 
   const DEFAULT_BANNER = {
