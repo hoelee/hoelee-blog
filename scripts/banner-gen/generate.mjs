@@ -133,6 +133,44 @@ const BANNERS = {
     ],
   },
 
+  'when-smart-says-healthy-but-your-raid-is-corrupting-data': {
+    titlebar: 'root@unraid — cache pool scrub',
+    lines: [
+      { t: 'dim', text: 'btrfs RAID1 · 2× Samsung PM9A3 NVMe · same batch' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'btrfs scrub /mnt/cache' },
+      { t: 'err', text: 'csum 0x8941f998 recurring = CRC32C(zero block)' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'self-heal rewrite → does NOT stick' },
+      { t: 'err', text: 'write-path corruption · SMART stays clean' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'fix = restore VM + replace both drives' },
+    ],
+    flow: [
+      { n: '1', label: 'SMART clean' },
+      { n: '2', label: 'csum zeros', err: true },
+      { n: '3', label: 'self-heal no-stick' },
+      { n: '4', label: 'restore VM' },
+      { n: '5', label: 'replace both ✓' },
+    ],
+  },
+
+  'self-hosting-mem0-memory-stack': {
+    titlebar: 'root@dsm — mem0 memory stack',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: "curl -X POST :20015/memories -H X-Api-Key" },
+      { t: 'dim', text: 'user_id + text → mem0 extracts & stores' },
+      { t: 'prompt', text: '¶' }, { t: 'ok', text: '→ remembers across sessions ✓' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'stack = mem0-api + LiteLLM + pgvector(pg17)' },
+      { t: 'err', text: 'infer=true → LLM hop · slow writes' },
+      { t: 'prompt', text: '' }, { t: 'ok', text: 'self-hosted · data stays on LAN ✓' },
+    ],
+    flow: [
+      { n: '1', label: 'POST /memories' },
+      { n: '2', label: 'store fact' },
+      { n: '3', label: 'search' },
+      { n: '4', label: 'feed context' },
+      { n: '5', label: 'remembers ✓' },
+    ],
+  },
+
   'hardening-a-tor-onion-service': {
     titlebar: 'root@tor-host — onion service audit',
     lines: [

@@ -125,10 +125,20 @@ const TERMINALS = {
     <div class="line"><span class="prompt">$</span><span class="cmd">warm session · 7s pacing · sweep.py</span><span class="fix">→ 20+ listings ✓</span></div>`,
 
   'unraid-stop-array-hangs-on-swapfile': `
-    <div class="line"><span class="prompt">$</span><span class="cmd">unraid → stop array · swapfile on /mnt/cache</span></div>
-    <div class="line"><span class="prompt">&nbsp;</span><span class="err">umount: target is busy · /proc/swaps says /dev/loop0</span></div>
-    <div class="line"><span class="prompt">$</span><span class="cmd">swapoff -a + losetup -j at stopping_svcs</span><span class="fix">→ clean stop ✓</span></div>`,
-};
+      <div class="line"><span class="prompt">$</span><span class="cmd">unraid → stop array · swapfile on /mnt/cache</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="err">umount: target is busy · /proc/swaps says /dev/loop0</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">swapoff -a + losetup -j at stopping_svcs</span><span class="fix">→ clean stop ✓</span></div>`,
+
+    'when-smart-says-healthy-but-your-raid-is-corrupting-data': `
+        <div class="line"><span class="prompt">$</span><span class="cmd">scrub → re-read vdisk1.img</span></div>
+        <div class="line"><span class="prompt">&nbsp;</span><span class="err">csum 0x8941f998 = CRC32C(zeros) · recurring</span></div>
+        <div class="line"><span class="prompt">$</span><span class="cmd">self-heal rewrite does NOT stick</span><span class="fix">→ replace both drives ✓</span></div>`,
+
+      'self-hosting-mem0-memory-stack': `
+        <div class="line"><span class="prompt">$</span><span class="cmd">curl -X POST :20015/memories · X-Api-Key</span></div>
+        <div class="line"><span class="prompt">&nbsp;</span><span class="err">infer=true → LLM hop · slow write</span></div>
+        <div class="line"><span class="prompt">$</span><span class="cmd">infer=false · pgvector · LiteLLM gateway</span><span class="fix">→ remembers across chats ✓</span></div>`,
+    };
 
 const DEFAULT_TERMINAL = `
   <div class="line"><span class="prompt">$</span><span class="cmd">engineering · devops · self-hosting</span></div>
