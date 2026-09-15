@@ -17,6 +17,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import sharp from 'sharp';
 import { dirname, join, resolve } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -211,7 +212,7 @@ const chrome = process.env.CHROME_PATH ||
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const outPng = join(ROOT, '.og', 'gen', `${slug}.png`);
 try {
-  execSync(`"${chrome}" --headless --disable-gpu --force-device-scale-factor=1 --window-size=1200,630 --virtual-time-budget=3000 --screenshot="${outPng}" "file:///${htmlPath.replace(/\\/g, '/')}"`, { stdio: 'pipe' });
+  execSync(`"${chrome}" --headless --disable-gpu --force-device-scale-factor=1 --window-size=1200,900 --virtual-time-budget=3000 --screenshot="${outPng}" "file:///${htmlPath.replace(/\\/g, '/')}"`, { stdio: 'pipe' });
 } catch (e) {
   console.error('Chrome render failed:', e.message);
   process.exit(1);
@@ -221,8 +222,16 @@ try {
 const publicDir = join(ROOT, 'public', 'og');
 mkdirSync(publicDir, { recursive: true });
 const finalPng = join(publicDir, `${slug}.png`);
-execSync(`copy /Y "${outPng}" "${finalPng}"`, { stdio: 'pipe' });
 
-console.log(`✓ OG image generated: public/og/${slug}.png`);
+sharp(outPng)
+  .extract({ left: 0, top: 0, width: 1200, height: 630 })
+  .toFile(finalPng)
+  .then(() => {
+    console.log(`✓ OG image generated: public/og/${slug}.png`);
+  })
+  .catch((e) => {
+    console.error('crop failed:', e.message);
+    process.exit(1);
+  });
 console.log(`  title: ${title}`);
 console.log(`  category: ${category} | tags: ${tags.join(', ')}`);
