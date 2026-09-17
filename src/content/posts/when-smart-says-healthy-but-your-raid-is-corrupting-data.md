@@ -1,6 +1,6 @@
 ---
 title: "When SMART Says Healthy and Your RAID Is Silently Corrupting Data"
-description: "A btrfs RAID1 pool on two healthy-looking NVMe drives quietly corrupted a Windows VM. How I caught it, the checksum forensic that proved it, and why I replaced both drives."
+description: "A btrfs RAID1 pool on two healthy-looking NVMe drives quietly corrupted a Windows VM. How I caught it with a checksum forensic — and why the root cause (M.2 riser link fault vs batch defect) is still uncertain, with both drives now testing clean."
 pubDate: 2026-09-16
 category: devops
 tags: [unraid, btrfs, nvme, raid, storage, data-loss, troubleshooting]
@@ -14,8 +14,57 @@ btrfs RAID1 pool — two mirrored enterprise NVMe drives that said **"healthy"**
 in every tool I could run — was quietly feeding my Windows 11 VM all-zero
 bytes. Not visibly failing. Silently corrupting.
 
-This is the full story: how the corruption surfaced, the checksum that gave
-it away, and why the answer was "replace both drives, don't trust SMART".
+This is the full story: how the corruption surfaced, and the checksum that
+gave it away.
+
+> **Update (2026-09-16): the root cause turned out to be uncertain.** The
+> "replace both drives" verdict below was my best diagnosis at the time, but a
+> later, unrelated failure taught me to question it. Both NVMe drives now test
+> clean, and the strongest remaining suspect is the **M.2 riser** both drives
+> were plugged into — a link-layer fault on the riser reproduces exactly the
+> correlated, all-zero corruption I blamed on the drives. SMART is silent to
+> link faults, so it can't rule one out. I describe that wake-up call (a "dead"
+> SATA SSD that was just a bad cable) in a companion post. Read the original
+> analysis, then the correction — and then the *sequel*: two weeks later the
+> same all-zero fingerprint appeared on a **completely different drive stack**,
+> and this time the root cause surfaced. See [The Corruption Came Back on
+> Different Drives — the Cause Was TRIM, Not the SSDs](/posts/the-cause-was-trim-not-the-ssds/).
+
+## Update: why I no longer blame the drives
+
+Two things changed my mind after this post went up.
+
+**1. The drives test clean now.** Under current conditions both PM9A3s read and
+write correctly. If they carried a batch-level defect that was actively
+corrupting in September, I'd expect them to fail a sustained write+verify
+(`verify=crc32c`) soak — they don't.
+
+**2. A link fault was the real lesson all along.** Right after this incident I
+hit the *same* failure signature on a different drive (a Seagate IronWolf 110 that threw
+`WRITE FPDMA QUEUED` timeouts, failed `mkfs`, and went silent — textbook
+"dead SSD"). It turned out to be the **SATA cable**. A flaky link reproduces
+every symptom I blamed on hardware below: timeouts dropped before a CRC is
+computed, real pages lost, and — if both RAID1 members share the same
+faulty **M.2 riser** or slot — *correlated* corruption across both drives.
+That's the one explanation that fits "both members lied the same way," and it
+doesn't require any drive defect at all.
+
+So I can't honestly say "the drives were bad." They may have been perfectly
+fine, and the corruption may have come from the **M.2 riser** they both sat
+on. Note that **this does not make the incident a false alarm**: real data
+*could not be read back*, and whatever the cause, I removed it, migrated the
+data, and verified every byte. But the correct lesson is "rule out the link
+before condemning the drive," not "same-batch drives are untrustworthy."
+
+The full link-vs-drive detective work is in **["I Was About to RMA This SSD —
+the Fault Was a SATA Cable"](/posts/that-dying-ssd-was-just-a-bad-sata-cable/)**.
+
+## The original analysis (kept for transparency)
+
+What follows is what I concluded *at the time*. It was the most defensible
+reading of the evidence available, and it may still be right for reasons I
+can't rule out — but read it as the incident report it is, not the final
+verdict.
 
 ## Why this matters
 
@@ -101,7 +150,11 @@ When self-heal rewrites keep not sticking, you're no longer in "one bad
 sector" territory. You're in "the device is lying about writes" territory,
 and RAID redundancy won't help.
 
-## Why both drives had to go
+## Why both drives had to go (my reasoning at the time)
+
+> This was the basis for the original "replace both" decision. Read the
+> correction in the Update above before acting on it — a shared M.2 riser
+> link fault also fits this evidence without any drive being defective.
 
 The data pointed at a **hardware defect in the same-batch drives**, not a
 wear or one-off event:
@@ -156,15 +209,29 @@ mirror, a checksum, or a fresh backup to compare against.
 
 ## The result
 
-One Windows VM restored from backup, both confirmed-failing drives replaced,
-and Docker's data root safely off the pool. The cost was a few days of noise
-and a rescue effort — but it was contained because the corruption was caught
-by checksums, not wallowed in for weeks.
+One Windows VM restored from backup, the data safely off the failing pool, and
+Docker's data root relocated — **plus a lesson I had to un-learn after the
+fact.** I replaced both drives, but I can no longer be certain they were the
+cause: the evidence fits a shared **M.2 riser** link fault just as well, and
+both drives test clean now. (Full detective work in ["I Was About to RMA This
+SSD — the Fault Was a SATA Cable"](/posts/that-dying-ssd-was-just-a-bad-sata-cable/).)
 
-The lesson that sticks: **with storage, "redundant" is only as good as your
-least-trustworthy member.** Two disks that fail together are not a mirror —
-they're a single point of failure wearing two serial numbers. Verify your
-restores, checksum your data, and when a drive's *rewards* of zeros keep
-reappearing, replace the whole set.
+The incident was contained because corruption was caught by checksums, not
+wallowed in for weeks — that part stands regardless of cause. But the honest
+lesson is broader and less dramatic than "replace the drives":
+
+1. **A "corrupting" drive isn't proof the drive is bad.** Before condemning
+   hardware, rule out the link: reseat/swap the cable, move to a different
+   port/riser/slot, and rerun the *same* failing operation. If the fault
+   follows the **port/riser**, it's the connection.
+2. **SMART can't see link faults.** Zero media errors and ~100% spare say
+   nothing about a flaky cable or riser — timeouts drop I/O before a CRC is
+   even computed.
+3. **Same-batch drives sharing a channel is a shared-failure risk either
+   way.** Whether the corruption was the drives or the riser, a married pair
+   on one faulty path is a single point of failure wearing two serial numbers.
+4. **Checksum your data and test-restore your backups.** That — not the part
+   diagnosis — is what turned a weeks-long silent corruption into a contained
+   incident.
 
 ---

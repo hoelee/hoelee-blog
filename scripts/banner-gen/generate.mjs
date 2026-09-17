@@ -416,23 +416,59 @@ const BANNERS = {
     },
 
     'unraid-stop-array-hangs-on-swapfile': {
-      titlebar: 'root@unraid — array stop incident',
-      lines: [
-        { t: 'prompt', text: '$' }, { t: 'cmd', text: 'WebUI → Stop array · swapfile lives on /mnt/cache (btrfs RAID1)' },
-        { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'Retry unmounting user shares… · umount: target is busy (every 5s, forever)' },
-        { t: 'prompt', text: 'WARN' }, { t: 'err', text: '/proc/swaps lists /dev/loop0 — grep swapfile never matches' },
-        { t: 'prompt', text: '$' }, { t: 'cmd', text: 'fix = User Scripts: swapoff -a + losetup -j/-d at stopping_svcs · swapon at disks_mounted' },
-        { t: 'prompt', text: '' }, { t: 'ok', text: '→ clean unmount on first try · swap survives stop/start ✓' },
-      ],
-      flow: [
-        { n: '1', label: 'stop array' },
-        { n: '2', label: 'EBUSY loop', err: true },
-        { n: '3', label: 'losetup -j' },
-        { n: '4', label: 'swapoff hook' },
-        { n: '5', label: 'clean stop ✓' },
-      ],
-    },
-  };
+          titlebar: 'root@unraid — array stop incident',
+          lines: [
+            { t: 'prompt', text: '$' }, { t: 'cmd', text: 'WebUI → Stop array · swapfile lives on /mnt/cache (btrfs RAID1)' },
+            { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'Retry unmounting user shares… · umount: target is busy (every 5s, forever)' },
+            { t: 'prompt', text: 'WARN' }, { t: 'err', text: '/proc/swaps lists /dev/loop0 — grep swapfile never matches' },
+            { t: 'prompt', text: '$' }, { t: 'cmd', text: 'fix = User Scripts: swapoff -a + losetup -j/-d at stopping_svcs · swapon at disks_mounted' },
+            { t: 'prompt', text: '' }, { t: 'ok', text: '→ clean unmount on first try · swap survives stop/start ✓' },
+          ],
+          flow: [
+            { n: '1', label: 'stop array' },
+            { n: '2', label: 'EBUSY loop', err: true },
+            { n: '3', label: 'losetup -j' },
+            { n: '4', label: 'swapoff hook' },
+            { n: '5', label: 'clean stop ✓' },
+          ],
+        },
+
+        'the-cause-was-trim-not-the-ssds': {
+                  titlebar: 'root@unraid — ssd pool trim watch',
+                  lines: [
+                    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'raw read error rate (failing now) is 19665 — sdd SMART trip' },
+                    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'btrfs device stats /mnt/ssd' },
+                    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'corruption_errs sdd1=27 sdb1=31 · csum 0x8941f998 = CRC32C(zeros) · both mirrors' },
+                    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'fix = diskAutotrim="off" · remount,nodiscard · scrub' },
+                    { t: 'prompt', text: '' }, { t: 'ok', text: '→ scrub #2: corrected 0 · counters flat · cause = queued TRIM firmware bug ✓' },
+                  ],
+                  flow: [
+                    { n: '1', label: 'SMART trip' },
+                    { n: '2', label: 'zeros on both mirrors', err: true },
+                    { n: '3', label: 'queued TRIM' },
+                    { n: '4', label: 'autotrim off' },
+                    { n: '5', label: 'scrub clean ✓' },
+                  ],
+                },
+
+                'that-dying-ssd-was-just-a-bad-sata-cable': {
+                  titlebar: 'root@unraid — sdd mkfs attempt',
+                  lines: [
+                    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'mkfs.btrfs -K -f /dev/sdd1' },
+                    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'ata7.00: WRITE FPDMA QUEUED timeout · NCQ disabled · lost async page write' },
+                    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'ERROR: superblock magic doesn\'t match · smartctl -H timeout' },
+                    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'fix = new SATA cable + different port · rerun the same mkfs' },
+                    { t: 'prompt', text: '' }, { t: 'ok', text: '→ clean format · 8 GiB fio verify=crc32c err=0 · device stats all zero ✓' },
+                  ],
+                  flow: [
+                    { n: '1', label: '"dying" SSD' },
+                    { n: '2', label: 'FPDMA timeouts', err: true },
+                    { n: '3', label: 'cable/port swap' },
+                    { n: '4', label: 'rerun mkfs' },
+                    { n: '5', label: 'clean ✓' },
+                  ],
+                },
+              };
 
   const DEFAULT_BANNER = {
     titlebar: 'root@host — shell',

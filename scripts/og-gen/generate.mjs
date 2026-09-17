@@ -136,7 +136,7 @@ const TERMINALS = {
         <div class="line"><span class="prompt">$</span><span class="cmd">self-heal rewrite does NOT stick</span><span class="fix">→ replace both drives ✓</span></div>`,
 
       'self-hosting-mem0-memory-stack': `
-        <div class="line"><span class="prompt">$</span><span class="cmd">curl -X POST :20015/memories · X-Api-Key</span></div>
+              <div class="line"><span class="prompt">$</span><span class="cmd">curl -X POST :20015/memories · X-Api-Key</span></div>
         <div class="line"><span class="prompt">&nbsp;</span><span class="err">infer=true → LLM hop · slow write</span></div>
         <div class="line"><span class="prompt">$</span><span class="cmd">infer=false · pgvector · LiteLLM gateway</span><span class="fix">→ remembers across chats ✓</span></div>`,
 
@@ -159,6 +159,16 @@ const TERMINALS = {
       <div class="line"><span class="prompt">$</span><span class="cmd">reading app → GET /webhook/mtts?pass=…&text=…</span></div>
       <div class="line"><span class="prompt">&nbsp;</span><span class="err">azure token expires in ~10min · google in ~1h</span></div>
       <div class="line"><span class="prompt">$</span><span class="cmd">2 cron sidecars write accesstoken.txt · 570s / 3500s</span><span class="fix">→ 1 year uptime ✓</span></div>`,
+
+    'the-cause-was-trim-not-the-ssds': `
+      <div class="line"><span class="prompt">$</span><span class="cmd">btrfs device stats /mnt/ssd</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="err">corruption_errs sdd1=27 sdb1=31 · csum 0x8941f998 = CRC32C(zeros) · both mirrors</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">diskAutotrim="off" · remount,nodiscard · scrub</span><span class="fix">→ 0 new errors ✓</span></div>`,
+
+    'that-dying-ssd-was-just-a-bad-sata-cable': `
+      <div class="line"><span class="prompt">$</span><span class="cmd">mkfs.btrfs -K -f /dev/sdd1</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="err">WRITE FPDMA QUEUED timeouts · superblock magic doesn't match</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">swap SATA cable/port · rerun mkfs</span><span class="fix">→ clean · 0 errors ✓</span></div>`,
   };
 
 const DEFAULT_TERMINAL = `
