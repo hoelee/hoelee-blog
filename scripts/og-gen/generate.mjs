@@ -144,6 +144,21 @@ const TERMINALS = {
       <div class="line"><span class="prompt">$</span><span class="cmd">wp plugin list · hre-ai-remix 0.0.1 → 0.0.22</span></div>
       <div class="line"><span class="prompt">&nbsp;</span><span class="err">404 …/wp-json/hre/v1<span class="hl">admin</span>/photos — rest_url() has no trailing slash</span></div>
       <div class="line"><span class="prompt">$</span><span class="cmd">fix = '/admin/…' · 58 commits · 4 were the AI</span><span class="fix">→ shipped ✓</span></div>`,
+
+    'n8n-v1-to-v2-upgrade-gotchas': `
+      <div class="line"><span class="prompt">$</span><span class="cmd">pull n8nio/n8n:2.40.1 · restart · upgrade took 90s</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="err">telemetry schema: executions_data_save_on_error rejected</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">read the boot log · pin timeouts + limits</span><span class="fix">→ 7 fixed ✓</span></div>`,
+
+    'self-healing-digital-goods-entitlements': `
+      <div class="line"><span class="prompt">$</span><span class="cmd">nocodb → n8n W1–W5 → alist role scopes</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="err">public hostname: 60s latency → nginx 504 → retry storm → 503</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">http://nocodb:10380 · 30ms · W4 repairs drift 03:00</span><span class="fix">→ self-healing ✓</span></div>`,
+
+    'running-tts-as-a-service-with-token-sidecars': `
+      <div class="line"><span class="prompt">$</span><span class="cmd">reading app → GET /webhook/mtts?pass=…&text=…</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="err">azure token expires in ~10min · google in ~1h</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">2 cron sidecars write accesstoken.txt · 570s / 3500s</span><span class="fix">→ 1 year uptime ✓</span></div>`,
   };
 
 const DEFAULT_TERMINAL = `

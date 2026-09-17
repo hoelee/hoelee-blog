@@ -445,6 +445,69 @@ const BANNERS = {
     ],
   };
 
+BANNERS['n8n-v1-to-v2-upgrade-gotchas'] = {
+  titlebar: 'root@dsm — n8n v1 → v2 migration',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'docker pull n8nio/n8n:2.40.1 · container up in 90s' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'v1.123.x → v2.40.1 · 17 workflows · 7 active' },
+    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'Telemetry failed schema validation: executions_data_save_on_error' },
+    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'Failed to start Python task runner — Python 3 missing' },
+    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'Sandbox: enabled=false (DB override; env was enabled=true)' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'N8N_WEBHOOK_URL · pin TASK_TIMEOUT=300 · pin compression limits' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'storage rename flagged for v3 · migrate + remount together' },
+    { t: 'prompt', text: '' }, { t: 'ok', text: '→ 7 deprecations resolved · downstream workflows intact ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'pull v2' },
+    { n: '2', label: 'read boot log' },
+    { n: '3', label: 'schema reject', err: true },
+    { n: '4', label: 'pin defaults' },
+    { n: '5', label: 'verified ✓' },
+  ],
+};
+
+BANNERS['self-healing-digital-goods-entitlements'] = {
+  titlebar: 'root@dsm — entitlement lifecycle (W1–W5)',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'nocodb webhook → n8n compute → alist role scopes' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'desired = union(active purchases, direct grants) · MAX expiry wins' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'shared/effective-grants.js inlined at build · 4 workflows' },
+    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'public hostname: >60s → nginx 504 → 1s retries → pool → 503' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'http://nocodb:10380 (30ms, no tunnel) → cascade gone' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'W3 sweeps every 5min · W4 repairs drift 03:00 + verifies' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'W5 public: CORS-locked, minimal fields, no HMAC theatre' },
+    { t: 'prompt', text: '' }, { t: 'ok', text: '→ repair verified · reconcile log empty when healthy ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'grant' },
+    { n: '2', label: 'expire' },
+    { n: '3', label: 'drift', err: true },
+    { n: '4', label: 'repair' },
+    { n: '5', label: 'verify ✓' },
+  ],
+};
+
+BANNERS['running-tts-as-a-service-with-token-sidecars'] = {
+  titlebar: 'root@dsm — tts service · 1 year uptime',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'reader → GET /webhook/{mtts,gtts}?pass=…&text=…&speed=…' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'azure speech F0 · google cloud cmn-CN-Wavenet-A' },
+    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'token stored in workflow → 401 after 10min (azure) / 1h (google)' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: '2 cron sidecars → accesstoken.txt on shared volume' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'refresh 570s / 3500s · margin before expiry' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'map speed 5–50 → -20%…+150% · strip trailing newline' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: '8 neural voices selected by integer index' },
+    { t: 'prompt', text: '' }, { t: 'ok', text: '→ secrets in zero workflows · still running ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'webhook' },
+    { n: '2', label: 'read token' },
+    { n: '3', label: 'synthesize' },
+    { n: '4', label: 'audio/wav' },
+    { n: '5', label: '1yr ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';
