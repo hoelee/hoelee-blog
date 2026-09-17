@@ -139,7 +139,12 @@ const TERMINALS = {
         <div class="line"><span class="prompt">$</span><span class="cmd">curl -X POST :20015/memories · X-Api-Key</span></div>
         <div class="line"><span class="prompt">&nbsp;</span><span class="err">infer=true → LLM hop · slow write</span></div>
         <div class="line"><span class="prompt">$</span><span class="cmd">infer=false · pgvector · LiteLLM gateway</span><span class="fix">→ remembers across chats ✓</span></div>`,
-    };
+
+    'shipping-an-ai-photo-editor-as-a-wordpress-plugin': `
+      <div class="line"><span class="prompt">$</span><span class="cmd">wp plugin list · hre-ai-remix 0.0.1 → 0.0.22</span></div>
+      <div class="line"><span class="prompt">&nbsp;</span><span class="err">404 …/wp-json/hre/v1<span class="hl">admin</span>/photos — rest_url() has no trailing slash</span></div>
+      <div class="line"><span class="prompt">$</span><span class="cmd">fix = '/admin/…' · 58 commits · 4 were the AI</span><span class="fix">→ shipped ✓</span></div>`,
+  };
 
 const DEFAULT_TERMINAL = `
   <div class="line"><span class="prompt">$</span><span class="cmd">engineering · devops · self-hosting</span></div>

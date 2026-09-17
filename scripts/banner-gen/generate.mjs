@@ -342,6 +342,24 @@ const BANNERS = {
     ],
   },
 
+  'shipping-an-ai-photo-editor-as-a-wordpress-plugin': {
+    titlebar: 'wp-admin — AI Remix Photo plugin',
+    lines: [
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: 'wp plugin list · hre-ai-remix 0.0.1 → 0.0.22' },
+      { t: 'err', text: '404 …/v1admin/photos — rest_url() has no trailing slash' },
+      { t: 'dim', text: 'routes in is_admin() ✗ · watermark silent-fallback ✗' },
+      { t: 'prompt', text: '$' }, { t: 'cmd', text: "join REST with '/admin/…' · log root cause · warn admin" },
+      { t: 'prompt', text: '' }, { t: 'ok', text: '→ 22 releases · 58 commits · 4 were the AI ✓' },
+    ],
+    flow: [
+      { n: '1', label: 'PoC → plugin' },
+      { n: '2', label: 'v1admin 404', err: true },
+      { n: '3', label: 'silent watermark', err: true },
+      { n: '4', label: 'server-side gates' },
+      { n: '5', label: '0.0.22 ✓' },
+    ],
+  },
+
   'best-ai-video-generators-2026': {
     titlebar: '~/blog — AI video free vs paid 2026',
     lines: [
