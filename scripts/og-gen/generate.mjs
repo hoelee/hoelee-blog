@@ -171,6 +171,11 @@ const TERMINALS = {
       <div class="line"><span class="prompt">$</span><span class="cmd">swap SATA cable/port · rerun mkfs</span><span class="fix">→ clean · 0 errors ✓</span></div>`,
   };
 
+TERMINALS['self-hosted-speech-to-text-api'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">whisper-server --host 0.0.0.0 --port 20129 · large-v3 · RTX 3060</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">connect ETIMEDOUT 192.168.1.123:20129 — bound to 127.0.0.1 only</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">bind 0.0.0.0 · firewall LocalSubnet · n8n key gate</span><span class="fix">→ 130 wpm ✓</span></div>`;
+
 const DEFAULT_TERMINAL = `
   <div class="line"><span class="prompt">$</span><span class="cmd">engineering · devops · self-hosting</span></div>
   <div class="line"><span class="prompt">&nbsp;</span><span class="fix">read the full post →</span></div>`;

@@ -57,13 +57,19 @@ New visitors land on reverse-chronological "Latest posts" with no guidance to th
 
 ### Phase B — Content (80% of value; the long game)
 
-**Step B1 — Write the 2nd flagship case study: "Self-Hosting a Mem0 Memory Stack".**
+**Step B1 — Write the 2nd flagship case study: "Self-Hosting a Mem0 Memory Stack".** ✅ Done 2026-09-16
 The Mem0 flagship is already the single highest-value unwritten post in the backlog.
-- [ ] Write `src/content/posts/self-hosting-mem0.md` (category `case-studies`).
-- [ ] Write Chinese twin `src/content/posts/zh/self-hosting-mem0.md` (same filename → auto language-switch).
-- [ ] Follow the "hard job → post" template (§4 content-guide) + open with "why it matters" + end with hire CTA (§8 post-guideline).
+- [x] Write `src/content/posts/self-hosting-mem0.md` (category `case-studies`).
+- [x] Write Chinese twin `src/content/posts/zh/self-hosting-mem0.md` (same filename → auto language-switch).
+- [x] Follow the "hard job → post" template (§4 content-guide) + open with "why it matters" + end with hire CTA (§8 post-guideline).
 - **Governing doc:** `content-guide.md` §4/§8, `post-guideline.md` §8.
-- **Done when:** both EN + ZH pages live, language-switch works, hire CTA present.
+- **Done when:** ✅ both EN + ZH pages live, language-switch works, hire CTA present.
+
+**Step B1b — Write the self-hosted STT case study.** ✅ Done 2026-09-19
+`self-hosted-speech-to-text-api.md` (EN + ZH): whisper.cpp on GPU + n8n auth gate +
+nginx gateway, with the four build traps and the "5x faster than typing" business case.
+- [x] EN + ZH posts, custom OG + banner, hire CTA.
+- **Done when:** ✅ both pages build, language-switch verified, images generated.
 
 **Step B2 — Write 2–3 short "gotcha" posts (Google-friendly, compound over time).**
 - [ ] "The Traefik forward-auth gotcha that cost me a day"

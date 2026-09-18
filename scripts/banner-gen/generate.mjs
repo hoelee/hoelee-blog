@@ -544,6 +544,27 @@ BANNERS['running-tts-as-a-service-with-token-sidecars'] = {
   ],
 };
 
+BANNERS['self-hosted-speech-to-text-api'] = {
+  titlebar: 'root@gpu-pc — whisper.cpp',
+  lines: [
+    { t: 'cmd', text: 'netstat -an | grep 20129' },
+    { t: 'ok',  text: 'TCP  127.0.0.1:20129  LISTENING   ← only this PC' },
+    { t: 'dim', text: 'iPhone · iPad · Android · work PCs ?' },
+    { t: 'cmd', text: '--host 0.0.0.0 + firewall -RemoteAddress LocalSubnet' },
+    { t: 'ok',  text: 'TCP  0.0.0.0:20129    LISTENING   ← reachable' },
+    { t: 'cmd', text: 'n8n gate: Authorization header → per-device key' },
+    { t: 'err', text: 'bad key                              → 403' },
+    { t: 'hl',  text: '{"text":"…"}  large-v3 on RTX 3060 · 130 wpm' },
+  ],
+  flow: [
+    { n: '1', label: 'phone dictates' },
+    { n: '2', label: 'HTTPS + key' },
+    { n: '3', label: 'n8n gate' },
+    { n: '4', label: 'GPU transcribe' },
+    { n: '5', label: '5x typing ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';
