@@ -565,6 +565,26 @@ BANNERS['self-hosted-speech-to-text-api'] = {
   ],
 };
 
+BANNERS['replacing-rdpguard-with-ipban'] = {
+  titlebar: 'root@win11 — ipban service',
+  lines: [
+    { t: 'cmd', text: 'sc.exe qc IPBAN' },
+    { t: 'ok',  text: 'START_TYPE : 2  AUTO_START   ✓' },
+    { t: 'dim', text: 'RdpGuard 7.8.7 — paid, closed, 3 versions behind' },
+    { t: 'err', text: 'uninstall → rule rdpguard-… deleted → 12 bans LOST' },
+    { t: 'cmd', text: 'ban.txt → IPBan import (12 ipv4)' },
+    { t: 'ok',  text: 'Updating firewall with 12 entries...' },
+    { t: 'err', text: "ipban --install-service → 'Unrecognized command'" },
+    { t: 'hl',  text: '16 attackers blocked · zero protection gap' },
+  ],
+  flow: [
+    { n: '1', label: 'export bans' },
+    { n: '2', label: 'sc.exe install' },
+    { n: '3', label: 'whitelist LAN' },
+    { n: '4', label: '16 blocked ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';

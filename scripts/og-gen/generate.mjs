@@ -176,6 +176,11 @@ TERMINALS['self-hosted-speech-to-text-api'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">connect ETIMEDOUT 192.168.1.123:20129 — bound to 127.0.0.1 only</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">bind 0.0.0.0 · firewall LocalSubnet · n8n key gate</span><span class="fix">→ 130 wpm ✓</span></div>`;
 
+TERMINALS['replacing-rdpguard-with-ipban'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">ipban --install-service</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">Unrecognized command or argument '--install-service'</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">sc.exe create IPBAN type= own start= auto binPath= ...</span><span class="fix">→ AUTO_START ✓</span></div>`;
+
 const DEFAULT_TERMINAL = `
   <div class="line"><span class="prompt">$</span><span class="cmd">engineering · devops · self-hosting</span></div>
   <div class="line"><span class="prompt">&nbsp;</span><span class="fix">read the full post →</span></div>`;
@@ -227,12 +232,25 @@ const tagsHtml = tags.map((t) => `<span>#${esc(t)}</span>`).join('');
 
 const logoPath = 'file:///' + join(ROOT, 'public', 'logo-square.png').replace(/\\/g, '/');
 
+// the tag chip shows "<category> · <kind>"; kind is a human label for the section.
+// Were KIND to be hardcoded, every non-devops post would carry a wrong label.
+const KIND_BY_CATEGORY = {
+  engineering: 'Engineering',
+  devops: 'DevOps',
+  ai: 'AI',
+  web3: 'Web3',
+  tutorials: 'Tutorials',
+  'case-studies': 'Case Study',
+  notes: 'Notes',
+};
+const kind = KIND_BY_CATEGORY[category] || category;
+
 let tpl = readFileSync(join(__dirname, 'template.html'), 'utf8');
 tpl = tpl
   .replace('{{TITLE_SIZE}}', String(titleSize))
   .replace('{{LOGO_PATH}}', logoPath)
-  .replace('{{CATEGORY}}', esc(category))
-  .replace('{{KIND}}', 'DevOps')
+  .replace('{{CATEGORY}}', esc(category === kind.toLowerCase() ? category : kind))
+  .replace('{{KIND}}', '')
   .replace('{{TITLE_HTML}}', titleHtml)
   .replace('{{TERMINAL_HTML}}', terminalHtml)
   .replace('{{TAGS_HTML}}', tagsHtml);
