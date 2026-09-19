@@ -20,9 +20,9 @@ The way I answer a curiosity like that is to build something, so the experiment 
 These addresses don't work in a normal browser. You need Tor Browser, which routes your traffic through the Tor network. It's a five-minute setup:
 
 1. Download it from **[torproject.org/download](https://www.torproject.org/download/)**.
-2. **Verify the signature.** The download page links the `.asc` files, and this step matters — a tampered Tor Browser is the worst possible way to lose your anonymity. Download the signing key, then check the file:
+2. **Verify the signature.** The download page links the `.asc` files, and this step matters — a tampered Tor Browser is the worst possible way to lose your anonymity. Fetch the Tor Browser signing key (the fingerprint is published on the download page and in the Tor Browser manual), then check the file:
    ```bash
-   gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
+   # import the signing key — see the .asc link on the download page
    gpg --verify tor-browser-*.tar.xz.asc tor-browser-*.tar.xz
    ```
 3. Extract and run it. Windows and macOS get a normal installer; on Linux, extract and run `./start-tor-browser.desktop`.

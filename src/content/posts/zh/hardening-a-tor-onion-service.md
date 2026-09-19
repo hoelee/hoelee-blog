@@ -20,9 +20,9 @@ banner: /banners/hardening-a-tor-onion-service.png
 这些地址在普通浏览器里打不开,你需要 Tor Browser,它会把你的流量经过 Tor 网络转发。安装大概五分钟:
 
 1. 从 **[torproject.org/download](https://www.torproject.org/download/)** 下载。
-2. **验证签名。** 下载页会给出 `.asc` 文件和签名密钥的链接,这一步很重要——被篡改的 Tor Browser 是丢掉匿名性最糟糕的方式。先导入签名密钥,再校验文件:
+2. **验证签名。** 下载页会给出 `.asc` 文件和签名密钥的链接,这一步很重要——被篡改的 Tor Browser 是丢掉匿名性最糟糕的方式。先取得 Tor Browser 的签名密钥(指纹发布在下载页和 Tor Browser 手册里),再校验文件:
    ```bash
-   gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
+   # 导入签名密钥——见下载页上的 .asc 链接
    gpg --verify tor-browser-*.tar.xz.asc tor-browser-*.tar.xz
    ```
 3. 解压并运行。Windows 和 macOS 是常规安装包;Linux 解压后运行 `./start-tor-browser.desktop`。
