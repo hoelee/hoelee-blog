@@ -72,11 +72,13 @@ nginx gateway, with the four build traps and the "5x faster than typing" busines
 - **Done when:** ✅ both pages build, language-switch verified, images generated.
 
 **Step B2 — Write 2–3 short "gotcha" posts (Google-friendly, compound over time).**
+- [x] "Replacing RDPGuard With IPBan: The Traps Nobody Documents" (EN + ZH, `devops`, 2026-09-19) — the uninstaller that unbans 12 attackers, `--install-service` doesn't exist in v4.1.0, `ExpireTime` vs `BanTime`. Both images custom.
 - [ ] "The Traefik forward-auth gotcha that cost me a day"
 - [ ] "Site-to-site OpenVPN behind CGNAT"
 - [ ] "Fixing the WordPress /cv 301→404 chain" (from own audit)
 - **Governing doc:** `content-guide.md` §3 (post type #3), `post-guideline.md`.
 - **Done when:** ≥2 gotcha posts live (these are `notes`/`devops`, no Chinese translation required per §8).
+- ⚠ **Note:** `post-guideline.md` §8 (newer) says *every* post gets a ZH twin — the "no Chinese required" note above is stale. The RDPGuard post was published EN + ZH.
 
 **Step B3 — Adopt the "hard job → post" habit.**
 Every solved problem becomes a `notes` entry the same week.
