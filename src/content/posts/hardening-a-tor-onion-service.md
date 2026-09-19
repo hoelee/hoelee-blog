@@ -15,6 +15,27 @@ The way I answer a curiosity like that is to build something, so the experiment 
 - `hoeleegitkcng572znkbpyffppyulsdwv3aurrzlk7y7vlhknogswoqd.onion` — the Gitea mirror
 - `hoeleeaiwowgndbxswegtdzoeupz7lkkechtqmurbmnpvwa4k3vyuyid.onion` — the portfolio mirror
 
+### If you've never opened a `.onion` before
+
+These addresses don't work in a normal browser. You need Tor Browser, which routes your traffic through the Tor network. It's a five-minute setup:
+
+1. Download it from **[torproject.org/download](https://www.torproject.org/download/)**.
+2. **Verify the signature.** The download page links the `.asc` files, and this step matters — a tampered Tor Browser is the worst possible way to lose your anonymity. Download the signing key, then check the file:
+   ```bash
+   gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
+   gpg --verify tor-browser-*.tar.xz.asc tor-browser-*.tar.xz
+   ```
+3. Extract and run it. Windows and macOS get a normal installer; on Linux, extract and run `./start-tor-browser.desktop`.
+4. **Click Connect.** The default settings are fine. If you're on a censored network, choose "Configure connection" and pick a bridge (Snowflake or obfs4).
+5. Wait for "Connected" and the circuit display in the top-left corner. You're on Tor.
+
+Now paste one of the addresses above into the URL bar, exactly as written. Two things to know:
+
+- A v3 address is **56 characters** of base32 (`a–z`, `2–7`) plus `.onion`. There is no typo correction and no search suggestion — one wrong character gives you a dead address with no explanation.
+- A 16-character address (v2) won't load at all. The v2 protocol was retired in 2021.
+
+One thing that surprises first-timers: a brand-new onion can take **10–60 minutes** before the network recognises it. Tor has to publish a descriptor and get it accepted into the hash ring. An onion that doesn't load on the first try is usually just young, not broken.
+
 While I was researching how to do this right, a lot of what I read online talked up the benefits of obfs4. What actually kept my setup safe had nothing to do with that reading.
 
 So what does actually keep an onion service safe? I went through this properly when I set the mirrors up, and again months later when I went back to check on them. Some of the setup held up. Some of it had quietly broken. And a couple of things I believed about Docker turned out to be wrong in ways I could measure.

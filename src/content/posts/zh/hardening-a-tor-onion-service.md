@@ -15,6 +15,27 @@ banner: /banners/hardening-a-tor-onion-service.png
 - `hoeleegitkcng572znkbpyffppyulsdwv3aurrzlk7y7vlhknogswoqd.onion` — Gitea 镜像
 - `hoeleeaiwowgndbxswegtdzoeupz7lkkechtqmurbmnpvwa4k3vyuyid.onion` — 个人主页镜像
 
+### 如果你从没打开过 `.onion`
+
+这些地址在普通浏览器里打不开,你需要 Tor Browser,它会把你的流量经过 Tor 网络转发。安装大概五分钟:
+
+1. 从 **[torproject.org/download](https://www.torproject.org/download/)** 下载。
+2. **验证签名。** 下载页会给出 `.asc` 文件和签名密钥的链接,这一步很重要——被篡改的 Tor Browser 是丢掉匿名性最糟糕的方式。先导入签名密钥,再校验文件:
+   ```bash
+   gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
+   gpg --verify tor-browser-*.tar.xz.asc tor-browser-*.tar.xz
+   ```
+3. 解压并运行。Windows 和 macOS 是常规安装包;Linux 解压后运行 `./start-tor-browser.desktop`。
+4. **点 Connect。** 默认设置就行。如果你所在网络有审查,选 "Configure connection" 并使用网桥(Snowflake 或 obfs4)。
+5. 等左上角出现 "Connected" 和链路显示,就说明你已经在 Tor 上了。
+
+然后把上面的地址**一字不差**粘进地址栏。有两件事要知道:
+
+- v3 地址是 **56 个字符**的 base32(`a–z`、`2–7`)加 `.onion`。没有拼写纠错,也没有搜索建议——错一个字符就是一个打不开的地址,而且不会有任何提示。
+- 16 个字符的地址(v2)完全打不开。v2 协议已在 2021 年退役。
+
+有一点会让第一次用的人意外:全新的洋葱地址可能需要 **10 到 60 分钟**才会被网络识别。Tor 必须先发布 descriptor,并让它被哈希环接受。第一次打不开通常只是地址还太年轻,不是配置坏了。
+
 研究怎么把它做好时,我在网上读到了很多讲 obfs4 好处的文章。最终让我的部署真正安全的东西,和那些阅读没什么关系。
 
 那么,真正让一个洋葱服务安全的是什么?我设镜像时认真走了一遍全程,几个月后又回头检查了一遍。有一部分配置经受住了考验,有一部分已经悄悄坏掉,还有几件我原本对 Docker 的认知,被实测证明是错的。
