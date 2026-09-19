@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { SITE } from '../../../config';
 import PostList from '../../../components/PostList.astro';
 import CategoryArt from '../../../components/CategoryArt.astro';
 import { getCollection } from 'astro:content';
@@ -29,6 +30,7 @@ const blurb = meta?.blurb.zh;
   description={blurb ?? `「${category}」分类下的文章。`}
   lang="zh"
   switchHref={`/categories/${category}/`}
+  altLocaleUrl={`${SITE.url}/categories/${category}/`}
 >
   <h1>{name}</h1>
   {blurb && <p class="lede">{blurb}</p>}

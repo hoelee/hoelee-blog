@@ -13,6 +13,7 @@ const posts = sortByUpdated(await getCollection('posts', isZh));
   title={`${SITE.handle} — 技术博客`}
   description="Hoelee 的技术博客中文版：工程、DevOps、自托管、AI 自动化与 Web3 实验。"
   lang="zh"
+  altLocaleUrl={`${SITE.url}/`}
 >
   <section>
     <h1>你好，我是 {SITE.author}。</h1>

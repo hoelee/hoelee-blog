@@ -4,7 +4,12 @@ import AuthorCard from '../components/AuthorCard.astro';
 import { SITE } from '../config';
 ---
 
-<BaseLayout title="About — Mr Hoelee" description={`About ${SITE.author} (${SITE.handle}).`}>
+<BaseLayout
+  title="About — Mr Hoelee"
+  description={`About ${SITE.author} (${SITE.handle}).`}
+  switchHref="/zh/about/"
+  altLocaleUrl={`${SITE.url}/zh/about/`}
+>
   <h1>About</h1>
   <p>
     I'm {SITE.author} ({SITE.handle}), a full-stack developer and DevOps engineer

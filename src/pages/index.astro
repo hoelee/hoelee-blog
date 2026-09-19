@@ -9,7 +9,7 @@ import { sortByUpdated } from '../lib/sort';
 const posts = sortByUpdated(await getCollection('posts', isEn));
 ---
 
-<BaseLayout title={SITE.title} description={SITE.description}>
+<BaseLayout title={SITE.title} description={SITE.description} altLocaleUrl={`${SITE.url}/zh/`}>
   <section>
     <h1>Hi, I'm {SITE.author}.</h1>
     <p>

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AuthorCard from '../../components/AuthorCard.astro';
+import { SITE } from '../../config';
+---
+
+<BaseLayout
+  title="关于 — Mr Hoelee"
+  description={`关于 ${SITE.author}（${SITE.handle}）。`}
+  lang="zh"
+  switchHref="/about/"
+  altLocaleUrl={`${SITE.url}/about/`}
+>
+  <h1>关于</h1>
+  <p>
+    我是 {SITE.author}（{SITE.handle}），一名base在马来西亚的全栈开发者兼 DevOps
+    工程师。我做 Web 应用——PHP/CodeIgniter、Java/Spring、JavaScript/TypeScript/React——
+    并自托管一个约 140 个容器的 homelab（Docker、Traefik、nginx、Cloudflare tunnel）。
+    我运营 Hoelee Enterprise，一家面向马来西亚中小企业的网站设计开发公司
+    （邮箱托管只是副业，并非主业）。
+  </p>
+  <p>
+    这个博客就是我的动态作品集：我把自己构建的东西记录下来，从自托管 CI/CD、
+    Docker 编排，到 Web3 实验与 AI 自动化。无论你是招聘方、客户，还是同路的
+    开发者，这里的文章都是我能做什么最诚实的呈现。
+  </p>
+
+  <AuthorCard bio="base在马来西亚的全栈开发者兼 DevOps 工程师。接受远程／混合办公机会。" />
+
+  <h2>联系方式</h2>
+  <p>
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    <span class="sep">·</span>
+    <a href={SITE.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+    <span class="sep">·</span>
+    <a href={SITE.gitea} target="_blank" rel="noopener">git.hoelee.com</a>
+    <span class="sep">·</span>
+    <a href={SITE.website} target="_blank" rel="noopener">www.hoelee.com</a>
+  </p>
+</BaseLayout>

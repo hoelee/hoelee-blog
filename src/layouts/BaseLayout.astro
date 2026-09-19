@@ -15,6 +15,9 @@ interface Props {
   // When provided, the language switch links to it; otherwise it falls back to
   // the section landing page (/ for EN, /zh/ for ZH).
   switchHref?: string;
+  // Absolute URL of the other-language version of THIS page (built by each
+  // page) — drives hreflang so EN/ZH twins don't compete for the same query.
+  altLocaleUrl?: string;
   article?: {
     publishedTime: string;
     modifiedTime?: string;
@@ -30,11 +33,22 @@ const {
   ogImage = '/og-default.png',
   type = 'website',
   switchHref,
+  altLocaleUrl,
   article,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 const ogImageUrl = new URL(ogImage, SITE.url).href;
+
+// hreflang: only emitted when the page has a known counterpart in the other
+// language. x-default points at the English version (English-first site).
+const hreflang = altLocaleUrl
+  ? [
+      { hreflang: 'en', href: lang === 'en' ? canonical : altLocaleUrl },
+      { hreflang: 'zh', href: lang === 'zh' ? canonical : altLocaleUrl },
+      { hreflang: 'x-default', href: lang === 'en' ? canonical : altLocaleUrl },
+    ]
+  : [];
 
 // Language switcher: opposite of current page lang.
 // If a per-page translation link is provided, use it; else fall back to the section landing.
@@ -59,6 +73,11 @@ const nav = isZh
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
 
+    <!-- hreflang: this page + its other-language twin -->
+    {hreflang.map((alt) => (
+      <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+    ))}
+
     <!-- Open Graph -->
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content={SITE.name} />
@@ -69,6 +88,7 @@ const nav = isZh
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content={SITE.locale} />
+    {lang === 'zh' && <meta property="og:locale:alternate" content="en_US" />}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -101,6 +121,7 @@ const nav = isZh
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Person',
+      '@id': `${SITE.url}/#person`,
       name: SITE.author,
       alternateName: SITE.handle,
       url: SITE.url,
