@@ -45,6 +45,14 @@ The entire blog strategy is a **name-search play**, so identity must be airtight
 - [ ] Related-posts module (3 cards) on every post
 - [ ] No orphaned/thin pages (avoid the hoelee.com ~400-attachment mistake)
 
+### Crawler / sitemap mechanics (as built)
+
+- `robots.txt` is a **build-time endpoint** (`src/pages/robots.txt.ts`), not a static file in `public/`. It interpolates `SITE.url` so the `Sitemap:` line can't drift. **Keep it pure ASCII** — the response has no charset, so a non-ASCII byte renders as mojibake (`鈥�`) in viewers that fall back to a legacy codepage. Check: `LC_ALL=C grep -c '[^ -~]' dist/robots.txt` must be `0`.
+- Policy is **allow-all**, including AI *training* crawlers. Rationale: `robots.txt` is advisory and unenforced (Cloudflare documents it as voluntarily honoured), so a blocklist there buys nothing; enforcement, if ever wanted, belongs in Cloudflare AI Crawl Control. `/pagefind/` is the only exclusion (build artifacts, not content).
+- **Why a real robots.txt matters at all:** writing one turned Cloudflare's *Content Signals Policy* placeholder from a **replacement** into a **prepend**. On a Free-plan zone with no origin `robots.txt`, Cloudflare serves that placeholder *in place of* your file — a comment block with no `User-agent`, no directives and no `Sitemap:` line. Confirm the origin is serving yours before blaming Astro.
+- Sitemap `lastmod` + `xhtml:link` hreflang alternates are **derived**, never authored — see the rule in the project skill. `sitemap-index.xml` legitimately contains exactly one entry (`sitemap-0.xml`) and looks empty in a viewer; the URLs are in `sitemap-0.xml` (77 of them at 29 posts). Don't "fix" the index.
+- hreflang exists in **two places on purpose**: in-page `<link rel="alternate">` (from `BaseLayout`'s `altLocaleUrl`) and sitemap `xhtml:link`. Google treats the sitemap as more authoritative when they disagree, so both must be kept in sync — which is automatic for posts and for any page that passes `altLocaleUrl`.
+
 ---
 
 ## Syndication policy
