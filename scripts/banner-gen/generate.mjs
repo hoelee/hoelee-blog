@@ -585,6 +585,26 @@ BANNERS['replacing-rdpguard-with-ipban'] = {
   ],
 };
 
+BANNERS['patching-workbench-26-for-mariadb'] = {
+  titlebar: 'root@win11 — workbench 26.7.0',
+  lines: [
+    { t: 'cmd', text: 'workbench → mariadb 192.168.1.124:3306' },
+    { t: 'err', text: 'TypeError: on_session_message() missing 1 arg' },
+    { t: 'dim', text: 'the error handler crashed reporting the error' },
+    { t: 'err', text: "ERROR 1193: Unknown system variable 'gtid_mode'" },
+    { t: 'dim', text: 'MariaDB 10.11 → nversion 101119 · major >= 8 guard passes' },
+    { t: 'cmd', text: 'patch replication.py · DbSession.py · SetupTasks.py' },
+    { t: 'err', text: "ERROR 1193: 'explain_json_format_version' — again" },
+    { t: 'hl',  text: '4 connections · mysqlsh proved the server was fine' },
+  ],
+  flow: [
+    { n: '1', label: 'mysqlsh test' },
+    { n: '2', label: 'fix handler' },
+    { n: '3', label: '3 patches' },
+    { n: '4', label: 'connected ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';

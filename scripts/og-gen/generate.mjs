@@ -181,6 +181,12 @@ TERMINALS['replacing-rdpguard-with-ipban'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">Unrecognized command or argument '--install-service'</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">sc.exe create IPBAN type= own start= auto binPath= ...</span><span class="fix">→ AUTO_START ✓</span></div>`;
 
+TERMINALS['patching-workbench-26-for-mariadb'] = `
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">TypeError: on_session_message() missing 1 required argument</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">select @@gtid_mode · MariaDB 10.11</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">ERROR 1193: Unknown system variable 'gtid_mode'</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">3 patches · 4 connections</span><span class="fix">→ connected ✓</span></div>`;
+
 const DEFAULT_TERMINAL = `
   <div class="line"><span class="prompt">$</span><span class="cmd">engineering · devops · self-hosting</span></div>
   <div class="line"><span class="prompt">&nbsp;</span><span class="fix">read the full post →</span></div>`;
