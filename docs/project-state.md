@@ -80,6 +80,26 @@ nginx gateway, with the four build traps and the "5x faster than typing" busines
 - **Done when:** ≥2 gotcha posts live (these are `notes`/`devops`, no Chinese translation required per §8).
 - ⚠ **Note:** `post-guideline.md` §8 (newer) says *every* post gets a ZH twin — the "no Chinese required" note above is stale. The RDPGuard post was published EN + ZH.
 
+**Step B2b — Draft bank (written, held as `draft: true`, publish when content runs short).** ✅ Drafted 2026-09-20
+Two finished posts (EN + ZH, each with frontmatter pointing at OG + banner paths) sitting in the repo but
+**not built or listed** — `draft: true` excludes them from all listings and generates no pages.
+
+| Slug | Category | Status | Assets |
+|---|---|---|---|
+| `migrating-codeigniter-iis-to-openlitespeed` | `engineering` | drafted, unpublished | OG + banner PNGs **not yet generated** |
+| `upgrading-codeigniter-46-to-47` | `notes` | drafted, unpublished | OG + banner PNGs **not yet generated** |
+
+**To publish one later:**
+1. Flip `draft: true` → `draft: false` in **both** `src/content/posts/<slug>.md` and `src/content/posts/zh/<slug>.md`.
+2. Set the real `pubDate` (currently `2026-09-20`, the draft date) in both files.
+3. Generate its images: `node scripts/og-gen/generate.mjs <slug>` and `node scripts/banner-gen/generate.mjs <slug>` (add a `TERMINALS[slug]` / `BANNERS[slug]` entry first for the custom panel).
+4. `npm run build`, commit, `git push origin main`.
+5. Verify both URLs return 200 and the language switcher links them.
+
+- **Why these two:** `engineering` had only 1 post and `tutorials` only 1 — the blog was ~all `devops`/`case-studies`. These put PHP/CodeIgniter (the actual day-job stack) on the blog, which is what a PHP full-stack recruiter searches for.
+- **Governing doc:** `content-guide.md` §3/§4, `post-guideline.md` §8.
+- **Done when:** both are published live with EN+ZH, custom OG + banner, and verified 200.
+
 **Step B3 — Adopt the "hard job → post" habit.**
 Every solved problem becomes a `notes` entry the same week.
 - [ ] Revisit cadence target: 2 posts/month → 1/week (`content-guide.md` §5).
