@@ -1,7 +1,8 @@
 ---
 title: "购买主机前，如何核实一家服务商的真实情况"
 description: "一份可复用的核查清单，帮你把真实的主机声明和营销话术分开：对比域名年龄与「运营多年」的说法、在 AUP 里找出隐藏的禁止条款、并用第三方渠道交叉验证口碑。"
-pubDate: 2026-09-09
+pubDate: 2025-11-26
+updatedDate: 2026-09-09
 category: tutorials
 tags: [hosting, vps, due-diligence, whois, devops]
 ogImage: /og/how-to-verify-a-hosting-provider-before-you-buy.png

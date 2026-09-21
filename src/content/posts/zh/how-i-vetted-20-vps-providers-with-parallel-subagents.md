@@ -1,7 +1,8 @@
 ---
 title: "如何用并行子代理在三小时内核查 20 家 VPS 服务商"
 description: "一个关于编排并行 AI 子代理对 20 家主机服务商做尽职调查的案例研究——WHOIS、AUP 和口碑核查——把数小时的研究任务压缩成一份结构化、可追溯的供应商评分卡。"
-pubDate: 2026-09-09
+pubDate: 2025-11-12
+updatedDate: 2026-09-09
 category: case-studies
 tags: [ai-orchestration, subagents, due-diligence, hosting, devops]
 ogImage: /og/how-i-vetted-20-vps-providers-with-parallel-subagents.png

@@ -1,7 +1,8 @@
 ---
 title: "NocoDB 附件字段怎么改都不生效，和一个漏网的正则"
 description: "回填 300 行数据时踩到的两个小坑：NocoDB 在附件保留 id 的情况下会无视 path 的改动，以及一个 lookahead 正则悄悄跳过了没有扩展名的 URL。"
-pubDate: 2026-09-10
+pubDate: 2026-02-04
+updatedDate: 2026-09-10
 category: notes
 tags: [nocodb, backfill, python, regex, data-pipeline]
 ogImage: /og/the-nocodb-attachment-that-wouldnt-update.png

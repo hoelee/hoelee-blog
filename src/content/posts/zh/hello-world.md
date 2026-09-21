@@ -1,7 +1,8 @@
 ---
 title: "你好，世界 —— 关于这个博客"
 description: "这个博客是做什么的：技术写作、自托管经验，以及一份我构建与学习过程的记录。"
-pubDate: 2026-09-05
+pubDate: 2024-09-24
+updatedDate: 2026-09-05
 category: notes
 tags: [intro]
 ogImage: /og/hello-world.png

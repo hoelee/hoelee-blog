@@ -1,7 +1,8 @@
 ---
 title: "为什么你的无头浏览器不是万能爬虫"
 description: "两个二手交易平台，两面完全不同的墙：闲鱼用「非法访问」把无头浏览器挡在门外，Carousell 却照常吐数据。教训是——在伸手拿 Playwright 之前，先搞清页面到底是怎么把数据交给你的。"
-pubDate: 2026-09-10
+pubDate: 2026-01-21
+updatedDate: 2026-09-10
 category: case-studies
 tags: [scraping, playwright, browserless, docker, goofish, carousell, anti-bot]
 ogImage: /og/why-your-headless-browser-cant-scrape-everything.png

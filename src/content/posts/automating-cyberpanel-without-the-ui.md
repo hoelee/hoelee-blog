@@ -1,7 +1,8 @@
 ---
 title: "Automating CyberPanel Without the UI: Reverse-Engineering an Undocumented v2 API"
 description: "CyberPanel v2 killed the documented JSON API and left only the Angular UI's own session+CSRF endpoints. Here's the exact auth flow and how I found the real functions behind the pages."
-pubDate: 2026-09-09
+pubDate: 2026-03-11
+updatedDate: 2026-09-09
 category: devops
 tags: [cyberpanel, api, reverse-engineering, automation, django, self-hosting, curl]
 ogImage: /og/automating-cyberpanel-without-the-ui.png

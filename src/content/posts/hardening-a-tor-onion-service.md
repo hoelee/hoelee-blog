@@ -1,7 +1,8 @@
 ---
 title: "Hardening a Tor Onion Service: What Actually Matters"
 description: "Out of curiosity I mirrored my portfolio and git server onto the darknet. Here's the hardening that held, the parts that silently broke, and whether it's worth offering to clients."
-pubDate: 2026-09-09
+pubDate: 2025-12-10
+updatedDate: 2026-09-09
 category: devops
 tags: [tor, docker, security, self-hosting, networking]
 ogImage: /og/hardening-a-tor-onion-service.png

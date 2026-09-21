@@ -1,7 +1,8 @@
 ---
 title: "Telegram 机器人通知为什么发不出去：IPv6、DNS 和一个折腾了一整天的 400"
 description: "一次排障记录：一个跑在 Docker 里的 Telegram 监控机器人，sendPhoto 一直返回 nginx/1.30.1 的 400，但 getMe 却正常——根因是只返回 IPv6 的 DNS 应答、一个写错的 extra_hosts IP，以及一个用 join 拼接破坏了 JPEG 二进制数据的 multipart body。"
-pubDate: 2026-09-09
+pubDate: 2026-03-25
+updatedDate: 2026-09-09
 category: devops
 tags: [docker, telegram, python, dns, ipv6, debugging, portainer]
 ogImage: /og/why-telegram-bot-notifications-die.png

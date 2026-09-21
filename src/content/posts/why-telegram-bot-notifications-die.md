@@ -1,7 +1,8 @@
 ---
 title: "Why Telegram Bot Notifications Die: IPv6, DNS, and a 400 That Took a Day"
 description: "A debugging story: a Dockerized telegram monitor whose sendPhoto calls returned 400 from nginx/1.30.1 while getMe worked fine — an IPv6-only DNS answer, a wrong extra_hosts IP, and a multipart join that corrupted JPEG bytes."
-pubDate: 2026-09-09
+pubDate: 2026-03-25
+updatedDate: 2026-09-09
 category: devops
 tags: [docker, telegram, python, dns, ipv6, debugging, portainer]
 ogImage: /og/why-telegram-bot-notifications-die.png

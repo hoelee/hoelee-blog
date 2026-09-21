@@ -1,7 +1,8 @@
 ---
 title: "Syncing a Self-Improving AI Agent Across Machines"
 description: "How I sync my Hermes agent's skills, config, and cron jobs between two PCs with a git-backed profile distribution — and why I sync manually instead of on a cron."
-pubDate: 2026-09-11
+pubDate: 2026-02-18
+updatedDate: 2026-09-11
 category: case-studies
 tags: [hermes, git, gitea, ai-agents, devops, sync]
 ogImage: /og/syncing-a-self-improving-ai-agent-across-machines.png

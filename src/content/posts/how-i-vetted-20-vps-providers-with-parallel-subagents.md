@@ -1,7 +1,8 @@
 ---
 title: "How I Vetted 20 VPS Providers in Three Hours with Parallel Subagents"
 description: "A case study in orchestrating parallel AI subagents to run due diligence on 20 hosting providers — WHOIS, AUP, and reputation checks — collapsing a multi-hour research task into a structured, verifiable vendor scorecard."
-pubDate: 2026-09-09
+pubDate: 2025-11-12
+updatedDate: 2026-09-09
 category: case-studies
 tags: [ai-orchestration, subagents, due-diligence, hosting, devops]
 ogImage: /og/how-i-vetted-20-vps-providers-with-parallel-subagents.png

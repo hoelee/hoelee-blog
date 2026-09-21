@@ -1,7 +1,8 @@
 ---
 title: "How to Verify a Hosting Provider Before You Buy"
 description: "A reusable checklist for separating real hosting claims from marketing: check the domain age against the 'since' claim, read the AUP for silent disqualifiers, and cross-check reputation on third-party sources."
-pubDate: 2026-09-09
+pubDate: 2025-11-26
+updatedDate: 2026-09-09
 category: tutorials
 tags: [hosting, vps, due-diligence, whois, devops]
 ogImage: /og/how-to-verify-a-hosting-provider-before-you-buy.png

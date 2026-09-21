@@ -1,7 +1,8 @@
 ---
 title: "我是如何托管这个博客的：Astro、Gitea Actions 与自托管 CI/CD"
 description: "这篇文章完整拆解了这个网站背后的构建与部署管线——以 Git 作为 CMS、跑在 unRaid 服务器上的自托管 runner，以及最前端的 Cloudflare。"
-pubDate: 2026-09-06
+pubDate: 2024-10-08
+updatedDate: 2026-09-04
 category: case-studies
 tags: [astro, gitea, ci-cd, self-hosting, docker, cloudflare]
 ogImage: /og/how-i-host-this-blog.png

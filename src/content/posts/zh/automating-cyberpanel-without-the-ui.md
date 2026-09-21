@@ -1,7 +1,8 @@
 ---
 title: "不用界面管理 CyberPanel：逆向一个没有文档的 v2 API"
 description: "CyberPanel v2 砍掉了有文档的 JSON API，只留下 Angular 界面自己调用的 session + CSRF 端点。这篇文章讲清确切的认证流程，以及我怎么从页面背后挖出真正的函数。"
-pubDate: 2026-09-09
+pubDate: 2026-03-11
+updatedDate: 2026-09-09
 category: devops
 tags: [cyberpanel, api, reverse-engineering, automation, django, self-hosting, curl]
 ogImage: /og/automating-cyberpanel-without-the-ui.png

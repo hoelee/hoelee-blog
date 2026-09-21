@@ -1,7 +1,8 @@
 ---
 title: "在多台机器之间同步一个会自我学习的 AI Agent"
 description: "如何用基于 git 的 profile distribution 在两台电脑之间同步 Hermes agent 的技能、配置和定时任务——以及为什么我选择手动同步而不是用 cron。"
-pubDate: 2026-09-11
+pubDate: 2026-02-18
+updatedDate: 2026-09-11
 category: case-studies
 tags: [hermes, git, gitea, ai-agents, devops, sync]
 ogImage: /og/syncing-a-self-improving-ai-agent-across-machines.png

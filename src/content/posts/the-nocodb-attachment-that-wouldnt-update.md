@@ -1,7 +1,8 @@
 ---
 title: "The NocoDB Attachment That Wouldn't Update (and a Regex That Missed)"
 description: "Two small gotchas from backfilling 300 rows: NocoDB ignores a path change when the attachment keeps its id, and a lookahead regex silently skipped URLs without a file extension."
-pubDate: 2026-09-10
+pubDate: 2026-02-04
+updatedDate: 2026-09-10
 category: notes
 tags: [nocodb, backfill, python, regex, data-pipeline]
 ogImage: /og/the-nocodb-attachment-that-wouldnt-update.png

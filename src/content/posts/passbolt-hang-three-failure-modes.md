@@ -1,7 +1,8 @@
 ---
 title: "Passbolt UI Kept Hanging — Three Failure Modes From One Missing Config File"
 description: "My self-hosted Passbolt returned 504s for weeks: a null GPG fingerprint stalled email delivery, a container recreate wiped the fix, and ssl.force behind a proxy caused a redirect loop."
-pubDate: 2026-09-13
+pubDate: 2026-01-07
+updatedDate: 2026-09-13
 category: devops
 tags: [passbolt, docker, gpg, smtp, reverse-proxy, portainer]
 ogImage: /og/passbolt-hang-three-failure-modes.png

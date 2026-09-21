@@ -1,7 +1,8 @@
 ---
 title: "Hello, World — About This Blog"
 description: "What this blog is for: technical writing, self-hosting experience, and a record of what I build and learn."
-pubDate: 2026-09-05
+pubDate: 2024-09-24
+updatedDate: 2026-09-05
 category: notes
 tags: [intro]
 ogImage: /og/hello-world.png

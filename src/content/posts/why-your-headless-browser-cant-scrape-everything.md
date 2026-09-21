@@ -1,7 +1,8 @@
 ---
 title: "Why Your Headless Browser Can't Scrape Everything"
 description: "Two second-hand marketplaces, two very different walls: Goofish blocks a headless browser with 'illegal access' while Carousell keeps serving data. The lesson is to read how a page delivers data before you reach for Playwright."
-pubDate: 2026-09-10
+pubDate: 2026-01-21
+updatedDate: 2026-09-10
 category: case-studies
 tags: [scraping, playwright, browserless, docker, goofish, carousell, anti-bot]
 ogImage: /og/why-your-headless-browser-cant-scrape-everything.png

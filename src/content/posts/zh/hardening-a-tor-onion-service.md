@@ -1,7 +1,8 @@
 ---
 title: "加固 Tor 洋葱服务:真正重要的是什么"
 description: "出于对暗网的好奇,我把个人主页和 Git 服务器镜像了过去。这篇记录哪些加固扛得住、哪些会悄悄坏掉,以及值不值得把它当成服务卖给客户。"
-pubDate: 2026-09-09
+pubDate: 2025-12-10
+updatedDate: 2026-09-09
 category: devops
 tags: [tor, docker, security, self-hosting, networking]
 ogImage: /og/hardening-a-tor-onion-service.png

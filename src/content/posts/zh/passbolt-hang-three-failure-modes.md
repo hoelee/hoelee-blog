@@ -1,7 +1,8 @@
 ---
 title: "Passbolt 界面反复卡死——一个缺失的配置文件引发的三种故障模式"
 description: "自托管的 Passbolt 连续几周返回 504：GPG 指纹为空卡住邮件投递，重建容器抹掉了修复，代理后面的 ssl.force 又造成无限重定向。"
-pubDate: 2026-09-13
+pubDate: 2026-01-07
+updatedDate: 2026-09-13
 category: devops
 tags: [passbolt, docker, gpg, smtp, reverse-proxy, portainer]
 ogImage: /og/passbolt-hang-three-failure-modes.png
