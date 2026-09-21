@@ -605,6 +605,25 @@ BANNERS['patching-workbench-26-for-mariadb'] = {
   ],
 };
 
+BANNERS['why-i-still-bought-a-local-gpu'] = {
+  titlebar: 'root@unraid — local inference',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'llama-server -m qwen3.8-27b-Q6_K.gguf --n-gpu-layers 99' },
+    { t: 'dim', text: '24GB VRAM · ~1300 tok/s prefill · 40 tok/s decode' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'agent run --task build-from-spec --iterations 50' },
+    { t: 'err', text: 'frontier api: 50 calls · metered · quota can change' },
+    { t: 'ok',  text: 'local gpu:  50 calls · $0.00 · runs as long as I want' },
+    { t: 'hl',  text: 'use the frontier to DECIDE, local compute to BUILD' },
+  ],
+  flow: [
+    { n: '1', label: 'frontier plans' },
+    { n: '2', label: 'spec locked' },
+    { n: '3', label: 'local agents run' },
+    { n: '4', label: '50× iterations' },
+    { n: '5', label: 'fixed cost ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';

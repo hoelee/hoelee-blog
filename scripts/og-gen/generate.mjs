@@ -191,7 +191,13 @@ const DEFAULT_TERMINAL = `
   <div class="line"><span class="prompt">$</span><span class="cmd">engineering · devops · self-hosting</span></div>
   <div class="line"><span class="prompt">&nbsp;</span><span class="fix">read the full post →</span></div>`;
 
-// ---------- read frontmatter from the post ----------
+TERMINALS['why-i-still-bought-a-local-gpu'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">agent run --task build-from-spec --iterations 50</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">api: 50 calls · $12.40 · quota may change</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">local: 50 calls · $0.00 · runs on my card</span></div>
+`;
+
+// ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {
   console.error(`Post not found: ${postPath}`);
