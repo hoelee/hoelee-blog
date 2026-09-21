@@ -3,10 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostList from '../../components/PostList.astro';
 import { getCollection } from 'astro:content';
 import { isEn } from '../../lib/lang';
-import { sortByUpdated } from '../../lib/sort';
+import { sortForListing } from '../../lib/sort';
 import { SITE } from '../../config';
 
-const posts = sortByUpdated(await getCollection('posts', isEn));
+const posts = sortForListing(await getCollection('posts', isEn));
 ---
 
 <BaseLayout

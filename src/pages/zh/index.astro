@@ -4,9 +4,9 @@ import PostList from '../../components/PostList.astro';
 import { getCollection } from 'astro:content';
 import { isZh } from '../../lib/lang';
 import { SITE } from '../../config';
-import { sortByUpdated } from '../../lib/sort';
+import { sortForListing } from '../../lib/sort';
 
-const posts = sortByUpdated(await getCollection('posts', isZh));
+const posts = sortForListing(await getCollection('posts', isZh));
 ---
 
 <BaseLayout

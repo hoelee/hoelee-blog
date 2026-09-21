@@ -5,7 +5,7 @@ import PostList from '../../components/PostList.astro';
 import CategoryArt from '../../components/CategoryArt.astro';
 import { getCollection } from 'astro:content';
 import { isEn } from '../../lib/lang';
-import { sortByUpdated } from '../../lib/sort';
+import { sortForListing } from '../../lib/sort';
 import { categoryMeta } from '../../lib/categories';
 
 export async function getStaticPaths() {
@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 const { category } = Astro.params;
 const meta = categoryMeta(category as string);
 
-const posts = sortByUpdated(
+const posts = sortForListing(
   (await getCollection('posts', isEn)).filter((p) => p.data.category === category),
 );
 
