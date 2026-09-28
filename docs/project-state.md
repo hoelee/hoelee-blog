@@ -283,7 +283,40 @@ moved into the archive's empty months with `updatedDate: 2026-09-29` holding the
     something already written → floor 2026-09-13.
 - **Still empty, and therefore the spare slots for the next batch:** 2024-10 → 2025-02 (five months) and 2025-04/05.
 - **Done when:** ✅ build clean, `lastmod` = 2026-09-29 for all four URLs (EN + ZH), listing order still monotonic
-  on `/posts/`, the homepage and `/zh/`, both article pages render the historical date.
+on `/posts/`, the homepage and `/zh/`, both article pages render the historical date.
+
+**Step B2i — (unplanned) The web3 category, plus two engineering posts.** ✅ Done 2026-09-29
+`web3` had **zero** posts and no route at all: `/categories/` rendered its card with the label
+"0 posts · coming soon" as a *non-link*, and `/categories/web3/` returned **404** (Astro only emits a
+category detail route once the category has posts). A Gitea sweep found seven real web3 repos whose
+commits date to **2024-08-15 → 2024-08-19**, which is also why those posts could be backdated honestly.
+Five posts shipped (EN + ZH, custom OG + banner, hire CTA):
+
+| Slug | Category | pubDate | updatedDate | Source repo |
+|---|---|---|---|---|
+| `fully-on-chain-svg-nfts` | `web3` | 2024-10-08 | 2026-09-29 | `foundry-nft` — `MoodNft.sol`, `DeployMoodNft.s.sol` |
+| `why-my-on-chain-nft-art-changed-on-windows` | `web3` | 2026-08-19 | — | `foundry-nft` — the `.gitattributes` fix commit |
+| `chainlink-vrf-v2-lottery-contract` | `web3` | 2024-12-10 | 2026-09-29 | `hardhat-smartcontract-lottery` — `Raffle.sol` |
+| `verifying-a-pdf-report-page-by-page` | `engineering` | 2026-09-28 | 2026-09-29 | `numerology-report` — `docs/pdf-pipeline.md` |
+| `jpa-version-field-lost-update` | `engineering` | 2026-08-19 | — | `springboot-hoelee-demo` — `@Version` |
+
+- **Why these dates:** the two 2024 posts fill the empty 2024-10 and 2024-12 archive months with the real
+  work date and `updatedDate` holding the true date, so `lastmod` stays honest. The two 2026-08-19 posts use
+  the real work date rather than joining the 2026-09-29 pile-up. `verifying-a-pdf-report-page-by-page` was
+  moved **one day** to 2026-09-28 for the same reason — it was the fifth post landing on 2026-09-29.
+- ⚠ **Date pins were re-checked before moving any date.** The only `202[0-9]` hits in the two backdated
+  posts are inside the contract address `0xc2022b56…`, not dates. All cited figures were traced to source:
+  `868596` / `4102 bytes` / `993568` gas / `0.000535185588997216 ETH` / block `6522146` / mint `181874`
+  (deploy + mint logs), `335011` gas (`.gas-snapshot`), `2.5pt→7.5pt` + `20,225,818` bytes + `30–490pt`
+  (`docs/pdf-pipeline.md`; the `27 pages` / `12,789 pages` figures live in `app/Libraries/ReportPdf.php`
+  lines 21 and 196, **not** in the doc), `@Version` + `POST_VERSION_CONFLICT` in the Spring demo.
+- ⚠ **The `TERMINALS` / `BANNERS` entries for all five slugs ARE committed this time** (unlike B2f, which had
+  to hide them in this file because a parallel session held uncommitted generator edits). Both generators
+  were verified clean and the diffs purely additive (30/0 and 100/0) before editing.
+- Banner centering **measured, not eyeballed**: all five at 8 rows, `gapAbove`/`gapBelow` within 2px,
+  `overflow=0`, `scrollHeight == clientHeight == 636`.
+- **Done when:** ✅ 2 new category routes (`/categories/web3/`, `/zh/categories/web3/`), build 127 pages clean,
+  all 10 post URLs + 10 images 200, language switch both ways, listing order monotonic on `/posts/`, `/`, `/zh/`.
 
 ### Phase C — Discovery & structure (Tier 2)
 

@@ -286,6 +286,36 @@ TERMINALS['reading-a-containers-own-api-docs'] = `
     <div class="line"><span class="prompt">$</span><span class="cmd">grep process.env → AUTH_SECRET · PORT 3000 · WORKER_TIMEOUT</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">exec cat /proc/net/tcp</span><span class="fix">→ listening on 3000 ✓</span></div>`;
 
+TERMINALS['fully-on-chain-svg-nfts'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">forge script script/DeployMoodNft.s.sol --broadcast</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">tokenURI → ipfs://… · art depends on a pin and a gateway</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">Base64.encode(vm.readFile("img/smile.svg"))</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">→ data:application/json;base64,… · the whole NFT on chain ✓</span></div>`;
+
+TERMINALS['why-my-on-chain-nft-art-changed-on-windows'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">vm.readFile("img/smile.svg") → Base64.encode</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">core.autocrlf rewrote the SVG with CRLF in the working tree</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">printf 'a\\nb' | base64  ≠  printf 'a\\r\\nb' | base64</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">img/*.svg text eol=lf</span><span class="fix">→ same bytes on every machine ✓</span></div>`;
+
+TERMINALS['chainlink-vrf-v2-lottery-contract'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">forge test --match-contract RaffleTest</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">InsufficientBalance() · the VRF mock had no subscription balance</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">fundSubscription + addConsumer in setUp()</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">→ draw picks a winner · 335,011 gas ✓</span></div>`;
+
+TERMINALS['verifying-a-pdf-report-page-by-page'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">php tools/pdf-verify.php /tmp/report-v10.html --expect=19</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">page header rendered at 2.5pt · footer art off by 30–490pt</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">per-sheet render + diff against the browser's own print</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">→ 19/19 PASS · every deviation ≤ 2pt ✓</span></div>`;
+
+TERMINALS['jpa-version-field-lost-update'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">PUT /api/posts/1  { "version": 3, "title": … }</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">row is already at version 4 · the write would win silently</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">@Version → UPDATE … WHERE version = 3</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">→ 409 Conflict, not a lost update ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {

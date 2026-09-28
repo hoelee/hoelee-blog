@@ -929,6 +929,106 @@ BANNERS['reading-a-containers-own-api-docs'] = {
   ],
 };
 
+BANNERS['fully-on-chain-svg-nfts'] = {
+  titlebar: 'foundry — sepolia · the art lives in the contract',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'forge script script/DeployMoodNft.s.sol --broadcast' },
+    { t: 'prompt', text: 'IPFS' }, { t: 'err', text: 'BasicNft stores a URI — art depends on a pin + a gateway' },
+    { t: 'prompt', text: 'ON-CHAIN' }, { t: 'cmd', text: 'Base64.encode(vm.readFile("img/smile.svg")) at deploy' },
+    { t: 'prompt', text: 'DEPLOY' }, { t: 'ok', text: 'BasicNft@0x84F0… · 4102 bytes of code · 868,596 gas' },
+    { t: 'prompt', text: 'MINT' }, { t: 'cmd', text: 'mintNft() → 181,874 gas · tokenId 0 belongs to the minter' },
+    { t: 'prompt', text: 'FLIP' }, { t: 'err', text: 'flipMood(0) by a non-owner → MoodNft__NotOwnerOfToken' },
+    { t: 'prompt', text: 'FLIP' }, { t: 'ok', text: 'owner flips → HAPPY ⇄ SAD, straight from on-chain state' },
+    { t: 'prompt', text: '' }, { t: 'hl', text: 'metadata + art inside the contract · no gateway lookup' },
+  ],
+  flow: [
+    { n: '1', label: 'draw the SVG' },
+    { n: '2', label: 'base64 at deploy' },
+    { n: '3', label: 'data: URI metadata' },
+    { n: '4', label: 'owner flips mood ✓' },
+  ],
+};
+
+BANNERS['why-my-on-chain-nft-art-changed-on-windows'] = {
+  titlebar: 'windows — one byte rewrites the artwork',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'vm.readFile("img/smile.svg") → Base64.encode' },
+    { t: 'prompt', text: 'WIN' }, { t: 'err', text: 'core.autocrlf rewrites the SVG with CRLF on checkout' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: "printf 'a\\nb' | base64   → YQpi" },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: "printf 'a\\r\\nb' | base64 → YQ0KYg==" },
+    { t: 'prompt', text: 'SILENT' }, { t: 'err', text: 'editor identical · git status clean · forge never warns' },
+    { t: 'prompt', text: 'FIX' }, { t: 'cmd', text: 'img/*.svg text eol=lf   in .gitattributes' },
+    { t: 'prompt', text: 'SAME' }, { t: 'ok', text: 'Windows and Linux checkouts encode identical bytes' },
+    { t: 'prompt', text: '' }, { t: 'hl', text: 'assert the encoded URI in a test — art stays reproducible ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'read the bytes' },
+    { n: '2', label: 'CRLF injected' },
+    { n: '3', label: 'base64 differs' },
+    { n: '4', label: 'eol=lf pinned ✓' },
+  ],
+};
+
+BANNERS['chainlink-vrf-v2-lottery-contract'] = {
+  titlebar: 'anvil — raffle · vrf v2.5 + automation',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'forge test --match-contract RaffleTest' },
+    { t: 'prompt', text: 'VRF' }, { t: 'err', text: 'InsufficientBalance() — the mock subscription held no funds' },
+    { t: 'prompt', text: 'FIX' }, { t: 'cmd', text: 'fundSubscription + addConsumer before the tests run' },
+    { t: 'prompt', text: 'KEEP' }, { t: 'cmd', text: 'checkUpkeep → true once the interval has elapsed' },
+    { t: 'prompt', text: 'DRAW' }, { t: 'cmd', text: 'performUpkeep → requestRandomWords · state = CALCULATING' },
+    { t: 'prompt', text: 'VRF' }, { t: 'ok', text: 'fulfillRandomWords → randomWords[0] % players.length' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'forge snapshot → the full draw costs 335,011 gas' },
+    { t: 'prompt', text: '' }, { t: 'hl', text: 'testnet learning project · not production money-handling code' },
+  ],
+  flow: [
+    { n: '1', label: 'pay to enter' },
+    { n: '2', label: 'timer trips upkeep' },
+    { n: '3', label: 'VRF returns proof' },
+    { n: '4', label: 'winner paid ✓' },
+  ],
+};
+
+BANNERS['verifying-a-pdf-report-page-by-page'] = {
+  titlebar: 'dsm — mPDF vs the browser print',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'php tools/pdf-verify.php /tmp/report-v10.html --expect=19' },
+    { t: 'prompt', text: 'BUG' }, { t: 'err', text: 'page header rendered at 2.5pt — invisible past page 1' },
+    { t: 'prompt', text: 'BUG' }, { t: 'err', text: 'stripSheetMargins also clipped .invoice-sheet' },
+    { t: 'prompt', text: 'BUG' }, { t: 'err', text: 'footer art off by 30–490pt — absolute only honoured at top level' },
+    { t: 'prompt', text: 'FIX' }, { t: 'cmd', text: 'per-sheet render · match only a standalone .sheet rule' },
+    { t: 'prompt', text: 'FIX' }, { t: 'cmd', text: 'hoistPinnedArt() + SetHTMLFooter() for the pinned artwork' },
+    { t: 'prompt', text: 'PASS' }, { t: 'ok', text: '19/19 pages MATCH · every deviation ≤ 2pt' },
+    { t: 'prompt', text: '' }, { t: 'hl', text: '20,225,818 bytes · 19 pages · 10.4s · essence 7 pages PASS' },
+  ],
+  flow: [
+    { n: '1', label: 'render per sheet' },
+    { n: '2', label: 'print baseline' },
+    { n: '3', label: 'diff geometry' },
+    { n: '4', label: '≤ 2pt ✓' },
+  ],
+};
+
+BANNERS['jpa-version-field-lost-update'] = {
+  titlebar: 'spring boot — two editors, one row',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'GET /api/posts/1 → { id: 1, version: 3 }' },
+    { t: 'prompt', text: 'A' }, { t: 'ok', text: 'PUT version 3 → 200 · the row is now version 4' },
+    { t: 'prompt', text: 'B' }, { t: 'err', text: 'PUT version 3 → would overwrite A and still answer 200' },
+    { t: 'prompt', text: 'FIX' }, { t: 'cmd', text: '@Version on the entity → UPDATE … WHERE version = 3' },
+    { t: 'prompt', text: 'JPA' }, { t: 'err', text: 'ObjectOptimisticLockingFailureException' },
+    { t: 'prompt', text: 'API' }, { t: 'ok', text: 'PostVersionConflictException → 409 Conflict' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: './mvnw test → integration test asserts the conflict path' },
+    { t: 'prompt', text: '' }, { t: 'hl', text: 'stale writes fail loudly · the client re-reads instead of clobbering' },
+  ],
+  flow: [
+    { n: '1', label: 'read v3' },
+    { n: '2', label: 'A saves' },
+    { n: '3', label: 'B saves stale' },
+    { n: '4', label: '409 ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';
