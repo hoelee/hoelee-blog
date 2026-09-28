@@ -787,6 +787,85 @@ BANNERS['why-chrome-forgets-its-tabs-in-a-container'] = {
   ],
 };
 
+BANNERS['smartctl-exit-code-32-skips-the-disks-that-matter'] = {
+  titlebar: 'root@unraid — disk health · textfile collector',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'for dev in /dev/sd?; do smartctl -A "$dev"' },
+    { t: 'err',  text: 'rc=32   ← "OK, but attributes were below threshold"' },
+    { t: 'dim',  text: 'treated as unreadable → disk skipped' },
+    { t: 'err',  text: '2 of 4 SSDs missing · the marginal ones' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'fatal=$(( rc & ~(32 | 64) ))  · rc as a metric' },
+    { t: 'ok',   text: '→ 4/4 disks collected ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'rc=32', err: true },
+    { n: '2', label: 'skip ✗' },
+    { n: '3', label: '2/4 disks' },
+    { n: '4', label: 'mask bits' },
+    { n: '5', label: '4/4 ✓' },
+  ],
+};
+
+BANNERS['why-your-grafana-dashboard-shows-no-data'] = {
+  titlebar: 'root@grafana — 41 panels · No data',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl -s prometheus:9090/api/v1/targets' },
+    { t: 'ok',   text: 'all 7 targets: up' },
+    { t: 'err',  text: 'every panel: "No data"' },
+    { t: 'dim',  text: 'my check substituted the values by hand ✓  ← bug invisible' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: '$nodename = label_values(...{nodename=~"$nodename"})' },
+    { t: 'err',  text: '← variable filters on itself → 0 options' },
+    { t: 'ok',   text: '→ no self-reference + saved current · 21/25 ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'targets up' },
+    { n: '2', label: 'panels ✗' },
+    { n: '3', label: 'variables' },
+    { n: '4', label: 'self-ref' },
+    { n: '5', label: '21/25 ✓' },
+  ],
+};
+
+BANNERS['your-disk-full-alert-is-lying'] = {
+  titlebar: 'root@monitor — alert rules · 16 total',
+  lines: [
+    { t: 'err',  text: 'ALERT filesystem >90% · 500 GB still free' },
+    { t: 'err',  text: 'ALERT memory >90% used · 4.8 GB available' },
+    { t: 'err',  text: 'ALERT CPU steal >25% · host fine at 41%' },
+    { t: 'dim',  text: 'always true · never actionable' },
+    { t: 'dim',  text: 'and each one trains you to skim' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'alert on the consequence, not the ratio' },
+    { t: 'ok',   text: '→ free <25 GB · MemAvailable <512 MB ✓' },
+  ],
+  flow: [
+    { n: '1', label: '% full ✗', err: true },
+    { n: '2', label: '% used ✗', err: true },
+    { n: '3', label: 'steal ✗' },
+    { n: '4', label: 'absolute' },
+    { n: '5', label: 'silent ✓' },
+  ],
+};
+
+BANNERS['one-prometheus-for-unraid-synology-and-a-vps'] = {
+  titlebar: 'root@unraid — prometheus · 7 targets · 25.5k series',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'sum(node_filesystem_size_bytes)' },
+    { t: 'err',  text: '64 TB "total"  ← one NAS volume counted 3×' },
+    { t: 'err',  text: 'KVM guest: no cpufreq → 0 series' },
+    { t: 'err',  text: 'nodename = 9f9afcccc962  ← container ID' },
+    { t: 'dim',  text: 'cAdvisor: systemd slices reported as containers' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'dedup · textfile · hostname pin' },
+    { t: 'ok',   text: '→ 47 cores · 158 GHz · 142 GB · 155 containers ✓' },
+  ],
+  flow: [
+    { n: '1', label: '3 views', err: true },
+    { n: '2', label: 'dedup ✓' },
+    { n: '3', label: 'guest gap' },
+    { n: '4', label: 'textfile' },
+    { n: '5', label: 'one screen ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';

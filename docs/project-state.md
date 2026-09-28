@@ -145,6 +145,26 @@ self-hosted app produced two posts:
   first-person debugging stories with measured evidence — the moat per `content-guide.md` §7.
 - **Done when:** ✅ 4 pages 200 with expected content, language switch links both ways, 4 images served as `image/png`.
 
+**Step B2f — (unplanned) Four monitoring posts out of one Prometheus/Grafana session.** ✅ Done 2026-09-29
+One working session that unified monitoring across unRaid + Synology DSM + a VPS produced four posts. All four are
+**backdated** into the 2026-03-25 → 2026-09-04 archive gap (that stretch had no posts) with `updatedDate: 2026-09-29`
+holding the real date, so the sitemap `lastmod` stays honest and listings still sort by `pubDate`:
+
+| Slug | Category | pubDate | What it argues |
+|---|---|---|---|
+| `smartctl-exit-code-32-skips-the-disks-that-matter` | `notes` | 2026-04-14 | `smartctl`'s exit status is a bitfield, not a boolean: `rc=32` means "SMART OK, attributes were below threshold in the past". An `if ! smartctl` guard skipped 2 of 4 SSDs — exactly the marginal ones. Fix: mask the informational bits (32/64), export `rc` as a metric. |
+| `why-your-grafana-dashboard-shows-no-data` | `devops` | 2026-05-17 | A template variable defined as `label_values(...{nodename=~"$nodename"})` filters on itself → 0 options → `$node` empty → every panel No data while all targets are `up`. Also: why hand-substituting variable values during verification hides exactly this bug, and `$__all` ≠ `.*` in automated panel checks. |
+| `your-disk-full-alert-is-lying` | `devops` | 2026-06-24 | Percentage thresholds on multi-TB volumes fire while 500 GB remains; 92% "memory used" with 4.8 GB available is cache, not pressure. Alert on consequences: bytes free, `MemAvailable`, steal >50%. Includes the "keep the comparison in the threshold condition" rule and the mount-selector exclusions. |
+| `one-prometheus-for-unraid-synology-and-a-vps` | `case-studies` | 2026-07-29 | The flagship: node_exporter vs cAdvisor coverage matrix; `name!=""` for cAdvisor's non-container cgroups; "total storage" counting one NAS volume three times (`/volume1`, `/opt`, CIFS re-mount) and the dedup selector; a KVM guest exporting no CPU frequency at all (textfile collector, distinct metric name, merged with `or`); a container reporting its own ID as `nodename`. Result: 7 targets, 47 cores / 158 GHz / 142 GB / 64 TB / 155 containers on one screen. |
+
+- All four EN + ZH, custom OG + banner, hire CTA naming "self-hosted monitoring pipelines"; no post carries an absolute
+  date or "recently/as of" phrasing, which is what made the backdating safe (per `post-guideline.md` backdating rule).
+- **Why:** the blog had **zero** Prometheus/Grafana/monitoring posts while `content-guide.md` §2 lists monitoring under
+  `devops`, "my most differentiated material" — and `monitoring`/`grafana no data`/`smartctl exit code` are heavily
+  searched by exactly the audience this blog targets.
+- **Done when:** ✅ 8 pages 200 with expected content, language switch links both ways, 8 images served as `image/png`,
+  archive order still monotonic on `/posts/`, the homepage and `/zh/`.
+
 ### Phase C — Discovery & structure (Tier 2)
 
 **Step C1 — Per-post custom OG images (at least for case studies).**

@@ -243,6 +243,31 @@ TERMINALS['why-chrome-forgets-its-tabs-in-a-container'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">exit_type=Crashed ← the container kills the browser</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">tabs_keeper.py · snapshot every 60s · replay via /json/new</span><span class="fix">→ restored 2/2 tabs ✓</span></div>`;
 
+TERMINALS['smartctl-exit-code-32-skips-the-disks-that-matter'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">for dev in /dev/sd?; do smartctl -A "$dev" || continue; done</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">rc=32 · "disk OK, attributes were below threshold in the past"</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">→ 2 of 4 SSDs silently skipped · exactly the marginal ones</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">fatal=$(( rc &amp; ~(32 | 64) )) · rc exported as a metric</span><span class="fix">→ 4/4 collected ✓</span></div>`;
+
+TERMINALS['why-your-grafana-dashboard-shows-no-data'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl -s prometheus:9090/api/v1/targets | jq .[].health</span><span class="fix">→ all 7 up</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl -sG /api/v1/query --data-urlencode 'query=node_uname_info'</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">data is there · panel expression returns rows · dashboard: No data</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">$nodename = label_values(...{nodename=~"$nodename"}) ← filters on itself</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">drop the self-reference · save current values</span><span class="fix">→ 21/25 panels ✓</span></div>`;
+
+TERMINALS['your-disk-full-alert-is-lying'] = `
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">ALERT filesystem above 90% · 17 TB volume · 500 GB still free</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">ALERT memory above 90% used · 4.8 GB actually available</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">ALERT CPU steal above 25% · host fine at 41%</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">alert on the consequence, not the ratio</span><span class="fix">→ silent when healthy ✓</span></div>`;
+
+TERMINALS['one-prometheus-for-unraid-synology-and-a-vps'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">sum(node_filesystem_size_bytes) → 64 TB "total"</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">one NAS volume counted 3×: /volume1 · /opt · CIFS re-mount</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">KVM guest: no cpufreq · 0 series   nodename = 9f9afcccc962</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">dedup selector · textfile collector · hostname pin</span><span class="fix">→ 7 targets ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {
