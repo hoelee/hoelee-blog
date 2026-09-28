@@ -126,6 +126,82 @@ hire CTA, commit `8711136`.
   (`nocodb-sso-is-a-licensed-feature`, `authentik-forward-auth-gate-wasnt-live`). If those publish, add
   cross-links so the trio reads as a series rather than repetition.
 
+**Step B2f — (unplanned) Publish the agent-safety + CDP-automation pair.** ✅ Done 2026-09-29
+Two posts from the DigiKedai voucher-automation session, both backdated into the archive's empty 2025
+stretch (EN + ZH, custom OG + banner, commit `170f5cc`):
+
+| Slug | Category | pubDate | updatedDate | What it is |
+|---|---|---|---|---|
+| `i-let-an-agent-manage-my-shopee-vouchers` | `ai` | 2025-07-08 | 2026-09-29 | the audit → propose → auto design, the `mode: propose` gate, and the list-lag mistake that created an unplanned RM140 voucher |
+| `why-your-cdp-clicks-silently-fail` | `devops` | 2025-03-19 | 2026-09-29 | stale rect from `scroll-behavior: smooth`, coordinate clicks dropped on a hidden window, JS-dispatched events — and how to tell the three causes apart |
+
+- **Why 2025 dates:** 2025-01 → 2025-10 was completely empty in the archive (nearest neighbours:
+  2024-09-24 and 2025-11-12). Backdating fills a real gap; `updatedDate` keeps `lastmod` / `dateModified`
+  honest (post-guideline backdating rule). Neither post carries a date-, month- or version-pinned sentence —
+  verified with `grep -nE "20[0-9]{2}|January|…|tonight|this week"` **before** moving the date.
+- ⚠ **B2's gotcha list is still open:** the three bullets there (Traefik forward-auth, OpenVPN behind CGNAT,
+  WordPress `/cv` 301→404 chain) remain unstarted; `why-your-cdp-clicks-silently-fail` counts as an extra.
+- ⚠ **Generator entries deliberately NOT committed.** Another session had uncommitted edits in
+  `scripts/og-gen/generate.mjs` / `scripts/banner-gen/generate.mjs`, so the `TERMINALS` / `BANNERS` entries for
+  these two slugs were applied through throwaway `generate.local.mjs` copies (deleted afterwards) and the images
+  were committed as static files. **Re-add the four entries below** the next time one of these images must be
+  regenerated, or when the next post needs a panel in the same style:
+
+````js
+TERMINALS['i-let-an-agent-manage-my-shopee-vouchers'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">python voucher_watch.py --auto</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">Confirm clicked · voucher not in the list — the list was 10 min stale</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">mode=propose</span><span class="fix">→ waiting for price confirmation ✓</span></div>`;
+
+TERMINALS['why-your-cdp-clicks-silently-fail'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">cdp click '.picker-item input'</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">clicked @591,361 · nothing happened · document.hidden=true</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">bringToFront + dispatch MouseEvent</span><span class="fix">→ picker opens ✓</span></div>`;
+
+BANNERS['i-let-an-agent-manage-my-shopee-vouchers'] = {
+  titlebar: 'unraid — shopee voucher watch',
+  lines: [
+    { t: 'cmd', text: 'python voucher_watch.py --auto' },
+    { t: 'dim', text: 'vouchers have no draft state — Confirm = live + escrow' },
+    { t: 'err', text: 'Confirm clicked · not in list · judged "refused" · clicked twice more' },
+    { t: 'ok',  text: 'it existed — the voucher list was ~10 min behind' },
+    { t: 'err', text: 'cost: one unplanned RM14/29 voucher · exposure RM140' },
+    { t: 'cmd', text: 'policy: mode=propose · cap RM300/month' },
+    { t: 'ok',  text: 'PROPOSAL RM9.60 / min RM18 × 20 → WAITING FOR PRICE' },
+    { t: 'hl',  text: 'agent-created vouchers since the gate: 0 · 4 live' },
+  ],
+  flow: [
+    { n: '1', label: 'read-only audit' },
+    { n: '2', label: 'propose params' },
+    { n: '3', label: 'human confirms' },
+    { n: '4', label: 'create once ✓' },
+  ],
+};
+
+BANNERS['why-your-cdp-clicks-silently-fail'] = {
+  titlebar: 'canary — seller centre via CDP',
+  lines: [
+    { t: 'cmd', text: "click '.picker-item.end-picker input'" },
+    { t: 'err', text: 'clicked @591,361 · picker never opened' },
+    { t: 'dim', text: 'scroll-behavior: smooth → rect read mid-animation' },
+    { t: 'ok',  text: 'scrollBehavior=auto + behavior:instant → rect is real' },
+    { t: 'err', text: 'document.hidden=true → coordinate clicks dropped' },
+    { t: 'cmd', text: "['mousedown','mouseup','click'].forEach(dispatchEvent)" },
+    { t: 'ok',  text: 'picker opens every time · Confirm lands ✓' },
+    { t: 'hl',  text: '3 causes · 1 injected listener tells them apart' },
+  ],
+  flow: [
+    { n: '1', label: 'arm listener' },
+    { n: '2', label: 'elementFromPoint' },
+    { n: '3', label: 'JS-dispatch click' },
+    { n: '4', label: 'opens every time ✓' },
+  ],
+};
+````
+- **Done when:** ✅ both pages 200 (EN + ZH), language switch links both ways, OG + banner served
+  (1200×630 / 1600×900), listing order monotonic on `/posts/`, `/` and `/zh/`, Gitea Actions task `success`,
+  and `git status` clean of other sessions' files.
+
 **Step B3 — Adopt the "hard job → post" habit.**
 Every solved problem becomes a `notes` entry the same week.
 - [ ] Revisit cadence target: 2 posts/month → 1/week (`content-guide.md` §5).
