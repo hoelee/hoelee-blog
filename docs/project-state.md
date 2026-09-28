@@ -75,7 +75,7 @@ nginx gateway, with the four build traps and the "5x faster than typing" busines
 - [x] "Replacing RDPGuard With IPBan: The Traps Nobody Documents" (EN + ZH, `devops`, 2026-09-19) — the uninstaller that unbans 12 attackers, `--install-service` doesn't exist in v4.1.0, `ExpireTime` vs `BanTime`. Both images custom.
 - [x] "When Your Database Client Lies to You: Patching Workbench 26 for MariaDB" (EN + ZH, `devops`, 2026-09-19) — a client whose error handler crashed while reporting its own errors, masking every real failure; three patches to Oracle's bundled code, all stemming from `major >= 8` being an invalid MySQL-vs-MariaDB test. Both images custom.
 - [x] "Why Chrome Forgets Its Tabs in a Container — And How I Fixed It" (EN + ZH, `devops`, 2026-09-29) — the container kills the browser, so it never sees a clean exit and *no* restore mechanism fires (flag, hand-edited `Preferences`, `RestoreOnStartup` policy all verified failing); the 60-second snapshot keeper that fixed it, plus the stale `Singleton*` and `custom-cont-init.d` permission traps. Both images custom.
-- [ ] "The Traefik forward-auth gotcha that cost me a day"
+- [x] "The Forward-Auth Gate That Verified Perfectly — and Wasn't Live" (EN + ZH, `devops`, 2026-09-29) — the B2 forward-auth item, delivered with a better villain than Traefik: the gate passed every local check (302 → outpost, branded login page) while the public URL served the app directly, because that hostname is served by a Cloudflare tunnel rule that bypasses nginx; adds `skip_path_regex` (SSO for the UI, open API), the "count before you substitute" revert trap (11 vhosts share the outpost port) and the same-second reload race. Custom OG + banner, hire CTA, commit `e7e4ee5`.
 - [ ] "Site-to-site OpenVPN behind CGNAT"
 - [ ] "Fixing the WordPress /cv 301→404 chain" (from own audit)
 - **Governing doc:** `content-guide.md` §3 (post type #3), `post-guideline.md`.
@@ -130,6 +130,20 @@ hire CTA, commit `8711136`.
 Every solved problem becomes a `notes` entry the same week.
 - [ ] Revisit cadence target: 2 posts/month → 1/week (`content-guide.md` §5).
 - **Done when:** 3 consecutive months hit the 2-posts/month floor.
+
+**Step B2e — (unplanned) Two posts out of the SSO / forward-auth session.** ✅ Done 2026-09-29
+Same working session that wired (and then deliberately rolled back) an authentik forward-auth gate in front of a
+self-hosted app produced two posts:
+
+| Slug | Category | What it argues | Commit |
+|---|---|---|---|
+| `authentik-forward-auth-gate-wasnt-live` | `devops` | the gate verified perfectly from the host while the public URL bypassed it — two ingress layers per hostname; verify from outside and read which software answered (`x-powered-by`) | `e7e4ee5` |
+| `nocodb-sso-is-a-licensed-feature` | `notes` | the OIDC env vars are real and enforced at boot, but the feature is Business+; on an unlicensed build an unauthenticated `GET /auth/oidc` throws and exits(1); MySQL meta blocks licensing; the "drop-in" community fork is abandoned (0.255.2, 2024-10-29) | `2d0de72` |
+
+- Both EN + ZH, custom OG + banner, hire CTA; both link to each other (one-way: the NocoDB post links to the gate post).
+- **Why:** the trap is rare and genuinely searchable (`authentik forward auth`, `nocodb sso self-hosted`), and both are
+  first-person debugging stories with measured evidence — the moat per `content-guide.md` §7.
+- **Done when:** ✅ 4 pages 200 with expected content, language switch links both ways, 4 images served as `image/png`.
 
 ### Phase C — Discovery & structure (Tier 2)
 
