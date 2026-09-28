@@ -1,12 +1,12 @@
 ---
 title: "把 CodeIgniter 4 应用从 IIS 迁移到 OpenLiteSpeed"
 description: "我把一个 17,000 行的 CodeIgniter 4 应用从 Windows IIS 搬到了 CyberPanel 上的 OpenLiteSpeed。迁移后冒出两个致命错误——而 IIS 一直靠 SSO 把它们藏着。"
-pubDate: 2026-09-20
+pubDate: 2026-09-27
 category: engineering
 tags: [codeigniter, php, openspeedway, cyberpanel, iis, migration, litespeed, linux]
 ogImage: /og/migrating-codeigniter-iis-to-openlitespeed.png
 banner: /banners/migrating-codeigniter-iis-to-openlitespeed.png
-draft: true
+draft: false
 ---
 
 我维护着一个数字命理报告生成器：一个 CodeIgniter 4 应用，接收出生日期和姓名，跑一遍命理引擎，渲染出 19 页 A4 报告。它在 Windows Server + IIS 上跑了很多年。2026 年 9 月，我把它迁到 CyberPanel 上的 OpenLiteSpeed，跑在 Linux 上，换了个域名。

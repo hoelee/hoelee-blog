@@ -1,12 +1,12 @@
 ---
 title: "Migrating a CodeIgniter 4 App From IIS to OpenLiteSpeed"
 description: "I moved a 17,000-line CodeIgniter 4 app from Windows IIS to OpenLiteSpeed on CyberPanel. Two fatal errors appeared that IIS had been hiding behind SSO."
-pubDate: 2026-09-20
+pubDate: 2026-09-27
 category: engineering
 tags: [codeigniter, php, openspeedway, cyberpanel, iis, migration, litespeed, linux]
 ogImage: /og/migrating-codeigniter-iis-to-openlitespeed.png
 banner: /banners/migrating-codeigniter-iis-to-openlitespeed.png
-draft: true
+draft: false
 ---
 
 I maintain a numerology report generator: a CodeIgniter 4 application that takes a birth date and a name, runs them through a numerology engine, and renders a 19-page A4 report. It had run on Windows Server with IIS for years. In September 2026 I moved it to OpenLiteSpeed on CyberPanel, on Linux, on a different domain.

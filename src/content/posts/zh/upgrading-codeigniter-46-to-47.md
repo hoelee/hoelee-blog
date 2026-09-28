@@ -1,12 +1,12 @@
 ---
 title: "CodeIgniter 4.6 升级到 4.7：官方指南没说到的破坏性变更"
 description: "CodeIgniter 4.7 官方升级指南列了八项破坏性变更。真正让我应用致命崩溃的那两项不在里面——而且它们属于同一类问题。"
-pubDate: 2026-09-20
+pubDate: 2026-09-27
 category: notes
 tags: [codeigniter, php, upgrade, composer, breaking-changes, config, framework]
 ogImage: /og/upgrading-codeigniter-46-to-47.png
 banner: /banners/upgrading-codeigniter-46-to-47.png
-draft: true
+draft: false
 ---
 
 我把一个 CodeIgniter 4 应用从 4.6.3 升到了 4.7.4。我读了升级指南，把每一项文档化的破坏性变更都对着代码库核了一遍，确认没有一项影响到我。然后我跑了一下应用，它致命崩溃了两次。

@@ -1,12 +1,12 @@
 ---
 title: "Upgrading CodeIgniter 4.6 to 4.7: The Breaking Changes the Guide Misses"
 description: "The official CodeIgniter 4.7 upgrade guide lists eight breaking changes. The two that actually fataled my app weren't in it — and both are the same class of problem."
-pubDate: 2026-09-20
+pubDate: 2026-09-27
 category: notes
 tags: [codeigniter, php, upgrade, composer, breaking-changes, config, framework]
 ogImage: /og/upgrading-codeigniter-46-to-47.png
 banner: /banners/upgrading-codeigniter-46-to-47.png
-draft: true
+draft: false
 ---
 
 I upgraded a CodeIgniter 4 app from 4.6.3 to 4.7.4. I read the upgrade guide, checked every documented breaking change against the codebase, and confirmed none of them applied. Then I ran the app and it fataled twice.
