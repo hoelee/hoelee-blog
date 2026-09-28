@@ -768,6 +768,25 @@ BANNERS['nocodb-sso-is-a-licensed-feature'] = {
   ],
 };
 
+BANNERS['why-chrome-forgets-its-tabs-in-a-container'] = {
+  titlebar: 'root@dsm — chrome · CDP 9222 · session restore',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'docker restart chrome' },
+    { t: 'err',  text: '["chrome://newtab/"]   ← every tab gone' },
+    { t: 'dim',  text: 'restore_on_startup=1 · RestoreOnStartup policy  ✓ both set' },
+    { t: 'err',  text: 'exit_type=Crashed  ← the browser never exits cleanly' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'tabs_keeper.py · snapshot 60s · replay /json/new' },
+    { t: 'ok',   text: '→ restored 2/2 tabs ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'blank tab' },
+    { n: '2', label: 'flag ✗' },
+    { n: '3', label: 'preference ✗' },
+    { n: '4', label: 'policy ✗' },
+    { n: '5', label: 'keeper ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';

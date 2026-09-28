@@ -237,6 +237,12 @@ TERMINALS['nocodb-sso-is-a-licensed-feature'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">unhandledRejection · container exits(1)</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">CE mode · meta=MySQL · fork 0.255.2 (2024)</span><span class="fix">→ gate at the edge ✓</span></div>`;
 
+TERMINALS['why-chrome-forgets-its-tabs-in-a-container'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">docker restart chrome · curl -s localhost:9232/json/list</span><span class="err">→ [ "chrome://newtab/" ]</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">restore_on_startup=1 · RestoreOnStartup policy · both set, both ignored</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">exit_type=Crashed ← the container kills the browser</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">tabs_keeper.py · snapshot every 60s · replay via /json/new</span><span class="fix">→ restored 2/2 tabs ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {
