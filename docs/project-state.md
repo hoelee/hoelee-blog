@@ -62,6 +62,19 @@ unanswerable, and the job-hunt thesis can't be verified. Decisions (2026-09-29):
 - **Done when:** a pageview from a second device shows up in CF Web Analytics, and GSC lists the sitemap as Submitted with the post URLs Discovered.
 - **Governing doc:** `seo-reference.md`.
 
+**E1 progress — self-hosted Umami deployed 2026-09-29 ✅ (deploy only; not yet public, not yet wired to the blog)**
+
+| Item | State |
+|---|---|
+| Stack | DSM Portainer **stack 284 `umami`** (endpoint 2), container `umami`, host port **5410 → 3000**, network `bridge_hoelee` |
+| Image | `ghcr.io/umami-software/umami:postgresql-latest` → resolved **v3.4.0** (Node 22.23.2). ⚠ v3 publishes versioned tags on `docker.umami.is`, but ghcr only carries rolling tags (`postgresql-v*` stops at 2.16) — record the running version before any upgrade or there is no tag to roll back to |
+| Database | **Reused the shared instance**: stack 139 `postgres` → `postgres-server` (PG 17.10, `Etc/UTC`). New role + DB `umami` (login only, **not** superuser). `CREATE EXTENSION pgcrypto` works because PG 13+ treats it as trusted. ⚠ Data lives in `/volume1/docker/postgres-server/data` next to authentik / n8n / tubesync / crowdsec — same fate if that volume is restored |
+| Env | `DATABASE_URL`, `APP_SECRET`, `TWO_FACTOR_ENCRYPTION_KEY`, `CLIENT_IP_HEADER=cf-connecting-ip`, `DISABLE_TELEMETRY=1`, `DISABLE_UPDATES=1`, `MCP_ENABLED=1`, `TZ=Asia/Kuala_Lumpur`. No `cpus:` (DSM has no CFS quota) |
+| Verified on LAN | `/api/heartbeat` → `{"ok":true}` (first hit 6.1 s cold, then 66 ms), `/login` 200, container `healthy`, prisma migrations created **16 tables** |
+| Ops notes | `/volume1/docker/umami/README.md` |
+| Still open | (a) `stats.hoelee.com` DNS + Cloudflare tunnel public-hostname → `http://192.168.1.1:5410` — the tunnel is **remotely managed** (`cloudflared --token`), and the existing `.cf-token` is Pages-only, so this needs a token with `Zone:DNS:Edit` + `Account:Cloudflare Tunnel:Edit` or a manual dashboard edit; `.hoelee.com` has **no wildcard DNS**. (b) CF Web Analytics still not enabled. (c) GSC sitemap submission still unconfirmed. (d) The blog's tracker snippet is **not** wired yet — nothing is being recorded until (a) exists. |
+| Dashboard login | default `admin` / `umami` — change on first login (agent does not hold this password) |
+
 **Step E2 — Wire the two sites together (www.hoelee.com → blog).** ⏸ Deferred by user 2026-09-29
 
 Measured: **all six pages of www.hoelee.com** (home, `/zh-hans/`, `/about-mrhoelee/`, T&C, support, privacy) contain
