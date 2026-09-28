@@ -1,7 +1,7 @@
 ---
 title: "Why Chrome Forgets Its Tabs in a Container — And How I Fixed It"
 description: "Chrome's \"continue where you left off\" never fires inside a Docker container. The three fixes that failed, the real root cause, and the 70-line keeper that works."
-pubDate: 2026-09-26
+pubDate: 2026-09-29
 category: devops
 tags: [docker, chrome, cdp, persistence, synology, self-hosting]
 ogImage: /og/why-chrome-forgets-its-tabs-in-a-container.png

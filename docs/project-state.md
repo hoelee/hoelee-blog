@@ -74,7 +74,7 @@ nginx gateway, with the four build traps and the "5x faster than typing" busines
 **Step B2 — Write 2–3 short "gotcha" posts (Google-friendly, compound over time).**
 - [x] "Replacing RDPGuard With IPBan: The Traps Nobody Documents" (EN + ZH, `devops`, 2026-09-19) — the uninstaller that unbans 12 attackers, `--install-service` doesn't exist in v4.1.0, `ExpireTime` vs `BanTime`. Both images custom.
 - [x] "When Your Database Client Lies to You: Patching Workbench 26 for MariaDB" (EN + ZH, `devops`, 2026-09-19) — a client whose error handler crashed while reporting its own errors, masking every real failure; three patches to Oracle's bundled code, all stemming from `major >= 8` being an invalid MySQL-vs-MariaDB test. Both images custom.
-- [x] "Why Chrome Forgets Its Tabs in a Container — And How I Fixed It" (EN + ZH, `devops`, 2026-09-26) — the container kills the browser, so it never sees a clean exit and *no* restore mechanism fires (flag, hand-edited `Preferences`, `RestoreOnStartup` policy all verified failing); the 60-second snapshot keeper that fixed it, plus the stale `Singleton*` and `custom-cont-init.d` permission traps. Both images custom.
+- [x] "Why Chrome Forgets Its Tabs in a Container — And How I Fixed It" (EN + ZH, `devops`, 2026-09-29) — the container kills the browser, so it never sees a clean exit and *no* restore mechanism fires (flag, hand-edited `Preferences`, `RestoreOnStartup` policy all verified failing); the 60-second snapshot keeper that fixed it, plus the stale `Singleton*` and `custom-cont-init.d` permission traps. Both images custom.
 - [ ] "The Traefik forward-auth gotcha that cost me a day"
 - [ ] "Site-to-site OpenVPN behind CGNAT"
 - [ ] "Fixing the WordPress /cv 301→404 chain" (from own audit)

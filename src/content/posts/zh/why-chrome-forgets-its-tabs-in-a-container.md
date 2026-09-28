@@ -1,7 +1,7 @@
 ---
 title: "为什么容器里的 Chrome 会忘记标签页 —— 以及我是怎么修好的"
 description: "Chrome 的「继续上次浏览」在 Docker 容器里根本不会生效：三次失败的尝试、真正的原因，以及最后管用的 70 行守护脚本。"
-pubDate: 2026-09-26
+pubDate: 2026-09-29
 category: devops
 tags: [docker, chrome, cdp, persistence, synology, self-hosting]
 ogImage: /og/why-chrome-forgets-its-tabs-in-a-container.png
