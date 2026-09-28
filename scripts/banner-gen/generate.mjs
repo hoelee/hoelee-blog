@@ -624,6 +624,67 @@ BANNERS['why-i-still-bought-a-local-gpu'] = {
   ],
 };
 
+BANNERS['migrating-codeigniter-iis-to-openlitespeed'] = {
+  titlebar: 'root@cyberpanel — docroot public/',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'cp -r app/ public/ → docroot = public_html/public' },
+    { t: 'dim', text: 'on IIS these routes only ever answered 302 (SSO) — the code never ran' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl -sI http://new-host/lifecode' },
+    { t: 'err', text: 'Fatal error: Call to undefined function env() · Constants.php' },
+    { t: 'err', text: 'Fatal error: Cannot call constructor · Welcome.php' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'pure constants only · override initController()' },
+    { t: 'prompt', text: '' }, { t: 'ok', text: '→ 19-page A4 report renders ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'IIS → OpenLiteSpeed' },
+    { n: '2', label: '500 on /lifecode', err: true },
+    { n: '3', label: 'SSO had hidden it' },
+    { n: '4', label: 'two fatal fixes' },
+    { n: '5', label: 'report renders ✓' },
+  ],
+};
+
+BANNERS['upgrading-codeigniter-46-to-47'] = {
+  titlebar: '~/numerology-report — composer update',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'composer update codeigniter4/framework' },
+    { t: 'ok', text: '4.6.3 → 4.7.4 · upgrade guide read · 8 breaking changes audited' },
+    { t: 'dim', text: 'none of the documented changes applied to this codebase' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'php spark routes' },
+    { t: 'err', text: 'Undefined property: Config\\App::$permittedURIChars' },
+    { t: 'err', text: 'Undefined property: Config\\Format::$jsonEncodeDepth' },
+    { t: 'ok', text: 'merge project-space configs by hand → routes + report OK ✓' },
+  ],
+  flow: [
+    { n: '1', label: '4.6 → 4.7' },
+    { n: '2', label: 'guide: 8 changes' },
+    { n: '3', label: 'none applied' },
+    { n: '4', label: '2 undefined props', err: true },
+    { n: '5', label: 'merge configs ✓' },
+  ],
+};
+
+BANNERS['read-only-nocodb-dashboard-for-a-remote-database'] = {
+  titlebar: 'root@dsm — nocodb · bridge_hoelee',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'docker exec mysql-server mysql -h192.168.1.124 -e "SELECT CURRENT_USER();"' },
+    { t: 'err',  text: 'nocodb_ro@192.168.1.1   ← the host IP, not 172.16.0.4' },
+    { t: 'dim',  text: 'container egress is SNAT-ed through the host' },
+    { t: 'cmd',  text: 'nocodb → POST /meta/bases/{id}/sources · mysql2' },
+    { t: 'hl',   text: 'meta.dbVersion = 10.11.19-MariaDB-ubu2404  → connected' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: "GRANT SELECT ON appdb.* TO 'nocodb_ro'@'192.168.1.1'" },
+    { t: 'err',  text: 'DROP command denied — read-only enforced by the database' },
+    { t: 'ok',   text: '4 tables live · 0 rows duplicated ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'NocoDB → VM db' },
+    { n: '2', label: 'SNAT → host IP', err: true },
+    { n: '3', label: 'SELECT-only grant' },
+    { n: '4', label: 'source auto-sync' },
+    { n: '5', label: 'live dashboard ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';

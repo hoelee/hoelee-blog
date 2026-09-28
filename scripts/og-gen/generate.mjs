@@ -197,6 +197,23 @@ TERMINALS['why-i-still-bought-a-local-gpu'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="fix">local: 50 calls · $0.00 · runs on my card</span></div>
 `;
 
+TERMINALS['read-only-nocodb-dashboard-for-a-remote-database'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">docker exec mysql-server mysql -h192.168.1.124 -e "SELECT CURRENT_USER();"</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">nocodb_ro@192.168.1.1 — the host IP, not the container IP</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">GRANT SELECT ON appdb.* · source auto-sync</span><span class="fix">→ live ✓</span></div>`;
+
+TERMINALS['migrating-codeigniter-iis-to-openlitespeed'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl -sI http://new-host/lifecode</span><span class="err">→ 500</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">Fatal error: Call to undefined function env() · Constants.php</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">Fatal error: Cannot call constructor · Welcome.php</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">pure constants · override initController()</span><span class="fix">→ report renders ✓</span></div>`;
+
+TERMINALS['upgrading-codeigniter-46-to-47'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">composer update codeigniter4/framework</span><span class="fix">4.6.3 → 4.7.4</span></div>
+    <div class="line"><span class="prompt">INFO</span><span class="cmd">upgrade guide read · 8 breaking changes · none apply</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">Undefined property Config\\App::$permittedURIChars → 500</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">merge project-space configs by hand</span><span class="fix">→ report renders ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {
