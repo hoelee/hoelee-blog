@@ -184,6 +184,8 @@ Read the vendor's own documentation when it exists — it's usually faster than 
 
 Four commands — `cat` the bundled spec, `grep` the bundle for env vars, read the config blob from the registry, `exec cat /proc/net/tcp` for the port — replaced a documentation hunt with: a full OpenAPI spec, all nine env vars, the default port, the config defaults, and a Swagger UI URL. No shell in the container, no login, nothing mutated.
 
+The place this paid off hardest was Synology's spreadsheet API container — the worked example, including the four failures that made me reach for these commands in the first place, is in [The Synology Spreadsheet API Is a Container, Not an API Endpoint](/posts/synology-spreadsheet-api-is-a-container/).
+
 ---
 
 *If you're integrating a self-hosted system and the docs stop short, I do that work for small businesses in Malaysia — [WhatsApp](https://wa.me/60127972969), [email](mailto:me@hoelee.com?subject=API%20integration), or [hoelee.com](https://hoelee.com).*

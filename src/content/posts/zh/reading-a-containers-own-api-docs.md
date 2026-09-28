@@ -207,6 +207,9 @@ docker rm -f probe
 OpenAPI 规范、全部九个 env 变量、默认端口、配置默认值，以及一个 Swagger UI
 地址。没进容器开 shell，不用登录，什么都没改动。
 
+这些命令最值的一次应用，就是 Synology 的 spreadsheet API 容器——完整案例、以及逼我动用这些命令的
+四个坑，写在[《Synology 的 Spreadsheet API 是一个容器，不是一个 API 端点》](/posts/synology-spreadsheet-api-is-a-container/)里。
+
 ---
 
 *如果你正在对接一个自托管系统，而文档又戛然而止——这正是我为马来西亚中小
