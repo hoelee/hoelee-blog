@@ -214,6 +214,11 @@ TERMINALS['upgrading-codeigniter-46-to-47'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">Undefined property Config\\App::$permittedURIChars → 500</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">merge project-space configs by hand</span><span class="fix">→ report renders ✓</span></div>`;
 
+TERMINALS['adding-english-mode-to-a-chinese-only-web-app'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl -s book.hoelee.com/index.html | grep -o lang=</span><span class="err">→ "en"</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">the UI is 100% Chinese · browsers then never offer translate</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">nginx sub_filter + gate-en.js · 871 zh→en labels</span><span class="fix">→ 88% English ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {

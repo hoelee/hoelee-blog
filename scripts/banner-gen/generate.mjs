@@ -685,6 +685,27 @@ BANNERS['read-only-nocodb-dashboard-for-a-remote-database'] = {
   ],
 };
 
+BANNERS['adding-english-mode-to-a-chinese-only-web-app'] = {
+  titlebar: 'root@dsm — reader-gateway · nginx:alpine',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl -s book.hoelee.com/index.html | head -1' },
+    { t: 'err',  text: '<html lang="en">   ← but the UI is 100% Chinese' },
+    { t: 'dim',  text: 'browsers key the translate prompt off that attribute' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'sub_filter  lang="en"  →  lang="zh-CN"' },
+    { t: 'hl',   text: 'no API exists to trigger browser translation from JS' },
+    { t: 'cmd',  text: 'gate-en.js · 871 zh→en labels · longest-first matching' },
+    { t: 'dim',  text: 'MutationObserver follows the Vue re-renders' },
+    { t: 'ok',   text: '→ 88% of UI labels English · app untouched ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'Chinese-only SPA' },
+    { n: '2', label: 'lang="en" lie', err: true },
+    { n: '3', label: 'fix at the proxy' },
+    { n: '4', label: 'EN pill + dictionary' },
+    { n: '5', label: 'English UI ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';
