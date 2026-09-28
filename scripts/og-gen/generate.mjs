@@ -219,6 +219,24 @@ TERMINALS['adding-english-mode-to-a-chinese-only-web-app'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">the UI is 100% Chinese · browsers then never offer translate</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">nginx sub_filter + gate-en.js · 871 zh→en labels</span><span class="fix">→ 88% English ✓</span></div>`;
 
+TERMINALS['vetting-an-open-source-dependency-before-you-bet-on-it'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">grep -in 'oidc\|sso\|saml' README.md ARCHITECTURE.md docs/*.md</span><span class="err">→ 0 hits</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">the spec assumed OIDC · partner login was never implementable</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">head -5 docs/white-label-custom-domains.md</span><span class="err">→ Target branch: multi-tenant</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">selfhost mode · manual payouts · pin the commit</span><span class="fix">→ 6 assumptions corrected ✓</span></div>`;
+
+TERMINALS['authentik-forward-auth-gate-wasnt-live'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl -sk -H 'Host: app.example.com' https://localhost/</span><span class="fix">→ 302 gated ✓</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl -sI https://app.example.com/</span><span class="err">→ 200 x-powered-by: Express</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">the tunnel rule answered · nginx was never in the path</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">verify from outside · read which layer replied</span><span class="fix">→ gate real ✓</span></div>`;
+
+TERMINALS['nocodb-sso-is-a-licensed-feature'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">NC_SSO=oidc · app boot</span><span class="fix">→ env keys enforced</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl -s localhost:10399/auth/oidc</span><span class="err">→ uncaught TypeError</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">unhandledRejection · container exits(1)</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">CE mode · meta=MySQL · fork 0.255.2 (2024)</span><span class="fix">→ gate at the edge ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {

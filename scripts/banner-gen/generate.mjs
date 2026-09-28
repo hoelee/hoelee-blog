@@ -706,6 +706,68 @@ BANNERS['adding-english-mode-to-a-chinese-only-web-app'] = {
   ],
 };
 
+BANNERS['vetting-an-open-source-dependency-before-you-bet-on-it'] = {
+  titlebar: 'root@dsm — due diligence · 6 checks',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl -s api.github.com/repos/getcoherence/openpartner' },
+    { t: 'dim',  text: 'MIT · created 2026-04 · 8 stars · 15 open issues' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: "grep -in 'oidc\\|sso\\|saml' README.md ARCHITECTURE.md docs/*.md" },
+    { t: 'err',  text: '0 hits   ← the spec assumed OIDC for partner login' },
+    { t: 'hl',   text: 'Community: API tokens ✓ · SSO ✗ (Enterprise only)' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'selfhost mode · manual payouts · pin the commit' },
+    { t: 'ok',   text: '→ 6 assumptions corrected before integration ✓' },
+  ],
+  flow: [
+    { n: '1', label: '1,306-line spec' },
+    { n: '2', label: 'repo vital signs' },
+    { n: '3', label: 'grep the feature' },
+    { n: '4', label: 'tier + rail fit' },
+    { n: '5', label: 'fallback decided ✓' },
+  ],
+};
+
+BANNERS['authentik-forward-auth-gate-wasnt-live'] = {
+  titlebar: 'root@dsm — forward-auth · two ingress layers',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: "curl -sk -H 'Host: app.example.com' https://localhost/" },
+    { t: 'err',  text: '302 → /outpost.goauthentik.io/start   ← looks gated' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl -sI https://app.example.com/' },
+    { t: 'err',  text: 'x-powered-by: Express   ← the app answered, not the outpost' },
+    { t: 'hl',   text: 'the tunnel rule went straight to the container — nginx never saw the request' },
+    { t: 'dim',  text: 'grep -c "proxy_pass :10000"  →  11 vhosts share that port' },
+    { t: 'cmd',  text: 'verify from outside · read which layer replied' },
+    { t: 'ok',   text: '→ one line to revert · ten gates left intact ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'vhost → outpost' },
+    { n: '2', label: 'tunnel → app', err: true },
+    { n: '3', label: 'x-powered-by told' },
+    { n: '4', label: 'count the port' },
+    { n: '5', label: 'gate verified ✓' },
+  ],
+};
+
+BANNERS['nocodb-sso-is-a-licensed-feature'] = {
+  titlebar: 'root@dsm — nocodb CE 2026.09.0',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'NC_SSO=oidc  NC_SSO_OIDC_ISSUER=https://auth…' },
+    { t: 'dim',  text: 'enforced at boot — the vars are wired in, not vestigial' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'docker run --name nc-sso-test -p 10399:8080  (no NC_DB → SQLite)' },
+    { t: 'err',  text: 'curl /auth/oidc  →  ### UNCAUGHT EXCEPTION ###  exits(1)' },
+    { t: 'hl',   text: 'one unauthenticated GET is enough to stop the instance' },
+    { t: 'dim',  text: 'CE mode · meta=MySQL (licensing needs Postgres) · fork 0.255.2' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'gate at the edge instead · prod container never touched' },
+    { t: 'ok',   text: '→ OIDC SSO is Business+ · one sentence, not an afternoon ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'NC_SSO vars', err: true },
+    { n: '2', label: 'throwaway box' },
+    { n: '3', label: '/auth/oidc dies' },
+    { n: '4', label: 'licence + Postgres' },
+    { n: '5', label: 'edge gate ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';
