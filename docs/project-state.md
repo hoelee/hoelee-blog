@@ -27,12 +27,98 @@ Living list of what's done and what's next for blog.hoelee.com. Work through the
 - ✅ Business framing corrected (website design & development = primary; email hosting = secondary)
 - ✅ Knowledge guides in `docs/` + README index + `hoelee-blog` skill
 - ✅ Both repos public (Gitea + GitHub) with title/description/homepage/topics + `v1.0.0` release
+- ✅ **Live re-audit of the Sept research recorded (§2 Phase E + §4), 2026-09-29** — 53 posts × 2 languages, 127 sitemap URLs, 133/133 internal links 200
 
 ---
 
 ## 2. Execution Plan (work top → bottom, one step at a time)
 
 > This plan comes from a full research pass (Sept 2026) comparing blog.hoelee.com against reference developer blogs (Simon Willison, Josh Comeau, Dan Abramov/overreacted, Julia Evans) + industry surveys. Priority is fixed: **identity & content → discovery → polish.** Don't reorder unless the user says so.
+>
+> **⚠ Re-checked against the live site 2026-09-29 (§4).** Parts of Phase A/C/D are stale — **C1, D1 and B2b are DONE.** The measured bottleneck is no longer content; it is **distribution / visibility**. Per user decision on 2026-09-29, **Phase E is inserted at the TOP of the queue — start there**, then work the still-open A/C items.
+
+### Phase E — Distribution & visibility (added 2026-09-29 from the live re-audit — DO THESE FIRST)
+
+The Sept research assumed the constraint was identity + content. Measured on 2026-09-29 that is no longer true:
+53 posts live in both languages, 127 sitemap URLs, and all **133 internal links** across the home, archive,
+category, about and ZH pages return **200**. The site is built and healthy — almost nobody can find it, and there
+is no instrumentation to tell whether anyone does. Full evidence table in §4.
+
+**Step E1 — Analytics + the search-performance loop.** ⬜
+
+There is **no analytics of any kind**: home, post, about and ZH pages were grepped for GA/GTM, Plausible, Umami,
+Matomo, Clarity, PostHog and Cloudflare's `beacon.min.js` — zero hits. Without it, "did this post get read" is
+unanswerable, and the job-hunt thesis can't be verified. Decisions (2026-09-29):
+
+| Option | Verdict |
+|---|---|
+| **Cloudflare Web Analytics** | ✅ **Primary.** Free with no event/traffic cap, **cookieless** (no consent banner, no CLS cost), one snippet in the base layout — and it reports Core Web Vitals field data, which the Sept report's CWV item otherwise has no way to check. |
+| **Google Search Console** | ✅ **Not optional, and half-done already.** `hoelee.com` carries a `google-site-verification=…` TXT record, so a **domain property** already covers `blog.hoelee.com`. Unconfirmed: whether `https://blog.hoelee.com/sitemap-index.xml` was ever submitted. Only the GSC UI can answer that. |
+| **Umami** (self-hosted on DSM — MIT, ~1 M events/month free cloud tier) | 🔵 Optional later, only if per-event funnels or full data ownership are wanted. |
+| GA4 / Plausible CE | ❌ Skip — GA4 brings weight + a consent banner; Plausible CE needs Postgres **and** ClickHouse. |
+
+- [ ] Enable CF Web Analytics for the zone and add the beacon to the base layout's `<head>` (belt-and-braces vs CF auto-injection).
+- [ ] Confirm the GSC domain property covers the blog, submit `sitemap-index.xml`, and re-check "Discovered / Indexed" counts ~a week later.
+- **Done when:** a pageview from a second device shows up in CF Web Analytics, and GSC lists the sitemap as Submitted with the post URLs Discovered.
+- **Governing doc:** `seo-reference.md`.
+
+**Step E2 — Wire the two sites together (www.hoelee.com → blog).** ⏸ Deferred by user 2026-09-29
+
+Measured: **all six pages of www.hoelee.com** (home, `/zh-hans/`, `/about-mrhoelee/`, T&C, support, privacy) contain
+**zero** references to `blog.hoelee.com`, while the blog links out to www.hoelee.com. The older, more established
+domain passes no authority and offers no click-path to the portfolio — one-way.
+
+⚠ **User decision 2026-09-29: www.hoelee.com needs a full overhaul; do NOT patch it piecemeal now.** Fold this link
+into that overhaul (together with the v2.1 audit finding that its agency framing conflicts with the job hunt).
+Tracked here so it isn't lost.
+
+**Step E3 — Syndicate 2–3 flagship posts.** ⬜ (report §9 "Month 2+ — promote": never executed)
+
+`seo-reference.md` already carries the syndication policy (cross-post with canonical back to the original domain);
+nothing has ever been syndicated, so the 53 posts only exist for people who already know the URL.
+
+- [ ] Cross-post to dev.to with `<link rel="canonical">` pointing at the original: `how-i-built-the-digikedai-telegram-bot`, `one-prometheus-for-unraid-synology-and-a-vps`, `self-hosting-mem0`.
+- [ ] One LinkedIn share per flagship (same photo + name identity as the blog).
+- **Done when:** each dev.to copy is live with the canonical set, and each has one LinkedIn post.
+
+**Step E4 — Chinese-side routes and nav are broken.** ⬜ (extends Step C4)
+
+Live ZH pages: the nav renders 「文章」→ `/zh/` (fallback; `/zh/posts/` **404s**) and 「关于」→ `/zh/` — i.e. the
+Chinese nav's *About* link is wrong even though `/zh/about/` itself returns 200 and is in the sitemap. `grep
+'/zh/about/'` finds **no inbound link anywhere on the site**, so the ZH About page is orphaned.
+
+- [ ] Build the `/zh/posts/` archive; point 「文章」 at it and 「关于」 at `/zh/about/`.
+- **Done when:** `/zh/posts/` 200, both ZH nav labels point at the right routes, and `/zh/about/` is reachable by clicking from `/zh/`.
+
+**Step E5 — `og:locale` is wrong on all 53 Chinese pages.** ⬜
+
+ZH post pages emit `<meta property="og:locale" content="en">` with `og:locale:alternate = en_US`.
+
+- **Done when:** ZH pages emit `zh_CN` (`en_US` as the alternate), EN pages unchanged.
+
+**Step E6 — Cloudflare is not caching the HTML.** ⬜
+
+A post page returns `cf-cache-status: DYNAMIC` and `strict-transport-security: max-age=0`. A static site behind CF
+should be edge-cached — lower TTFB and less origin traffic through the tunnel.
+
+- [ ] Add a cache rule for `blog.hoelee.com` (cache HTML, honour origin `last-modified`) and take a decision on HSTS.
+- **Done when:** a repeat request shows `cf-cache-status: HIT` **and** a deploy still goes live within ~1 minute.
+
+**Step E7 — Content-volume guardrail.** ⬜ ongoing
+
+53 posts shipped in ~4 weeks (30 dated 2026-09). The volume itself is the "content-farm" signal `content-guide.md`
+§7 warns about, even though every post traces to real logs/commits. Two rules:
+
+- Keep the existing per-post "every claim traces to a source file or log" check — do not relax it for volume.
+- **Never stack more than ~3–5 posts on one `pubDate`** (worst day so far: 2026-09-18 with 5). Spreading a batch by
+  backdating into archive gaps is the sanctioned method.
+
+**Step E8 — Small hygiene backlog.** ⬜
+
+- [ ] `scraping-bot-walled-marketplace-warm-browser-session`: OG card exists, **banner 404s** (no `banner:` in frontmatter, no PNG). Generate it or accept it as the one exception.
+- [ ] `authentik-css-greater-than-bug` (the `>` bug) is complete in EN + ZH but still `draft: true` since 2026-09-20 — the last item in the draft bank; publish it with images.
+- [ ] `og-default.png` has **no face**; the homepage and category pages share it. Regenerate after Step A1 (same source asset).
+- **Done when:** no page references a 404 image, the draft bank is empty, and the default share card matches the A1 photo.
 
 ### Phase A — Identity (highest ROI, ~2–3 hrs total)
 
@@ -82,7 +168,7 @@ nginx gateway, with the four build traps and the "5x faster than typing" busines
 - **Done when:** ≥2 gotcha posts live (these are `notes`/`devops`, no Chinese translation required per §8).
 - ⚠ **Note:** `post-guideline.md` §8 (newer) says *every* post gets a ZH twin — the "no Chinese required" note above is stale. The RDPGuard post was published EN + ZH.
 
-**Step B2b — Draft bank (written, held as `draft: true`, publish when content runs short).** ✅ Drafted 2026-09-20
+**Step B2b — Draft bank.** ✅ Both published 2026-09-27 (EN + ZH, with OG + banner, verified 200 on 2026-09-29) — `migrating-codeigniter-iis-to-openlitespeed` and `upgrading-codeigniter-46-to-47`. The publish recipe below stays valid for the next draft. Remaining draft: `authentik-css-greater-than-bug` (**E8**).
 Two finished posts (EN + ZH, each with frontmatter pointing at OG + banner paths) sitting in the repo but
 **not built or listed** — `draft: true` excludes them from all listings and generates no pages.
 
@@ -320,12 +406,10 @@ Five posts shipped (EN + ZH, custom OG + banner, hire CTA):
 
 ### Phase C — Discovery & structure (Tier 2)
 
-**Step C1 — Per-post custom OG images (at least for case studies).**
-Currently every post shares the generic 14KB `og-default.png` — flagship posts share the same bland card as category pages.
-- [ ] Build a branded 1200×630 OG template (name + face + title).
-- [ ] Generate a custom `ogImage` for each case study (frontmatter `ogImage:` field already supported).
-- **Governing doc:** `design-guide.md` §2/§3, `content-guide.md` §6 (ogImage field).
-- **Done when:** each case study's `og:image` is unique and 1200×630.
+**Step C1 — Per-post custom OG images.** ✅ Done (verified live 2026-09-29)
+Every published post serves its own `/og/<slug>.png` (1200×630) generated by `scripts/og-gen/generate.mjs`, with the
+category chip derived from frontmatter. Two leftovers only: the shared `og-default.png` still backs the homepage and
+category pages (no face — folded into **A1 / E8**), and one post's banner 404s (**E8**).
 
 **Step C2 — Tag pages** (`/tags/[tag]/` archive pages for fine-grained discovery + internal linking).
 - [ ] Add tag archive routes (tags currently render as labels only).
@@ -337,13 +421,15 @@ Currently every post shares the generic 14KB `og-default.png` — flagship posts
 
 **Step C4 — Dedicated `/zh/posts/` and `/zh/categories/` archive pages.** 🔵 In progress
 - [x] `/zh/categories/` index + `/zh/categories/[category]/` detail pages live (zh nav "分类" points there; PostList is locale-aware with zh-CN dates).
-- [ ] `/zh/posts/` archive still missing — zh nav "文章" falls back to `/zh/` landing (zh post count already 17, the archive is due).
+- [ ] `/zh/posts/` archive still missing — zh nav "文章" falls back to `/zh/` landing. ⚠ Live-measured 2026-09-29: the ZH nav's 「关于」 is **also** wrong (points at `/zh/`, not `/zh/about/`), and `/zh/about/` has **zero inbound links** — see **Step E4**, which folds into this one.
 - **Done when:** zh nav links to real `/zh/posts/` + `/zh/categories/` archives.
 
 ### Phase D — Polish / later (Tier 3)
 
-**Step D1 — Search** (AstroPaper-style fuzzy search). Low priority until >20 posts.
-**Step D2 — Google Search Console submission** — submit `sitemap-index.xml` for faster indexing.
+**Step D1 — Search.** ✅ Done (verified live 2026-09-29)
+Pagefind is shipped: `/pagefind/pagefind.js` → 200, a search toggle in the nav on both locales, and the shards are
+correctly `Disallow`ed in `robots.txt`. (Originally deferred until >20 posts.)
+**Step D2 — Google Search Console submission.** → merged into **Step E1** (2026-09-29). A `google-site-verification` TXT record already exists on `hoelee.com`, so the GSC domain property exists; what is unconfirmed is whether the blog's sitemap was ever submitted.
 **Step D3 — Newsletter / email capture** — only after real traffic exists (agree: do NOT add yet).
 
 ---
@@ -361,15 +447,43 @@ What the reference blogs do that blog.hoelee.com should mirror, ranked:
 | Consistent cadence (slow is fine, dead is not) | Julia (~monthly), Simon (daily) | ⚠️ only 3 posts, all Sept 4–6 — **Phase B** |
 | "Start here" / Favorites route | Julia Evans, Josh Comeau | ❌ — **Step A3** |
 | RSS + sitemap + clean SEO | All four | ✅ |
-| Per-post OG images | Josh Comeau | ❌ — **Step C1** |
-| Search (once >15–20 posts) | Josh Comeau | ❌ deferred — **Step D1** |
+| Per-post OG images | Josh Comeau | ✅ done (verify 2026-09-29 — §4) |
+| Search (once >15–20 posts) | Josh Comeau | ✅ done — Pagefind live (§4) |
 
 ---
 
-## 4. Conventions (non-negotiable)
+## 4. Live Audit Snapshot — 2026-09-29 (measured, not assumed)
+
+Method: `curl` from the Windows host (direct curl to blog.hoelee.com **worked** on this date — the DSM fallback was
+not needed), cross-checked against the local repo at `D:/dev/hoelee-blog`.
+
+| Check | Measured result |
+|---|---|
+| Posts | **53 published EN + 53 ZH** (54 files each, 1 draft) — every published post has a ZH twin, no orphans either way |
+| Sitemap | `sitemap-index.xml` → `sitemap-0.xml`, **127 URLs** (53 posts + 53 ZH + 19 landing/category + `/posts/`), `lastmod` honest; 254 `xhtml:link` hreflang alternates |
+| Internal links | 133 unique internal links across home / `/posts/` / `/categories/` / about / ZH pages → **133 × 200, zero 404s** |
+| `robots.txt` | Pure ASCII, allows all crawlers (search **and** AI), `Disallow: /pagefind/`, declares the sitemap |
+| Search | **Pagefind live** — `/pagefind/pagefind.js` 200, nav search toggle on both locales (**D1 done**) |
+| Per-post OG | Every post serves `/og/<slug>.png`; **1 post has no banner** (`scraping-bot-walled-…`) |
+| Analytics | **None at all.** No GA/GTM, Plausible, Umami, Matomo, Clarity, PostHog or CF `beacon.min.js` on home, post, about or ZH pages → **E1** |
+| Google Search Console | `hoelee.com` TXT `google-site-verification=g9jeE8…` exists ⇒ a **domain property** already covers the blog. Sitemap submission unverified → **E1** |
+| www.hoelee.com | 6 pages, **0 references to `blog.hoelee.com`** (one-way linking) → **E2 (deferred)**. Also `/cv` is now `301 → cloud.hoelee.com` Drive share (GET 200) — the v2.1 "broken /cv" finding is **FIXED**; note `HEAD` still returns 404 (a Pretty Link quirk), so don't re-diagnose it from a HEAD |
+| Author identity | Author card is still the letter avatar `<div class="avatar">M</div>` on About **and every post**; no photo anywhere on the site → **A1** |
+| ZH nav | 「文章」→ `/zh/` (no `/zh/posts/` route: **404**) and 「关于」→ `/zh/` — while `/zh/about/` is 200 but **orphaned** (zero inbound links) → **E4 / C4** |
+| `og:locale` | ZH pages emit `en` + alternate `en_US` → **E5** |
+| Homepage | No featured/start-here strip (**A3**). `<title>` says "engineering, DevOps & self-hosting" while the hero says "full-stack developer and DevOps engineer" (**A2**, cosmetic — lowest priority) |
+| Caching | `cf-cache-status: DYNAMIC` on a post page; `strict-transport-security: max-age=0` → **E6** |
+| Tags | Tags render as plain labels (not links), so `/tags/<tag>/` 404s cause **no broken links** — C2 is a missed-discovery item, not a bug |
+| Drafts | Exactly one: `authentik-css-greater-than-bug` (EN + ZH) → **E8** |
+| Cadence | 30 posts dated 2026-09; worst single-day stack = **5** (2026-09-18) — the backdating work held, no single-day dump at the top of the feed |
+| What did NOT change | The Sept report's platform verdict (Astro static) and its theme advice (AstroPaper) — the platform call still holds; the theme pick is moot because the custom theme already shipped and works |
+
+---
+
+## 5. Conventions (non-negotiable)
 
 - Push git.hoelee.com first, then GitHub
-- English-first; Chinese selective (2–3 flagship case studies); no Malay
+- English-first; **Chinese for every post** (same filename in `posts/zh/` — `post-guideline.md` §8 wins over the older "selective" wording); no Malay
 - No overclaiming, especially Web3
 - Name identity: "Lee Teong Hoe" / "Mr Hoelee" + same photo + same `sameAs` handles everywhere
 - Business framing: website design & development is primary; email hosting is secondary
