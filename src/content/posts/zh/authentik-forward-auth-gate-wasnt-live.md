@@ -1,7 +1,8 @@
 ---
 title: "验证完全正确的 Forward-Auth 网关——其实并未上线"
 description: "我的 authentik forward-auth 网关在宿主机上返回了干净的 302 跳转到登录页，公网 URL 却仍然直接服务应用。这个主机名有两条入口层，而我只改了其中一条。"
-pubDate: 2026-09-29
+pubDate: 2026-08-12
+updatedDate: 2026-09-29
 category: devops
 tags: ["authentik", "forward-auth", "cloudflare", "nginx", "docker", "self-hosting"]
 ogImage: /og/authentik-forward-auth-gate-wasnt-live.png

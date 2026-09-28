@@ -1,7 +1,8 @@
 ---
 title: "The Forward-Auth Gate That Verified Perfectly — and Wasn't Live"
 description: "My authentik forward-auth gate returned a clean 302 to the login page from the host itself, while the public URL still served the app. The hostname had two ingress layers, and I had only changed one."
-pubDate: 2026-09-29
+pubDate: 2026-08-12
+updatedDate: 2026-09-29
 category: devops
 tags: ["authentik", "forward-auth", "cloudflare", "nginx", "docker", "self-hosting"]
 ogImage: /og/authentik-forward-auth-gate-wasnt-live.png

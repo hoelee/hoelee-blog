@@ -1,7 +1,8 @@
 ---
 title: "浏览器翻译没有 API:我给一个纯中文网页应用加上了英文模式"
 description: "浏览器不提供触发翻译的 JavaScript API,而我的应用明明是中文却声明自己是英文。于是我改用反向代理,把一个英文模式注入进去。"
-pubDate: 2026-09-29
+pubDate: 2025-06-11
+updatedDate: 2026-09-29
 category: engineering
 tags: ["i18n", "nginx", "vue", "javascript", "self-hosting"]
 ogImage: "/og/adding-english-mode-to-a-chinese-only-web-app.png"

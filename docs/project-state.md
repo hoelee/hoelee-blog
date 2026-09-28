@@ -262,6 +262,29 @@ One session spent making a Synology NAS read, write and chart spreadsheets produ
 - **Done when:** ✅ 6 pages 200 with expected content, language switch links both ways, 6 images served as
   `image/png`, archive order still monotonic on `/posts/`, the homepage and `/zh/`.
 
+**Step B2h — (unplanned) Audit + backdate of the six posts that landed on 2026-09-29.** ✅ Done 2026-09-29
+One publishing day put **six** EN posts on the same `pubDate`, so `/posts/` opened with a single-day dump. Each was
+checked for date-, month- and version-pinned prose before its frontmatter was touched; two carried no pins and were
+moved into the archive's empty months with `updatedDate: 2026-09-29` holding the real date:
+
+| Slug | Category | pubDate → updatedDate | Why it was safe / blocked |
+|---|---|---|---|
+| `adding-english-mode-to-a-chinese-only-web-app` | `engineering` | 2025-06-11 → 2026-09-29 | no absolute date, month name, version or relative-time phrasing anywhere in EN or ZH; fills the empty 2025-06 |
+| `authentik-forward-auth-gate-wasnt-live` | `devops` | 2026-08-12 → 2026-09-29 | no pins. `nocodb-sso-is-a-licensed-feature` links *back* to it, so it must stay dated earlier than 2026-09-29 (it does), and the "licensing story in its own write-up" forward reference now reads as weeks rather than months. Fills the empty 2026-08 |
+
+- **The four that had to stay on 2026-09-29, and the exact sentence that pins them:**
+  - `read-only-nocodb-dashboard-for-a-remote-database` — image tag `nocodb/nocodb:2026.09.0` **and** a returned row
+    timestamp `2026-09-27 01:54:16+00:00` → floor 2026-09-27.
+  - `nocodb-sso-is-a-licensed-feature` — same `2026.09.0` image tag → floor 2026-09-01.
+  - `vetting-an-open-source-dependency-before-you-bet-on-it` — quotes the GitHub API as "last push 2026-09-10"
+    → floor 2026-09-11.
+  - `why-chrome-forgets-its-tabs-in-a-container` — the setup table names `Chrome 154` (≈ Oct 2026 on Chrome's
+    cadence) and the post links back to `scraping-bot-walled-marketplace-warm-browser-session` (2026-09-13) as
+    something already written → floor 2026-09-13.
+- **Still empty, and therefore the spare slots for the next batch:** 2024-10 → 2025-02 (five months) and 2025-04/05.
+- **Done when:** ✅ build clean, `lastmod` = 2026-09-29 for all four URLs (EN + ZH), listing order still monotonic
+  on `/posts/`, the homepage and `/zh/`, both article pages render the historical date.
+
 ### Phase C — Discovery & structure (Tier 2)
 
 **Step C1 — Per-post custom OG images (at least for case studies).**

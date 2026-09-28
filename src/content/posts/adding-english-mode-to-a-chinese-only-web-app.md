@@ -1,7 +1,8 @@
 ---
 title: "No API for Browser Translation: Adding an English Mode to a Chinese-Only Web App"
 description: "Browsers expose no JavaScript API to trigger translation — and my app declared English while being Chinese. How I injected an English mode at the reverse proxy."
-pubDate: 2026-09-29
+pubDate: 2025-06-11
+updatedDate: 2026-09-29
 category: engineering
 tags: ["i18n", "nginx", "vue", "javascript", "self-hosting"]
 ogImage: "/og/adding-english-mode-to-a-chinese-only-web-app.png"
