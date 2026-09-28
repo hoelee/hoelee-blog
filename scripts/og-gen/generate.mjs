@@ -268,6 +268,24 @@ TERMINALS['one-prometheus-for-unraid-synology-and-a-vps'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">KVM guest: no cpufreq · 0 series   nodename = 9f9afcccc962</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">dedup selector · textfile collector · hostname pin</span><span class="fix">→ 7 targets ✓</span></div>`;
 
+TERMINALS['synology-spreadsheet-api-is-a-container'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl ...SYNO.API.Info&amp;query=all</span><span class="fix">1515 APIs · no cell endpoints</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">→ conclusion: "the NAS has no spreadsheet API"  (wrong)</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">docker pull synology/spreadsheet-api:3.4.1</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">POST /spreadsheets/authorize · host must be an FQDN</span><span class="fix">→ read · write · xlsx ✓</span></div>`;
+
+TERMINALS['synology-api-401-with-the-correct-password'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">POST /spreadsheets/authorize · correct password</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">401 Unauthorized ← host=192.168.1.1:5001 · cert mismatch</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">2FA account: 401 forever · no OTP field in the schema</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">host=cloud.hoelee.com · protocol=https</span><span class="fix">→ token ✓</span></div>`;
+
+TERMINALS['reading-a-containers-own-api-docs'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">docker run --rm --entrypoint cat $IMG /app/public/openapi.yml</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="fix">27 KB OpenAPI spec · 15 endpoints · auth model</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">grep process.env → AUTH_SECRET · PORT 3000 · WORKER_TIMEOUT</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">exec cat /proc/net/tcp</span><span class="fix">→ listening on 3000 ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {

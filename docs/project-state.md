@@ -241,6 +241,27 @@ holding the real date, so the sitemap `lastmod` stays honest and listings still 
 - **Done when:** ✅ 8 pages 200 with expected content, language switch links both ways, 8 images served as `image/png`,
   archive order still monotonic on `/posts/`, the homepage and `/zh/`.
 
+**Step B2g — (unplanned) Three posts out of the Synology Office / spreadsheet-API session.** ✅ Done 2026-09-29
+One session spent making a Synology NAS read, write and chart spreadsheets produced three posts. All three are
+**backdated** into the 2024-09-24 → 2025-11-12 gap — the widest stretch in the archive with no posts — with
+`updatedDate: 2026-09-26` holding the real date, so `lastmod` stays honest and listings still sort by `pubDate`:
+
+| Slug | Category | pubDate | What it argues |
+|---|---|---|---|
+| `synology-spreadsheet-api-is-a-container` | `devops` | 2025-08-20 | The flagship. Enumerating the DSM gateway (1,515 APIs) showed no cell-level Office endpoint, so I concluded the NAS had no spreadsheet API — **wrong**: it ships as the container `synology/spreadsheet-api` (image tag ↔ Office version table). Plus two diagnostics that lied (`synopkg is_onoff` reporting a running package as "not turned on"; `ps` without `sudo` on DSM listing only your own processes, which made a live stack look dead), a required `AUTH_SECRET` whose absence crashes with a minified stack trace, a `401` with provably correct credentials, 2FA that can never authenticate, `403` vs `404` semantics, a personal `My Drive` unreachable by any service account, and the verified fix — read/write/CSV/`.xlsx` with Synology's own engine evaluating the formulas, then a chart out the far end. |
+| `synology-api-401-with-the-correct-password` | `notes` | 2025-09-10 | The two causes of a `401` when the password is right: `host` must be an FQDN whose certificate the proxy accepts (a bare LAN IP fails its TLS handshake, and a failed handshake is reported identically to a bad password), and a 2FA account can never sign in (`AuthorizationBody` has no OTP field). Includes the three-command triage that separates them, and why a token that worked yesterday returns `401` today — it's bound to the DSM session, not just to a 28-day clock. |
+| `reading-a-containers-own-api-docs` | `notes` | 2025-10-01 | Extract a container's contract from the artifact instead of the vendor's page: `--entrypoint cat` the bundled OpenAPI spec, `--entrypoint grep` the bundle for the env-var contract and the defaults, read Env/Entrypoint/Cmd from the registry config blob without pulling a byte, decode the real listening port from `/proc/net/tcp`, and run detached to read startup logs without hanging the shell. |
+
+- All three EN + ZH, custom OG + banner (centering **measured**, not eyeballed: gapAbove/gapBelow 47/49, 76/78,
+  106/108, `delta=2px`, `overflow=0`), hire CTA naming self-hosted integrations; the two `notes` posts link up to
+  the flagship with a relative link.
+- **Why:** the search results for `synology spreadsheet api` / `spreadsheet-api docker` are Synology's own Hub page,
+  a German how-to and two MCP wrappers — nothing covers the failure modes, and the "vendor tool told me the wrong
+  thing" shape matches the blog's strongest existing genre (`patching-workbench-26-for-mariadb`,
+  `when-smart-says-healthy-but-your-raid-is-corrupting-data`).
+- **Done when:** ✅ 6 pages 200 with expected content, language switch links both ways, 6 images served as
+  `image/png`, archive order still monotonic on `/posts/`, the homepage and `/zh/`.
+
 ### Phase C — Discovery & structure (Tier 2)
 
 **Step C1 — Per-post custom OG images (at least for case studies).**

@@ -866,6 +866,69 @@ BANNERS['one-prometheus-for-unraid-synology-and-a-vps'] = {
   ],
 };
 
+BANNERS['synology-spreadsheet-api-is-a-container'] = {
+  titlebar: 'root@dsm — office suite api',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl .../SYNO.API.Info&query=all' },
+    { t: 'ok',   text: '1515 APIs · SYNO.Office has no cell endpoint' },
+    { t: 'err',  text: '→ "the NAS has no spreadsheet API"   ← wrong' },
+    { t: 'dim',  text: 'synopkg is_onoff SynologyDrive' },
+    { t: 'err',  text: 'not turned on  ← while its daemons were serving traffic' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'docker pull synology/spreadsheet-api:3.4.1' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'POST /spreadsheets/authorize' },
+    { t: 'err',  text: '401 Unauthorized · host must be an FQDN with a valid cert' },
+    { t: 'ok',   text: '→ read · write · csv · xlsx ✓' },
+  ],
+  flow: [
+    { n: '1', label: '1515 APIs' },
+    { n: '2', label: 'no endpoint', err: true },
+    { n: '3', label: 'it is a container' },
+    { n: '4', label: '401 to FQDN' },
+    { n: '5', label: 'cells ✓' },
+  ],
+};
+
+BANNERS['synology-api-401-with-the-correct-password'] = {
+  titlebar: 'root@dsm — authorize · 401',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'POST /spreadsheets/authorize · correct password' },
+    { t: 'err',  text: '401 {"error":"Unauthorized"}' },
+    { t: 'dim',  text: 'host = 192.168.1.1:5001   ← cert does not match the IP' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'host = cloud.example.com · protocol = https' },
+    { t: 'ok',   text: '200 → token · JWT · 28 days ✓' },
+    { t: 'dim',  text: '2FA account: no OTP field in AuthorizationBody' },
+    { t: 'err',  text: '→ 401 on every host, every correct password' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'use a dedicated service account, 2FA off' },
+  ],
+  flow: [
+    { n: '1', label: '401', err: true },
+    { n: '2', label: 'password fine' },
+    { n: '3', label: 'host / cert' },
+    { n: '4', label: 'FQDN + https' },
+    { n: '5', label: 'token ✓' },
+  ],
+};
+
+BANNERS['reading-a-containers-own-api-docs'] = {
+  titlebar: 'root@dsm — the image is the source of truth',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'docker run --rm --entrypoint cat $IMG /app/public/openapi.yml' },
+    { t: 'ok',   text: 'OpenAPI 3.1 · 15 endpoints · AuthorizationBody schema' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'entrypoint grep $IMG -rhoE process.env.[A-Z_]+ /app/dist' },
+    { t: 'hl',   text: 'AUTH_SECRET · PORT · HOST · USER_TIMEOUT · WORKER_TIMEOUT' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl registry-1.docker.io/v2/.../blobs/<config>' },
+    { t: 'dim',  text: 'Entrypoint: docker-entrypoint.sh   Cmd: node dist/index.js' },
+    { t: 'ok',   text: '→ contract known before pulling a byte ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'docs gated' },
+    { n: '2', label: 'cat the spec' },
+    { n: '3', label: 'grep env vars' },
+    { n: '4', label: 'registry blob' },
+    { n: '5', label: 'contract ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';
