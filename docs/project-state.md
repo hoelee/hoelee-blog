@@ -108,6 +108,23 @@ dictionary + floating EN button (871 labels, 77–88% measured coverage). Custom
 - **Why:** `engineering` was the thinnest published category, and the story is a rare, searchable gotcha with hard numbers.
 - **Done when:** ✅ both pages 200, language switch links both ways, sitemap hreflang pair, RSS entry, OG + banner served.
 
+**Step B2d — (unplanned) Publish "How I Vet an Open-Source Dependency Before Betting On It".** ✅ Done 2026-09-29
+`vetting-an-open-source-dependency-before-you-bet-on-it` (category `devops`, EN + ZH): the six checks that
+corrected six assumptions from a 1,306-line architecture spec — repo vital signs via the GitHub API, grepping for
+the feature instead of reading for it (OIDC/SSO/SAML → 0 hits), reading a feature doc's target branch
+(white-label lives on `multi-tenant`, not `main`), reading the data model rather than the feature list
+(`percent`/`fixed` vs five assumed rule types), the Community-vs-Enterprise tier gate (API tokens free, SSO paid),
+and whether the money rail works in-country (selfhost + manual payouts, not Stripe Connect). Custom OG + banner,
+hire CTA, commit `8711136`.
+- **Why:** forms a due-diligence cluster with `how-to-verify-a-hosting-provider-before-you-buy` and
+  `how-i-vetted-20-vps-providers-with-parallel-subagents` — those cover vendors you *pay*, this covers code you
+  *depend on*. `devops` is the most differentiated category.
+- **Done when:** ✅ both pages 200, language switch links both ways, OG + banner served (1200×630 / 1600×900),
+  listing order monotonic on `/posts/`, `/` and `/zh/`, Gitea Actions task `success`.
+- ⚠ **Overlap to watch:** two parallel in-flight posts cover adjacent material
+  (`nocodb-sso-is-a-licensed-feature`, `authentik-forward-auth-gate-wasnt-live`). If those publish, add
+  cross-links so the trio reads as a series rather than repetition.
+
 **Step B3 — Adopt the "hard job → post" habit.**
 Every solved problem becomes a `notes` entry the same week.
 - [ ] Revisit cadence target: 2 posts/month → 1/week (`content-guide.md` §5).
