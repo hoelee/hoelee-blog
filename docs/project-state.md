@@ -101,6 +101,13 @@ Two finished posts (EN + ZH, each with frontmatter pointing at OG + banner paths
 - **Governing doc:** `content-guide.md` §3/§4, `post-guideline.md` §8.
 - **Done when:** both are published live with EN+ZH, custom OG + banner, and verified 200.
 
+**Step B2c — (unplanned) Publish "No API for Browser Translation" — the English-mode story.** ✅ Done 2026-09-29
+`adding-english-mode-to-a-chinese-only-web-app` (category `engineering`, EN + ZH): the `<html lang="en">` lie that
+suppressed the browser's translate prompt, the fact that no browser-translate API exists, and the gateway-injected
+dictionary + floating EN button (871 labels, 77–88% measured coverage). Custom OG + banner, hire CTA, commit `8a9ba6a`.
+- **Why:** `engineering` was the thinnest published category, and the story is a rare, searchable gotcha with hard numbers.
+- **Done when:** ✅ both pages 200, language switch links both ways, sitemap hreflang pair, RSS entry, OG + banner served.
+
 **Step B3 — Adopt the "hard job → post" habit.**
 Every solved problem becomes a `notes` entry the same week.
 - [ ] Revisit cadence target: 2 posts/month → 1/week (`content-guide.md` §5).
