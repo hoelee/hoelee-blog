@@ -77,8 +77,8 @@ unanswerable, and the job-hunt thesis can't be verified. Decisions (2026-09-29):
 | ✅ **Hardening (A+B) done 2026-09-29** | (A) Default `admin`/`umami` replaced with a random 20-char password (`C:\Users\hoelee\.secrets\umami-admin.txt`) and `APP_SECRET` rotated → every previously issued session invalidated. Verified: old password **401**, new password **200**, old token **401**. (B) New stack **285 `umami-gateway`** (`nginx:1.29-alpine`, holds host port **5410** = what the DSM vhost targets) — public allowlist is exactly `/script.js`, `/api/send`, `/api/heartbeat`; **everything else 403**. Umami itself no longer publishes a public port; the dashboard moved to **LAN-only `192.168.1.1:5411`** (stack 284 republished `5411:3000`), which is unreachable from the internet — verified from the VPS: TCP 5411 closed/filtered, TCP 443 open. ⚠ **Superseded later the same day by the SSO gate below** — the DSM vhost now points at the outpost, so stack 285 is no longer in the public path but is **left running as the rollback** |
 | ⚠ Gate design constraint found | **HTTP basic auth cannot be used here**: the Umami front end sends `Authorization: Bearer <jwt>` on its own API calls, and a browser sends only one `Authorization` header — Bearer replaces Basic, so a basic-auth gate 401s every API call and the dashboard breaks. If a *remote* dashboard is ever wanted, **one hostname is still enough** — either rely on Umami's own login (+ enable 2FA) or put cookie auth (authentik forward-auth / oauth2-proxy) on this same hostname with skip-paths for the tracker (the `traefik-login-numerology` pattern). A second hostname (tracker vs admin) is the PostHog/Sentry-scale ingest-vs-app split, not a requirement. `stats-admin.hoelee.com` was only a hypothetical and was never created (NXDOMAIN verified) |
 | End-to-end tracker verified | A real pageview POSTed through the **public** gate was recorded: 1 pageview / 1 visitor, with `country=MY, region=MY-07, city=George Town`, browser chrome, os Windows 10 — proving the `X-Forwarded-For` chain (DSM nginx → gate → Umami) works and geo needs no Cloudflare headers. The temporary test website was deleted afterwards (website list back to 0) |
-| Still open | (a) CF Web Analytics still not enabled (independent of Umami). (b) GSC sitemap submission still unconfirmed. (c) The blog's tracker snippet is **not** wired yet — no data is collected until a website record exists and the snippet is in the base layout. |
-| Dashboard login | **LAN only**: <http://192.168.1.1:5411> — `admin` + the random password in `C:\Users\hoelee\.secrets\umami-admin.txt` (agent-set 2026-09-29; change it in Settings → Profile if you prefer) |
+| Still open | (a) CF Web Analytics still not enabled (independent of Umami — it is the zero-code option and would also give Core Web Vitals field data). (b) GSC sitemap submission still unconfirmed — only the GSC UI answers it. (c) ✅ **Resolved 2026-09-30** — the tracker is wired into three sites (see Step B2j) and pageviews are landing with real geo + referrer; "recording" is no longer in doubt, only the CF/GSC half of E1 remains |
+| Dashboard login | **Two ways in** (since the SSO cut-over): <https://stats.hoelee.com> — authentik SSO first, then the app's own login — or the LAN break-glass <http://192.168.1.1:5411>. Credentials: `admin` + the random password in `C:\Users\hoelee\.secrets\umami-admin.txt` (agent-set 2026-09-29; change it in Settings → Profile if you prefer). Per-account 2FA is available (`TWO_FACTOR_ENCRYPTION_KEY` already set) |
 
 **E1 progress — SSO gate wired 2026-09-29 ✅ (authentik `forward-auth`-style proxy in front of the dashboard; tracker stays public)**
 
@@ -443,6 +443,50 @@ Five posts shipped (EN + ZH, custom OG + banner, hire CTA):
   `overflow=0`, `scrollHeight == clientHeight == 636`.
 - **Done when:** ✅ 2 new category routes (`/categories/web3/`, `/zh/categories/web3/`), build 127 pages clean,
   all 10 post URLs + 10 images 200, language switch both ways, listing order monotonic on `/posts/`, `/`, `/zh/`.
+
+**Step B2j — (unplanned) One post out of the analytics/SSO session, plus the tracker wired into three sites.** ✅ Done 2026-09-30
+
+The analytics session (Step E1) produced one flagship post and the material to justify it:
+
+| Slug | Category | pubDate | Commit | Live |
+|---|---|---|---|---|
+| `one-hostname-public-tracker-sso-dashboard` | `devops` | 2026-09-30 | `54d8cce` | EN + ZH + OG + banner all **200** |
+
+- **Angle:** "public ingest, private dashboard" on **one hostname** — the authentik proxy provider +
+  `skip_path_regex` pattern, written up as the *correct* counterpart to `authentik-forward-auth-gate-wasnt-live`
+  (which documented the gate that was never live). The two posts cross-reference the same instance from
+  opposite directions, which is exactly the compounding an authentik series is supposed to do.
+- **Two traps are the post's core value** (both cost real time in this session): (1) cloning a working
+  provider that used `mode=forward_single` leaves `internal_host` empty, so the SSO chain is textbook-correct
+  while **every app path 404s** — the tell is `x-powered-by: authentik` on the 404; (2) the embedded outpost
+  needs **1–2 minutes** to pick up a provider change and answers `302 → /flows/-/default/authentication/`
+  plus 404s until it does, which reads as "the wiring is broken".
+- Also in the post: why nginx basic auth can never gate this app (the browser carries one `Authorization`
+  header, so the app's own bearer token displaces Basic and every API call 401s), the honest trade-offs
+  (double login — no OIDC in the app; dashboard is as available as the outpost; one LAN break-glass port),
+  and the public-internet verification table (including `POST /api/send` returning an **app-level 400** rather
+  than a gate 403 — proof the request reaches the app).
+- **Generators committed with the post** (both clean, diffs additive-only 5/0 and 21/0): 3-line `TERMINALS`
+  entry, 8-row `BANNERS` entry with the 5-step flow.
+- **Verified:** build clean (129 pages, Pagefind 2 languages), 14 content assertions on the deployed pages
+  (framing, both traps, CTA, language switch both ways, tracker tag, og + banner), listing order monotonic
+  with the new post newest (2026-09-30), Gitea Actions run **122 success**, EN/ZH/OG/banner 200 within a minute.
+- ⚠ **Not done:** no synthetic pageview this time — the real-Chrome CDP window (9222) was closed by the time
+  the post shipped, and the house rule is to verify analytics with a real browser rather than a headless one.
+  The page carries the tracker (asserted in the HTML), so the first real visit is what will show up.
+
+**Tracker now wired into three sites (E1 progress, 2026-09-30)** — the analytics deployment is no longer
+"installed, not collecting":
+
+| Site | website ID | Where the snippet lives | Deploy path |
+|---|---|---|---|
+| `blog.hoelee.com` | `1817d8f6-0e49-4b9a-a50d-307e4f2962c7` | `src/layouts/BaseLayout.astro` (EN + ZH share it) | Gitea Actions, ~1 min |
+| `www.digikedai.com` | `61b57143-f3f4-4353-9ede-9c615146de84` | `dsm-resource-management/www/src/layouts/Base.astro` | `npm run build` + `./deploy.sh` (CF Pages) |
+| `www.sifumail.com` | `9d76b8aa-486a-4e4a-b344-f1f93e9ba292` | all 4 pages' `<head>` (static site, no shared template) | `scp` to the VPS docroot `/docker/web/www.sifumail.com/public/` |
+
+⚠ **Verification pitfall (cost me a false alarm): Umami drops bot/headless user agents.** The same payload
+returns `200 {"beep":"boop"}` and stores **nothing** from `HeadlessChrome`, but `200 {"cache":"…"}` and stores
+from a normal Chrome UA — so "0 pageviews after a headless test" is not a bug. Verify with a real browser.
 
 ### Phase C — Discovery & structure (Tier 2)
 
