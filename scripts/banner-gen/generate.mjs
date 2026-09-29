@@ -1028,6 +1028,27 @@ BANNERS['jpa-version-field-lost-update'] = {
     { n: '4', label: '409 ✓' },
   ],
 };
+BANNERS['one-hostname-public-tracker-sso-dashboard'] = {
+  titlebar: 'root@dsm — stats.hoelee.com · authentik outpost',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl -sI https://stats.hoelee.com/script.js' },
+    { t: 'ok',   text: '200 — the tracker stays public for every visitor' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'curl -sI https://stats.hoelee.com/' },
+    { t: 'dim',  text: '302 → auth.hoelee.com/if/flow/auth-stats/   (SSO)' },
+    { t: 'err',  text: 'mode=forward_single → app paths 404 behind a "healthy" SSO chain' },
+    { t: 'hl',   text: 'in proxy mode the outpost IS the reverse proxy' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'skip_path_regex · ^/script\\.js$  ^/api/send  ^/api/heartbeat$' },
+    { t: 'ok',   text: 'mode=proxy + internal_host → one hostname, no second subdomain ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'tracker public' },
+    { n: '2', label: 'dashboard gated' },
+    { n: '3', label: 'one hostname' },
+    { n: '4', label: 'skip paths' },
+    { n: '5', label: 'verified ✓' },
+  ],
+};
+
 
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);

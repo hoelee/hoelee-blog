@@ -316,6 +316,11 @@ TERMINALS['jpa-version-field-lost-update'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">@Version → UPDATE … WHERE version = 3</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="fix">→ 409 Conflict, not a lost update ✓</span></div>`;
 
+TERMINALS['one-hostname-public-tracker-sso-dashboard'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl -sI https://stats.hoelee.com/script.js | head -1</span><span class="fix">→ 200</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">mode=forward_single: SSO 302 ✓ · every app path 404</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">mode=proxy + internal_host=http://umami:3000</span><span class="fix">→ dashboard 200 ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {
