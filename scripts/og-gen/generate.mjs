@@ -321,6 +321,11 @@ TERMINALS['one-hostname-public-tracker-sso-dashboard'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">mode=forward_single: SSO 302 ✓ · every app path 404</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">mode=proxy + internal_host=http://umami:3000</span><span class="fix">→ dashboard 200 ✓</span></div>`;
 
+TERMINALS['loop-engineering-without-a-coding-agent'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">hermes cron list → 11 loops · 8 with no model in the path</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">agent-mode job: [drift_skip] × 29 runs — silent broken and silent healthy</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">rewrite as a script · exit 1 = CANNOT MEASURE</span><span class="fix">→ 1,618 ticks ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {

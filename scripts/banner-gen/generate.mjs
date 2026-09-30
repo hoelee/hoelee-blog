@@ -1049,6 +1049,26 @@ BANNERS['one-hostname-public-tracker-sso-dashboard'] = {
   ],
 };
 
+BANNERS['loop-engineering-without-a-coding-agent'] = {
+  titlebar: 'root@hermes — 11 cron loops, 8 with no model',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'hermes cron list → 11 loops running this machine' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: '8 of 11: no LLM · script stdout delivered as the notice' },
+    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'agent-mode job: [drift_skip] × 29 runs — silent when broken' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'rewrite as plain script · exit 1 = CANNOT MEASURE' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'control probe first · 2-fail threshold · 3-run cooldown' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'state beside the script: run_no · fails · down_since' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'tiers: report only → propose → act inside an allowlist' },
+    { t: 'prompt', text: '' }, { t: 'ok', text: '→ 1,618 ticks · 0 false alarms · self-healed a hung VM ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'trigger' },
+    { n: '2', label: 'probe' },
+    { n: '3', label: 'drift', err: true },
+    { n: '4', label: 'verify' },
+    { n: '5', label: 'act ✓' },
+  ],
+};
 
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
