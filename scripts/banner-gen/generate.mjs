@@ -1070,6 +1070,27 @@ BANNERS['loop-engineering-without-a-coding-agent'] = {
   ],
 };
 
+BANNERS['stop-writing-agent-prompts-for-deterministic-work'] = {
+  titlebar: 'root@hermes — deterministic check, no model',
+  lines: [
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'registry.npmjs.org/<pkg>/latest  vs  local version' },
+    { t: 'prompt', text: 'WARN' }, { t: 'err', text: 'agent mode: [drift_skip] × 29 — died before it could speak' },
+    { t: 'prompt', text: '' }, { t: 'dim', text: 'silent-because-healthy  ==  silent-because-crashed' },
+    { t: 'prompt', text: '$' }, { t: 'cmd', text: 'rewrite: exit 0 = measured · exit 1 = CANNOT MEASURE' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'script stdout delivered as the notice · no LLM in the path' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'the test: write down what success AND failure print' },
+    { t: 'prompt', text: 'INFO' }, { t: 'cmd', text: 'number or string → script · "it depends" → model + verifier' },
+    { t: 'prompt', text: '' }, { t: 'ok', text: '→ 8 of 11 loops now carry no model ✓' },
+  ],
+  flow: [
+    { n: '1', label: 'compare' },
+    { n: '2', label: 'agent ✗', err: true },
+    { n: '3', label: 'script' },
+    { n: '4', label: 'exit 1 ≠ silent' },
+    { n: '5', label: 'green ✓' },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';

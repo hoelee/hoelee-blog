@@ -326,6 +326,11 @@ TERMINALS['loop-engineering-without-a-coding-agent'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">agent-mode job: [drift_skip] × 29 runs — silent broken and silent healthy</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">rewrite as a script · exit 1 = CANNOT MEASURE</span><span class="fix">→ 1,618 ticks ✓</span></div>`;
 
+TERMINALS['stop-writing-agent-prompts-for-deterministic-work'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">hermes cron: CLI version check · agent mode</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">[drift_skip] × 29 runs — silent, and silence reads as "nothing to report"</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">rewrite as a script · stdout IS the notification</span><span class="fix">→ green since ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {
