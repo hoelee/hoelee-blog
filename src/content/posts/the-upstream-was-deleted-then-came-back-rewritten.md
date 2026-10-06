@@ -75,11 +75,13 @@ Verified on 2026-10-06, straight from the GitHub API and the registry:
 | Releases / tags | **0 / 0** |
 | Docker Hub | still **404** |
 
-The 2021 history is gone. The `created_at` timestamp still reads 2021-08-13
-because GitHub keeps that field when a repository is re-populated, but the
-git history begins on 2026-09-16 with an empty-repository commit. There is
-also a ghost of the deletion still sitting on the old branch: fetch
-`master`'s README and its entire contents are the single word `deleted`.
+The 2021 history is there but disconnected. `main` carries 233 commits and
+its oldest is dated 2026-09-16; the old branch survives as a **single commit
+dated 2026-06-22** whose message is just `commit`, and whose entire README is
+the one word `deleted`. The two branches share **no common ancestor** — which
+is what a wipe followed by a fresh start looks like in git. (`created_at`
+still reads 2021-08-13, because GitHub keeps that field when a repository is
+re-populated; the history is what tells you the truth.)
 
 And the code behind those 233 commits is not my app's codebase continued. It
 is a different application that happens to keep the name:
