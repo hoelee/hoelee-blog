@@ -526,7 +526,15 @@ from a normal Chrome UA — so "0 pageviews after a headless test" is not a bug.
   right content types; sitemap **139 URLs**, all four new entries `lastmod 2026-10-06` with hreflang alternates; EN and ZH
   listing rows **monotonic** with the new posts at **#2** (2026-10-06) and **#54** (2025-06-24, between 2025-07-08 and
   2025-06-11); language switch links both ways; CTA links present (Cloudflare rewrites the `mailto:` to `email-protection`
-  — expected). Commit `378d55c`, pushed Gitea + GitHub, both remotes **0/0**.
+  — expected). Commit `378d55c`, pushed Gitea + GitHub, both remotes **0/0**; follow-up `ef3f520` sharpened the wipe
+  evidence after checking the actual repo (not just the API): `master` is a **single commit dated 2026-06-22** whose
+  README is the word `deleted`, sharing **no common ancestor** with `main` — the API's `created_at` still reads 2021-08-13
+  and would have misled a reader who trusted it.
+- **Upstream source mirrored to Gitea (private) the same session:** `hoelee/reader-2026-rewrite` — full clone of
+  `github.com/hectorqin/reader` (`main` @ `5c59cae`, plus the 1-commit `master`), pushed with `git push --mirror`.
+  ⚠ Gitea's hook **rejects `refs/pull/*`** ("hook declined") — that is expected and harmless; branches and the whole
+  object history land. A future session should re-push from a fresh `git clone --mirror` to refresh it, or switch the
+  repo to a Gitea pull mirror (the existing `hoelee/reader` uses the 8h auto-sync mirror feature).
 - ⚠ **Reminder for the next session:** the assertion method matters — hrefs must be checked against **raw** HTML, not the
   tag-stripped text (a first pass reported the CTA and cross-links "missing" because tag-stripping removes `href`).
 
