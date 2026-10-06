@@ -488,6 +488,48 @@ The analytics session (Step E1) produced one flagship post and the material to j
 returns `200 {"beep":"boop"}` and stores **nothing** from `HeadlessChrome`, but `200 {"cache":"…"}` and stores
 from a normal Chrome UA — so "0 pageviews after a headless test" is not a bug. Verify with a real browser.
 
+**Step B2k — (unplanned) Two posts out of the reader/book.hoelee.com session: the upstream rewrite, and the front-door pattern.** ✅ Done 2026-10-06
+
+| Slug | Category | pubDate | Live |
+|---|---|---|---|
+| `the-upstream-was-deleted-then-came-back-rewritten` | `devops` | 2026-10-06 | EN + ZH + OG + banner all **200** |
+| `putting-a-front-door-on-an-app-you-cant-modify` | `devops` | **2025-06-24** (backdated) | EN + ZH + OG + banner all **200** |
+
+- **Why these two, from the reader's own setup (stack 136) rather than a generic idea:** the existing coverage of that
+  project was the translation post (`adding-english-mode-…`) and the TTS post. The untouched material was (a) the
+  dependency's death-and-resurrection and (b) the gateway/front-door packaging pattern.
+- ⚠ **The upstream facts changed while the skill still said "dead".** Re-verified live 2026-10-06: `github.com/hectorqin/reader`
+  is **alive** — 11,036★ / 5,471 forks / AGPL-3.0 / default branch `main`, last push 2026-10-02 — but it is a
+  **from-scratch rewrite**: the git history was re-initialised **2026-09-16** (`chore: 初始化仓库`) and holds **233
+  commits**; Kotlin/Spring+Vert.x → **TypeScript/Node**, port 8080 → **5888**, `/storage/data` JSON → **`/data` SQLite**,
+  env config → **admin-UI settings in the DB**, image moved to **`cnb.cool/hectorqin/reader:main`** (branch/commit tags,
+  deliberately no `:latest`), **0 releases / 0 tags**; Docker Hub `hectorqin/reader` still **404**. Upstream's own P0
+  notes admit the **image-pull + container upgrade drill was never run** and legacy-data auto-migration is unimplemented.
+  The running deployment is unchanged (`liangnianzhi/reader.hectorqin:latest-20250525`). **The `hectorqin-reader` skill was
+  corrected in this session** — a future session must not repeat "upstream is dead, there is no upgrade".
+- **Post 1** writes that up as "dead vs rewriting" with the reusable checks (repository health ≠ artifact health; no tags
+  ⇒ every upgrade is a SHA; mirror source *and* image; compare the **shape** before the features; read the maintainer's
+  "not done yet" list; AGPL-3.0 if you run it for paying users).
+- **Post 2** is the gateway pattern: a second `nginx:alpine` container owning the public port, the request-time
+  `resolver 127.0.0.11` (so the front page survives the app being down), `client_max_body_size` preserved for uploads,
+  why a proxy **body rewrite** cannot touch a client-rendered SPA, the "reload → back to the front door" injection with
+  its `sessionStorage.gatePass` consume-step, the app's own CSS hook for whitelabelling, and the **silent-failure** warning
+  (the injections depend on the literals `<html lang="en">` and `</head>`).
+- ⚠ **Backdating rule applied to post 2 only.** Post 1 is date-pinned (its facts *are* Sept–Oct 2026) so it ships on the
+  real date. Post 2 went into the empty **2025-06-25 → 2025-07-07** window at `2025-06-24`, `updatedDate: 2026-10-06`
+  so `lastmod` stays honest — and it is constrained to **link backwards only** (it cross-links
+  `adding-english-mode-…`, dated 2025-06-11); a forward link to a later-dated post would contradict the backdate.
+- **Generators committed with the posts** (both were clean, `deletions: 0`, `node --check` OK) via
+  `scripts/append_generator_entries.py`: 4-line `TERMINALS` + 8-row `BANNERS` per slug.
+- **Verified after deploy:** build clean (139 pages, Pagefind 2 languages, no duplicate-id warning); `measure_og_banner.py`
+  **PASS** on both (og `rows=1 overflow=0 missingHash=0`; banner 8 rows, `delta=2`, `overflow=0`); 8 live URLs 200 with the
+  right content types; sitemap **139 URLs**, all four new entries `lastmod 2026-10-06` with hreflang alternates; EN and ZH
+  listing rows **monotonic** with the new posts at **#2** (2026-10-06) and **#54** (2025-06-24, between 2025-07-08 and
+  2025-06-11); language switch links both ways; CTA links present (Cloudflare rewrites the `mailto:` to `email-protection`
+  — expected). Commit `378d55c`, pushed Gitea + GitHub, both remotes **0/0**.
+- ⚠ **Reminder for the next session:** the assertion method matters — hrefs must be checked against **raw** HTML, not the
+  tag-stripped text (a first pass reported the CTA and cross-links "missing" because tag-stripping removes `href`).
+
 ### Phase C — Discovery & structure (Tier 2)
 
 **Step C1 — Per-post custom OG images.** ✅ Done (verified live 2026-09-29)
