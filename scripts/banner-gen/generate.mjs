@@ -1091,6 +1091,27 @@ BANNERS['stop-writing-agent-prompts-for-deterministic-work'] = {
   ],
 };
 
+BANNERS['running-production-infrastructure-solo'] = {
+  titlebar: "root@hoe-lee — three hosts, one operator",
+  lines: [
+    { t: 'prompt', text: "$" }, { t: 'cmd', text: "docker ps — three hosts, one operator" },
+    { t: 'prompt', text: "DSM" }, { t: 'cmd', text: "86 containers · 44 stacks — storage, SSO, services" },
+    { t: 'prompt', text: "unRaid" }, { t: 'cmd', text: "37 containers · 21 stacks — CI runner, monitoring" },
+    { t: 'prompt', text: "VPS" }, { t: 'cmd', text: "39 containers · 13 stacks — mail, public sites" },
+    { t: 'prompt', text: "WARN" }, { t: 'err', text: "cAdvisor count inflated · one volume counted three times" },
+    { t: 'prompt', text: "$" }, { t: 'cmd', text: "verify_infra.py — re-measure, never remember" },
+    { t: 'prompt', text: "" }, { t: 'ok', text: "162 containers · 78 compose stacks ✓" },
+    { t: 'prompt', text: "" }, { t: 'dim', text: "a number you cannot re-check is not a number you can defend" },
+  ],
+  flow: [
+    { n: '1', label: "3 hosts" },
+    { n: '2', label: "162 ctrs" },
+    { n: '3', label: "monitor lied", err: true },
+    { n: '4', label: "re-measure" },
+    { n: '5', label: "honest ✓" },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';

@@ -3,8 +3,10 @@ title: "Running Production Infrastructure Solo: 162 Containers Across Three Host
 description: "One operator, three hosts, 162 containers in 78 compose stacks — Traefik, SSO, monitoring, mail, CI/CD and backups — and the two failures that changed how I verify my own numbers."
 pubDate: 2026-10-06
 category: case-studies
-tags: [docker, traefik, monitoring, self-hosting, infrastructure, devops]
-draft: true
+tags: [docker, traefik, monitoring, infrastructure, devops]
+ogImage: /og/running-production-infrastructure-solo.png
+banner: /banners/running-production-infrastructure-solo.png
+draft: false
 ---
 
 ## Why this matters

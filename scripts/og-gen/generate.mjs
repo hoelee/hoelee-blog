@@ -331,6 +331,12 @@ TERMINALS['stop-writing-agent-prompts-for-deterministic-work'] = `
     <div class="line"><span class="prompt">&nbsp;</span><span class="err">[drift_skip] × 29 runs — silent, and silence reads as "nothing to report"</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">rewrite as a script · stdout IS the notification</span><span class="fix">→ green since ✓</span></div>`;
 
+TERMINALS['running-production-infrastructure-solo'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">3 hosts · 162 containers · 78 compose stacks</span></div>
+    <div class="line"><span class="prompt"> </span><span class="err">grafana: cAdvisor 'containers' inflated by cgroup pseudo-entries</span></div>
+    <div class="line"><span class="prompt"> </span><span class="err">grafana: one NAS volume counted three times</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">verify_infra.py — re-derive from the live daemons</span><span class="fix">→ no remembered numbers ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {
