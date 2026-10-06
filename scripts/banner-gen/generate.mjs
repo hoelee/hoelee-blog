@@ -1112,6 +1112,43 @@ BANNERS['running-production-infrastructure-solo'] = {
   ],
 };
 
+BANNERS['the-upstream-was-deleted-then-came-back-rewritten'] = {
+  titlebar: "root@dsm — reader · the upstream came back",
+  lines: [
+    { t: 'prompt', text: "$" }, { t: 'cmd', text: "docker pull hectorqin/reader" },
+    { t: 'err', text: "→ 404   the official image is gone from Docker Hub" }, { t: 'prompt', text: "$" },
+    { t: 'cmd', text: "git log --oneline | tail -1" }, { t: 'err', text: "233 commits, oldest: 初始化仓库  (2026-09-16)" },
+    { t: 'hl', text: "Kotlin/Spring + Vert.x  →  TypeScript/Node · :8080 → :5888" }, { t: 'dim', text: "registry moved to cnb.cool — no tags, no releases" },
+    { t: 'prompt', text: "$" }, { t: 'cmd', text: "keep the front door outside the app image" },
+    { t: 'ok', text: "→ readers unaffected · migration plan written ✓" },
+  ],
+  flow: [
+    { n: '1', label: "orphaned image" },
+    { n: '2', label: "404 on Docker Hub", err: true },
+    { n: '3', label: "233 commits, new language" },
+    { n: '4', label: "a rewrite = a new app" },
+    { n: '5', label: "tested migration plan ✓" },
+  ],
+};
+
+BANNERS['putting-a-front-door-on-an-app-you-cant-modify'] = {
+  titlebar: "root@dsm — reader-gateway · nginx:alpine",
+  lines: [
+    { t: 'prompt', text: "$" }, { t: 'cmd', text: "curl -s book.example.com/index.html | wc -c" },
+    { t: 'err', text: "5879 — a shell: one empty div, everything else drawn by JS" }, { t: 'prompt', text: "$" },
+    { t: 'cmd', text: "body-rewrite? · patch the bundle? · fork it?" }, { t: 'err', text: "nothing in the bytes to rewrite" },
+    { t: 'hl', text: "a second container owns the public port" }, { t: 'cmd', text: "location = / → my page · location / → the app · resolver at request time" },
+    { t: 'dim', text: "app port → 127.0.0.1:7778 · branding via the app's own CSS hook" }, { t: 'ok', text: "→ front page · og card · 中/EN · vendor links gone ✓" },
+  ],
+  flow: [
+    { n: '1', label: "blank login box" },
+    { n: '2', label: "client-rendered SPA", err: true },
+    { n: '3', label: "gateway container" },
+    { n: '4', label: "page + 3 injections" },
+    { n: '5', label: "front door ✓" },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';

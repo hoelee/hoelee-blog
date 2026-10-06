@@ -337,6 +337,18 @@ TERMINALS['running-production-infrastructure-solo'] = `
     <div class="line"><span class="prompt"> </span><span class="err">grafana: one NAS volume counted three times</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">verify_infra.py — re-derive from the live daemons</span><span class="fix">→ no remembered numbers ✓</span></div>`;
 
+TERMINALS['the-upstream-was-deleted-then-came-back-rewritten'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">docker pull hectorqin/reader</span><span class="err">→ 404 Not Found</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">my 3.x build survives in a stranger's Docker Hub namespace</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">git log --oneline | wc -l</span><span class="fix">→ 233 commits since 2026-09-16</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">port · volume · env · db engine · config store</span><span class="err">→ all five changed: it's a new app</span></div>`;
+
+TERMINALS['putting-a-front-door-on-an-app-you-cant-modify'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl -s book.example.com/index.html | wc -c</span><span class="err">→ 5879 · body is <div id="app"></div></span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">client-rendered → a proxy body rewrite has nothing to rewrite</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">docker compose up -d   (gateway takes the public port)</span><span class="fix">→ front page 200 ✓</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">curl -s /index.html | grep -o lang=</span><span class="fix">→ zh-CN ✓</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {
