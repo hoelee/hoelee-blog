@@ -1149,6 +1149,24 @@ BANNERS['putting-a-front-door-on-an-app-you-cant-modify'] = {
   ],
 };
 
+BANNERS['every-player-stuttered-the-file-was-fine'] = {
+  titlebar: "root@media - the file was blameless",
+  lines: [
+    { t: 'prompt', text: "$" }, { t: 'cmd', text: "tsconv --file 5YkGHtaduGU" },
+    { t: 'dim', text: "container: 5818/5818 frames @ 0.040000 s" }, { t: 'dim', text: "decode: rc=0, zero errors printed" },
+    { t: 'err', text: "pictures: 106 frames wrong (SSIM 0.33)" }, { t: 'prompt', text: "$" },
+    { t: 'cmd', text: "-hwaccel cuda -c:v av1" }, { t: 'ok', text: "0 wrong frames  SSIM 1.000000" },
+    { t: 'hl', text: "gate: structure AND content, then replace" }, { t: 'dim', text: "65/65 affected files re-encoded" },
+  ],
+  flow: [
+    { n: '1', label: "decode" },
+    { n: '2', label: "encode" },
+    { n: '3', label: "verify" },
+    { n: '4', label: "content" },
+    { n: '5', label: "replace" },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';

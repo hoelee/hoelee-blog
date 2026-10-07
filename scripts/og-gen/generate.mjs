@@ -349,6 +349,12 @@ TERMINALS['putting-a-front-door-on-an-app-you-cant-modify'] = `
     <div class="line"><span class="prompt">$</span><span class="cmd">docker compose up -d   (gateway takes the public port)</span><span class="fix">→ front page 200 ✓</span></div>
     <div class="line"><span class="prompt">$</span><span class="cmd">curl -s /index.html | grep -o lang=</span><span class="fix">→ zh-CN ✓</span></div>`;
 
+TERMINALS['every-player-stuttered-the-file-was-fine'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">ffmpeg -v error -i out.mp4 -f null -   ->  0 errors</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">106/5819 frames show the WRONG picture</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">-c:v av1_cuvid   ->   -hwaccel cuda -c:v av1</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">0 wrong frames  SSIM 1.000000</span><span class="fix">-> fixed</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {
