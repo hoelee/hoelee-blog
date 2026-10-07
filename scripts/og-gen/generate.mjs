@@ -355,6 +355,12 @@ TERMINALS['every-player-stuttered-the-file-was-fine'] = `
     <div class="line"><span class="prompt">$</span><span class="cmd">-c:v av1_cuvid   ->   -hwaccel cuda -c:v av1</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">0 wrong frames  SSIM 1.000000</span><span class="fix">-> fixed</span></div>`;
 
+TERMINALS['it-reported-success-nothing-had-changed'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">upload show.mp4 -> "ok"</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">local 403,448,100 B  /  remote 12,582,912 B</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">read-back hash  ->  mismatch</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">re-upload  ->  hash match</span><span class="fix">-> verified</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {

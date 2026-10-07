@@ -1167,6 +1167,24 @@ BANNERS['every-player-stuttered-the-file-was-fine'] = {
   ],
 };
 
+BANNERS['it-reported-success-nothing-had-changed'] = {
+  titlebar: "root@nas - reported success",
+  lines: [
+    { t: 'prompt', text: "$" }, { t: 'cmd', text: "convert-batch --tier x265" },
+    { t: 'dim', text: "stage: 403,448,100 bytes written" }, { t: 'err', text: "remote: 12,582,912 bytes - reported OK" },
+    { t: 'prompt', text: "$" }, { t: 'cmd', text: "read-back hash -> mismatch, re-upload" },
+    { t: 'ok', text: "hash match - replacing" }, { t: 'hl', text: "verify at every boundary" },
+    { t: 'dim', text: "reported=30 landed=29 not-landed=0" }, { t: 'dim', text: "one writer, zero silent failures" },
+  ],
+  flow: [
+    { n: '1', label: "stage" },
+    { n: '2', label: "upload" },
+    { n: '3', label: "re-read" },
+    { n: '4', label: "hash" },
+    { n: '5', label: "replace" },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';
