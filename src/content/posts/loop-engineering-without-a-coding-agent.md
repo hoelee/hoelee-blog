@@ -1,6 +1,6 @@
 ---
-title: "Loop Engineering Without a Coding Agent: The 11 Cron Jobs That Run My Business"
-description: "Loop engineering is 2026's term for designing the system that prompts and checks an agent. I applied it to a business, not a codebase: 11 cron jobs, 8 with no AI at all."
+title: "Loop Engineering Without a Coding Agent: The 11 Cron Jobs That Run My Infrastructure"
+description: "Loop engineering is 2026's term for designing the system that prompts and checks an agent. I applied it to self-hosted infrastructure, not a codebase: 11 cron jobs, 8 with no AI at all."
 pubDate: 2026-10-01
 category: case-studies
 tags: ["loop-engineering", "ai-agents", "cron", "self-hosting", "automation", "monitoring"]
@@ -13,27 +13,28 @@ Every article about "loop engineering" is about a coding agent. Claude Code,
 Codex, `/goal`, `/loop`. The examples are always the same shape: an agent
 refactoring a repository overnight while you sleep.
 
-I don't have that problem. I run a small web studio — websites, hosting,
-self-hosted infrastructure — and my loops keep the *business* alive, not a
-codebase. Eleven scheduled jobs run on this machine: an endpoint watchdog
-that fires every five minutes, mail triage twice a day, a shop-voucher
-audit, a disk-corruption check, a domain-expiry reminder, a guard that
-notices when an upgrade silently reset my proxy headers.
+I don't have that problem. I run my own self-hosted infrastructure — a NAS,
+a couple of servers, mail, a reverse proxy, a CI runner — and my loops keep
+*that* alive, not a codebase. Eleven scheduled jobs run on this machine: an
+endpoint watchdog that fires every five minutes, mail triage twice a day, a
+marketplace voucher audit, a disk-corruption check, a domain-expiry
+reminder, a guard that notices when an upgrade silently reset my proxy
+headers.
 
 Eight of those eleven contain no AI at all.
 
 ## Why this matters more than the agent does
 
-A website that is down at 2am is a client who finds out before I do. An
-expiring domain is a live business that stops receiving mail. A corrupt SSD
-is a week of my work. None of these announce themselves; they all wait
-quietly until someone looks.
+A service that is down at 2am stays down until someone notices. An expiring
+domain is mail that silently stops arriving. A corrupt SSD is a week of my
+work. None of these announce themselves; they all wait quietly until someone
+looks.
 
 A loop is that someone. It turns "I should check on that" into "something
-checks on that, forever, and only speaks when there is news." The business
-outcome is not magic autonomy — it is that I stopped being the monitoring
-system. I get a Telegram message when something is actually wrong, and
-silence when it isn't.
+checks on that, forever, and only speaks when there is news." The payoff is
+not magic autonomy — it is that I stopped being the monitoring system. I get
+a Telegram message when something is actually wrong, and silence when it
+isn't.
 
 That is the whole value proposition, and it is worth being precise about it,
 because the 2026 hype around loops promises considerably more.
@@ -73,7 +74,7 @@ below.
 | Disk-corruption watchdog | daily 10:00 | SMART counters vs baseline | no |
 | Domain-expiry reminder | daily 09:00 | 30-day / 7-day thresholds | no |
 | Mail triage (`me@hoelee.com`) | 09:30 + 18:30 | unread mail, deduped | **yes** |
-| Shop voucher audit | daily 09:00 | read-only portal scrape | **yes** |
+| Marketplace voucher audit | daily 09:00 | read-only portal scrape | **yes** |
 | Real-IP + bot-block regression guard | hourly :20 | config invariants + log ratios | no |
 | unRaid SSD watchdog | daily 10:00 | counter deltas | no |
 | Mailbox health | monthly | IMAP/SMTP connect | no |
@@ -108,7 +109,7 @@ introduce failure modes, and it will, at 3am, silently.
 
 The measured difference in my own fleet: 8 of 11 loops run with zero tokens.
 The three that use a model all need judgment I cannot express as code — is
-this email important, is this voucher about to overspend, is this project
+this email important, does this voucher need a human, is this project
 stalled.
 
 ## Rule 2 — the verifier must be able to fail loudly about itself
@@ -150,7 +151,7 @@ contact with production has three tiers, and each loop sits in exactly one:
 
 **Tier 1 — report only.** Most of my loops. They observe and tell me. Nothing they do can break anything, which means I can deploy them on a Friday.
 
-**Tier 2 — propose, human confirms.** The shop-voucher audit runs daily and is *read-only by contract*. The prompt forbids creating or editing a voucher even if the script prints a proposal, because vouchers on that platform have no draft state: confirming means live and escrowed, with money attached. The loop's job is to hand me a decision I can make in ten seconds.
+**Tier 2 — propose, human confirms.** The voucher audit runs daily and is *read-only by contract*. The prompt forbids creating or editing a voucher even if the script prints a proposal, because vouchers on that platform have no draft state: confirming means live and escrowed, with money attached. The loop's job is to hand me a decision I can make in ten seconds.
 
 **Tier 3 — act, within an allowlist.** Exactly one loop in the fleet acts, and the conditions are narrow: it restarts a VM only when the guest is *unreachable from the hypervisor* (verified by ping and ARP from the host), never when the guest is up but its service is failing — that is a bug to fix, not a machine to bounce. A three-run cooldown prevents a restart loop. And it never runs at all when the control probe failed.
 
@@ -158,9 +159,9 @@ The pattern generalises: **each tier up must earn its right with a verifier
 I trust more than the agent.** Am I allowed to walk away? Only if the thing
 that decides "done" is something I would trust in a post-mortem.
 
-That third-tier restraint is also what the shops on the receiving end of
-these loops require. A marketplace audit that "helpfully" fixed its own
-findings would have been a compliance problem, not a win.
+That restraint is also what the platform on the receiving end requires. An
+audit that "helpfully" fixed its own findings would be a terms-of-service
+problem, not a win.
 
 ## Trap 1: a loop that fails forever looks exactly like a loop with nothing to report
 
@@ -207,9 +208,9 @@ nothing, writes nothing, opens no browser. A loop's job is to keep *a* loop
 turning — not necessarily its own.
 
 That is the honest boundary. These eleven jobs buy back attention and catch
-failures early; they do not run the business. The client emails still get
-answered by me. The price still gets confirmed by me. What changed is that I
-no longer spend any part of my day wondering whether something is broken.
+failures early. They never make a decision I haven't already handed them,
+and the judgement still comes from me. What changed is that I no longer
+spend any part of my day wondering whether something is broken.
 
 ## What I would do differently
 
@@ -221,31 +222,27 @@ no longer spend any part of my day wondering whether something is broken.
 ## The result
 
 Eleven loops, eight of them running with no model and therefore no token
-bill, covering seven monitored endpoints, a mailbox, a shop portal, a RAID
-array and a set of proxy invariants that a CyberPanel or DSM upgrade can
-silently reset. The endpoint watchdog has completed 1,618 consecutive ticks
-and has self-healed a hung VM from unreachable to healthy without me
+bill, covering seven monitored endpoints, a mailbox, a marketplace account,
+a RAID array and a set of proxy invariants that a CyberPanel or DSM upgrade
+can silently reset. The endpoint watchdog has completed 1,618 consecutive
+ticks and has self-healed a hung VM from unreachable to healthy without me
 touching it. The most expensive job in the fleet is a daily version check
 that costs nothing and would have kept failing forever if I hadn't read its
 history.
 
-If you are self-hosting anything for money, the useful version of "loop
-engineering" is not a fleet of agents. It is one cron job with a stop
+If you are running anything you have to keep alive, the useful version of
+"loop engineering" is not a fleet of agents. It is one cron job with a stop
 condition you can test, a verifier that says when it cannot see, an exit
 path for the failure you did not anticipate — and permission to do the
 smallest thing that helps. Start with the one thing you check manually every
 week, and make it load-bearing.
 
-## Want this for your business?
+## Open to work
 
-If you are running a website or an online shop and the answer to "is it up
-right now?" is "I'd have to check" — I build exactly this: self-hosted
-watchdogs, uptime and certificate monitoring, automated backups with
-verification, and mail triage that only pings you when something actually
-needs you. No SaaS subscription per host, no dashboard you have to remember
-to open.
+I'm a full-stack developer and DevOps engineer, and I'm open to remote or
+hybrid roles — platform, infrastructure, DevOps, or full-stack. This blog is
+the work sample: every post here is something I actually built and then had
+to keep running, and the eleven loops above are the least glamorous and most
+useful part of it.
 
-**WhatsApp: [+60 12-797 2969](https://wa.me/60127972969)** · **Email: [me@hoelee.com](mailto:me@hoelee.com?subject=Self-hosted%20monitoring%20and%20automation)** · **[hoelee.com](https://hoelee.com)**
-
-Website design and development is my main line of work; self-hosted
-infrastructure, monitoring and automation is the other half of it.
+**Email: [me@hoelee.com](mailto:me@hoelee.com) · [LinkedIn](https://www.linkedin.com/in/hoelee) · [GitHub](https://github.com/hoelee) · [hoelee.com](https://hoelee.com)**
