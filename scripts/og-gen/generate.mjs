@@ -361,6 +361,12 @@ TERMINALS['it-reported-success-nothing-had-changed'] = `
     <div class="line"><span class="prompt">$</span><span class="cmd">read-back hash  ->  mismatch</span></div>
     <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">re-upload  ->  hash match</span><span class="fix">-> verified</span></div>`;
 
+TERMINALS['does-hevc-actually-shrink-your-files'] = `
+    <div class="line"><span class="prompt">$</span><span class="cmd">hevc_nvenc -cq 27  ->  115% of source bitrate</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="err">the "high quality" default made it BIGGER</span></div>
+    <div class="line"><span class="prompt">$</span><span class="cmd">libx265 -crf 26  ->  56.7%</span></div>
+    <div class="line"><span class="prompt">&nbsp;</span><span class="cmd">min SSIM 0.988 · 22% smaller than NVENC</span><span class="fix">-> measured</span></div>`;
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 if (!existsSync(postPath)) {

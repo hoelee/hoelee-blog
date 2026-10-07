@@ -1185,6 +1185,24 @@ BANNERS['it-reported-success-nothing-had-changed'] = {
   ],
 };
 
+BANNERS['does-hevc-actually-shrink-your-files'] = {
+  titlebar: "root@media - does HEVC shrink it?",
+  lines: [
+    { t: 'prompt', text: "$" }, { t: 'cmd', text: "measure.sh --source h264-a.mp4" },
+    { t: 'dim', text: "nvenc cq27  -> 72.4% of source bitrate" }, { t: 'err', text: "nvenc cq27  -> 115.2% on the 720p file" },
+    { t: 'prompt', text: "$" }, { t: 'cmd', text: "libx265 -crf 26 -preset medium" },
+    { t: 'ok', text: "33.7% / 56.7% / 67.0% at min SSIM 0.99" }, { t: 'hl', text: "same quality, or the comparison is noise" },
+    { t: 'dim', text: "software beats hardware by 10-22%" }, { t: 'dim', text: "VP9/AV1 sources: no headroom, copy" },
+  ],
+  flow: [
+    { n: '1', label: "classify bpp" },
+    { n: '2', label: "encode" },
+    { n: '3', label: "ssim" },
+    { n: '4', label: "compare" },
+    { n: '5', label: "cap size" },
+  ],
+};
+
 // ---------- read frontmatter ----------
 const postPath = join(ROOT, 'src', 'content', 'posts', `${slug}.md`);
 let category = 'devops';
